@@ -6,13 +6,13 @@ import org.breeze.entity.Account;
 
 
 @WebService
-public interface WebServiceAcount {
+public interface AccountService {
 
 
 	/**
 	 * @param hello
 	 * @return
 	 */
-	 public Account getAccountByUserID(Long userid);
+	 public Account get(Long userid);
 
 }

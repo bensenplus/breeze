@@ -32,7 +32,7 @@ public class AccountServiceTest {
 
 	@Test
 	public void testGetAccountByUserID() {
-		Account account = accountService.getAccountByUserID(10001l);
+		Account account = accountService.get(10001l);
 		assertNotNull(account);
 	}
 
@@ -40,34 +40,34 @@ public class AccountServiceTest {
 	public void testGetAllAccount() {
 		
 		Page page = new Page();
-		List<Account> accountList = accountService.getAllAccount(page);
+		List<Account> accountList = accountService.select(page);
 		log.debug(page);
 		assertNotNull(accountList);
 	}
 
 	@Test
 	public void testGetAccount() {
-		Account account = accountService.getAccountByUserID(10001l);
+		Account account = accountService.get(10001l);
 		assertNotNull(account);
 	}
 
 	@Test
 	public void testUpdateAccount() {
 		
-		Account account = accountService.getAccountByUserID(10001l);
+		Account account = accountService.get(10001l);
 		account.setCity("shanghai");
 		int count = accountService.updateAccount(account);
 		log.debug(count);
-		account = accountService.getAccountByUserID(10001l);
+		account = accountService.get(10001l);
 		assertEquals("shanghai",account.getCity());
 	}
 	
 	@Test
 	public void testInsertAccount() {
-		Account account = accountService.getAccountByUserID(10001l);
-		accountService.deleteAccountByUserID(99999l);
+		Account account = accountService.get(10001l);
+		accountService.delete(99999l);
 		account.setUserid(99999l);
-		accountService.insertAccount(account);
+		accountService.create(account);
 	}
 
 }

@@ -6,11 +6,11 @@
 
   <cache />
 
-  <select id="getAllAccountCount" resultType="int">
+  <select id="count" resultType="int">
     SELECT COUNT(*)  FROM ACCOUNT
   </select>
   
-  <select id="getAllAccount"  resultType="Account">
+  <select id="select"  resultType="Account">
     SELECT
           ACCOUNT.USERID,
           ACCOUNT.PASSWORD,
@@ -28,7 +28,7 @@
     FROM ACCOUNT
   </select>
   
-  <select id="getAccountByUserID" parameterType="Long" resultType="Account">
+  <select id="get" parameterType="Long" resultType="Account">
     SELECT
           ACCOUNT.USERID,
           ACCOUNT.PASSWORD,
@@ -47,18 +47,18 @@
     WHERE ACCOUNT.USERID = #{userid}
   </select>
   
-  <delete id="deleteAccountByUserID" parameterType="Long">
+  <delete id="delete" parameterType="Long">
     DELETE FROM ACCOUNT WHERE USERID = #{userid}
   </delete>
   
-  <insert id="insertAccount" parameterType="Account">
+  <insert id="insert" parameterType="Account">
     INSERT INTO ACCOUNT
       (EMAIL,PASSWORD,FIRSTNAME, LASTNAME, STATUS, ADDRESS1, ADDRESS2, CITY, STATE, ZIP, COUNTRY, PHONE, USERID)
     VALUES
       (#{email}, #{password}, #{firstName}, #{lastName}, #{status}, #{address1},  #{address2}, #{city}, #{state}, #{zip}, #{country}, #{phone}, #{userid})
   </insert>
   
-  <update id="updateAccount" parameterType="Account">
+  <update id="update" parameterType="Account">
     UPDATE ACCOUNT SET
       EMAIL = #{email},
       FIRSTNAME = #{firstName},

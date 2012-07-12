@@ -21,7 +21,7 @@ public class AccountController {
 
 	@RequestMapping("/list")
 	public String list(ModelMap model, Page page) {
-		List<Account> accountList = accountService.getAllAccount(page);
+		List<Account> accountList = accountService.select(page);
 		model.addAttribute("accountList", accountList);
 		model.addAttribute("page", page);
 		return "account/list";
@@ -29,14 +29,14 @@ public class AccountController {
 	
 	@RequestMapping("/edit")
 	public String edit(ModelMap model, Long userid) {
-		Account account = accountService.getAccountByUserID(userid);
+		Account account = accountService.get(userid);
 		model.addAttribute("account", account);
 		return "account/edit";
 	}
 	
 	@RequestMapping("/copy")
 	public String copy(ModelMap model, Long userid) {
-		Account account = accountService.getAccountByUserID(userid);
+		Account account = accountService.get(userid);
 		model.addAttribute("account", account);
 		return "account/edit";
 	}
@@ -49,7 +49,7 @@ public class AccountController {
 	
 	@RequestMapping("/delete")
 	public String delete(Long userid) {
-		accountService.deleteAccountByUserID(userid);
+		accountService.delete(userid);
 		return "redirect:list";
 	}	
 	

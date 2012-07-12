@@ -22,32 +22,32 @@ public class AccountService {
 	@Resource(name = "accountDao")
 	private AccountDao accountDao;
 
-	public List<Account> getAllAccount(Page page) {
-		page.setCount(accountMapper.getAllAccountCount());
+	public List<Account> select(Page page) {
+		page.setCount(accountMapper.count());
 		RowBounds rowBounds = new RowBounds(page.getStartIndex(), page.getSizePerPage());
-		return accountDao.getAccountList(rowBounds);
+		return accountDao.select(rowBounds);
 	}
 
-	public Account getAccountByUserID(Long userid) {
-		return accountMapper.getAccountByUserID(userid);
+	public Account get(Long userid) {
+		return accountMapper.get(userid);
 	}
 
-	public Account getAccount(String username, String password) {
+	public Account get(String username, String password) {
 		Account account = new Account();
 		account.setPassword(password);
-		return accountMapper.getAccountByUsernameAndPassword(account);
+		return accountMapper.get(account);
 	}
 
-	public void insertAccount(Account account) {
-		accountMapper.insertAccount(account);
+	public void create(Account account) {
+		accountMapper.insert(account);
 	}
 
 	@Transactional
 	public int updateAccount(Account account) {
-		return accountMapper.updateAccount(account);
+		return accountMapper.update(account);
 	}
 
-	public int deleteAccountByUserID(Long userid) {
-		return accountMapper.deleteAccountByUserID(userid);
+	public int delete(Long userid) {
+		return accountMapper.delete(userid);
 	}
 }

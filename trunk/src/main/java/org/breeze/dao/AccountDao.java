@@ -15,8 +15,8 @@ public class AccountDao {
 	@Resource(name = "sqlSessionFactory")
 	private SqlSessionFactory sqlSessionFactory;
 
-	public List<Account> getAccountList(RowBounds rowBounds) {
+	public List<Account> select(RowBounds rowBounds) {
 		return sqlSessionFactory.openSession().selectList(
-				"org.breeze.dao.AccountMapper.getAllAccount", null, rowBounds);
+				"org.breeze.dao.AccountMapper.select", null, rowBounds);
 	}
 }
