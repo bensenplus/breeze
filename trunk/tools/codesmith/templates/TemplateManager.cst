@@ -1,0 +1,244 @@
+﻿<%-- 
+Name:
+Author: 
+Description: 
+--%>
+<%@ CodeTemplate Language="C#" TargetLanguage="Text" Src="" ResponseEncoding="UTF-8" Inherits="" Debug="False" Description="Template description here." %>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Assembly Name="System.Data" %>
+<%@ Import Namespace="System.Data" %>
+
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+<%@ Import Namespace="System.IO" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+
+<%-- 注册 定义的成员变量 --%>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="DB" Description="请选择名的数据来源" %>
+<%@ Property Name="RootTableSpaceName" Type="System.String" Default="com.scitel.{modelname模块名称}." Optional="False" Category="Context" Description="源码输出的模块名称" %>
+
+<%-- 启用 MAP方式 System-CSharpAlias  --%>
+<%@ Map Name="CSharpAlias" Src="System-CSharpAlias" Description="System to C# Type Map" %>
+<%@ Map Name="JavaAlias" Src="System-JavaAlias.csmap" Description="Oracle to Java Type Map" %>
+
+<script runat="template">
+<!-- #include file=getNamefunction.cs -->
+//Debugger.Break();
+</script>
+
+
+/**
+ *
+ */
+package <%=RootTableSpaceName%>.service;
+
+import <%=RootTableSpaceName%>.dao.<%=DaoName(SourceTable.Name)%>;
+import <%=RootTableSpaceName%>.model.<%= ModelName(SourceTable.Name)%>;
+
+import com.scitel.service.Manager;
+
+import java.sql.Connection;
+import java.util.List;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.scitel.dao.DAO;
+import com.scitel.framework.model.Pagination;
+import com.scitel.model.BaseObject;
+import com.scitel.model.UserInfo;
+import com.scitel.util.ConnectionPool;
+
+/**
+ * <p>Title: </p>
+ *
+ * <p>Description: <%=SourceTable.Name%> Manager 处理类</p>
+ *
+ * <p>Copyright: Copyright (c) 2007</p>
+ *
+ */
+public class <%=ManagerName(SourceTable.Name)%>
+    implements Manager {
+  	private static final Log log = LogFactory.getLog(<%=ManagerName(SourceTable.Name)%>.class);
+
+	/* （非 Javadoc）
+	* @see com.scitel.service.Manager#getList(com.scitel.model.UserInfo, com.scitel.model.BaseObject)
+	*/
+	public List getList(UserInfo userInfo, BaseObject object) throws Exception {
+		// TODO 自动生成方法存根
+		return null;
+	}
+
+	/* （非 Javadoc）
+	* @see com.scitel.service.Manager#getList(com.scitel.model.UserInfo, com.scitel.model.BaseObject, com.scitel.framework.model.Pagination)
+	*/
+  	public List getList(UserInfo userInfo, BaseObject object,
+                      Pagination pagination) throws Exception {
+    	// TODO 自动生成方法存根
+		List list = null;
+		Connection con = ConnectionPool.getConnection();
+		try {
+			DAO daointance = new <%=DaoName(SourceTable.Name)%>();
+			list = daointance.getList(con, userInfo, object, pagination);
+			con.commit();
+		}
+		catch (Exception e) {
+			con.rollback();
+			log.error(e);
+			throw e;
+		}
+		finally {
+			ConnectionPool.closeConnection(con);
+		}
+		return list;
+  	}
+	
+	
+		 /**
+	 * 根据分页对象获得简单记录列表
+	 * @param userInfo
+	 * @param object
+	 * @param pagination
+	 * @return
+	 * @throws Exception
+	 */
+	public List getMinList(UserInfo userInfo, BaseObject object, Pagination pagination)
+		throws Exception{
+		List list = null;
+		Connection con = ConnectionPool.getConnection();
+		try {
+			DAO daointance = new <%=DaoName(SourceTable.Name)%>();
+			list = daointance.getMinList(con, userInfo, object, pagination);
+			con.commit();
+		}
+		catch (Exception e) {
+			con.rollback();
+			log.error(e);
+			throw e;
+		}
+		finally {
+			ConnectionPool.closeConnection(con);
+		}
+		return list;
+	}
+
+  	/* （非 Javadoc）
+   	* @see com.scitel.service.Manager#getObject(com.scitel.model.UserInfo, java.lang.String)
+   	*/
+	public BaseObject getObject(UserInfo userInfo, String id) throws Exception {
+		// TODO 自动生成方法存根
+	    Connection con = ConnectionPool.getConnection();
+		DAO daointance = new <%=DaoName(SourceTable.Name)%>();
+	    <%= ModelName(SourceTable.Name)%> intance = null;
+	    try {
+	    	intance = (<%= ModelName(SourceTable.Name)%>) daointance.getObject(con, userInfo, id);
+	    }
+	    catch (Exception e) {
+	      log.error(e);
+	      throw e;
+	    }
+	    finally {
+	      ConnectionPool.closeConnection(con);
+	    }
+	    return intance;
+  	}
+
+  	/* （非 Javadoc）
+   	* @see com.scitel.service.Manager#add(com.scitel.model.UserInfo, com.scitel.model.BaseObject)
+   	*/
+  	public BaseObject add(UserInfo userInfo, BaseObject object) throws Exception {
+		// TODO 自动生成方法存根
+	    Connection con = ConnectionPool.getConnection();
+		DAO daointance = new <%=DaoName(SourceTable.Name)%>();
+	    try {
+			daointance.insert(con, userInfo, object) ;
+			con.commit();
+	    }
+	    catch (Exception ex) {
+	      con.rollback();
+	      log.error(ex);
+	      throw ex;
+	    }
+	    finally {
+	      ConnectionPool.closeConnection(con);
+	    }
+	    return object;
+  	}
+
+	/* （非 Javadoc）
+	* @see com.scitel.service.Manager#update(com.scitel.model.UserInfo, com.scitel.model.BaseObject)
+	*/
+	public BaseObject update(UserInfo userInfo, BaseObject object) throws
+		Exception {
+		// TODO 自动生成方法存根
+	    Connection con = ConnectionPool.getConnection();
+		DAO daointance = new <%=DaoName(SourceTable.Name)%>();
+	    try {
+	    	daointance.update(con, userInfo, object) ;
+			con.commit();
+	    }
+	    catch (Exception ex) {
+		con.rollback();
+      	log.error(ex);
+      	throw ex;
+	    }
+	    finally {
+	      ConnectionPool.closeConnection(con);
+	    }
+	    return object;
+	}
+
+	/* （非 Javadoc）
+	* @see com.scitel.service.Manager#remove(com.scitel.model.UserInfo, java.lang.String[])
+	*/
+  	public void remove(UserInfo userInfo, String[] ids) throws Exception {
+    	// TODO 自动生成方法存根
+  	    Connection con = ConnectionPool.getConnection();
+		DAO daointance = new <%=DaoName(SourceTable.Name)%>();
+  	    try {
+			int len = ids.length;
+ 	    	for ( int i=0; i<len ;i++){
+  	    		daointance.remove(con,null,ids[i]);
+  	    	}
+			con.commit();
+  	    }
+		
+  	    catch (Exception e) {
+		con.rollback();
+  	    log.error(e);
+
+  	    throw e;
+  	    }
+  	    finally {
+  	    ConnectionPool.closeConnection(con);
+  	    }
+		return ;
+ 	}
+	
+	
+  	/* （非 Javadoc）
+	* @see 取得相应表的SEQ_ID
+	*/
+  	public String getSequenceValue(UserInfo userInfo) throws Exception {
+    	// TODO 自动生成方法存根
+  	    Connection con = ConnectionPool.getConnection();
+  	    <%=DaoName(SourceTable.Name)%> daointance = new <%=DaoName(SourceTable.Name)%>();
+  	    try {
+  	    	String id = daointance.getSequenceValue(con);
+
+  	    	con.commit();	
+  	    	
+  	    	return id;
+  	    }
+		
+  	    catch (Exception e) {
+		con.rollback();
+  	    log.error(e);
+
+  	    throw e;
+  	    }
+  	    finally {
+  	    ConnectionPool.closeConnection(con);
+  	    }
+ 	}
+}

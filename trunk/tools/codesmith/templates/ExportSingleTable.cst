@@ -1,0 +1,239 @@
+﻿<%-- 
+
+Author: 
+Description: 
+ExportSingleTable.cst 
+
+输入 Scitel 系统报表的输出 
+
+
+--%>
+<%@ CodeTemplate Language="C#" TargetLanguage="Text" Src="" Inherits="" Debug="False" Description="Template description here." ResponseEncoding="UTF-8"  %>
+
+
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Import Namespace="SchemaExplorer" %>
+
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="System.Design" %>
+<%@ Assembly Name="CodeSmith.BaseTemplates" %>
+<%@ Assembly Name="CodeSmith.CustomProperties" %>
+<%@ Import Namespace="CodeSmith.BaseTemplates" %>
+<%@ Import Namespace="CodeSmith.CustomProperties" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="System.IO" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+<%@ Import Namespace="CodeSmith.CustomProperties" %>
+
+
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="Context" Description="指定的数据库表结构" %>
+<%@ Property Name="OutputPath" Type="System.String" Default="c:\srbzCode" Optional="False" Category="Context" Description="源码输出主目录" %>
+<%@ Property Name="RootTableSpaceName" Type="System.String" Default="com.scitel.{modelname模块名称}." Optional="False" Category="Context" Description="源码输出的模块名称" %>
+
+
+<%-- 启用 MAP方式 System-CSharpAlias  --%>
+<%@ Map Name="CSharpAlias" Src="System-CSharpAlias" Description="System to C# Type Map" %>
+<%-- 注册 子模板 --%>
+<%@ Register Name="TemplateAction" Template="TemplateAction.cst" %>
+<%@ Register Name="TemplateModel" Template="TemplateModel.cst" %>
+<%@ Register Name="TemplateDao" Template="TemplateDao.cst" %>
+<%@ Register Name="TemplateManager" Template="TemplateManager.cst" %>
+<%@ Register Name="TemplateJsp" Template="TemplateJsp.cst" %>
+
+<%@ Register Name="ExportSingleTableConfigAction" Template="ExportSingleTableStructsConfigAction.cst" %>
+<%@ Register Name="ExportSingleTableConfigForm" Template="ExportSingleTableStructsConfigForm.cst" %>
+<%
+
+    //Debugger.Break();
+    
+    //this.Progress.MaximumValue = 100;
+    //this.Progress.MinimumValue = 1;
+    //this.Progress.Step = 1;
+
+    /// 主输出
+    RenderMain();
+
+%>
+
+Done and Finish  !!!!!!!!!!!!!!!!!!!!!!!!
+
+<script runat="template">
+
+<!-- #include file=getNameFunction.cs -->
+
+/// 创建输出文件
+public void RenderMain()
+{
+    // 判断文最外层目录是否存在,否则创建 
+    if(Directory.Exists(OutputPath) == false)
+    {
+        Directory.CreateDirectory(OutputPath);
+    }
+
+	/// 创建 Model 部分
+	CreateTemplateModel(SourceTable);
+	
+	/// 创建 Dao 部分
+	CreateTemplateDao(SourceTable);
+	
+	/// 创建 Manager 部分
+	CreateTemplateManager(SourceTable);
+	
+	/// 创建 Action 部分
+	CreateTemplateAction(SourceTable);
+
+	/// 创建 Jsp 部分
+	CreateTemplateJsp(SourceTable);
+}
+
+///  输出 Model 模块
+public void CreateTemplateModel( TableSchema tb)
+{
+	/// 输出目录结构  输出最底层\logreport\model\$ModelName.java
+	string strFileName = GetFileName(OutputPath, "logreport" , "model"  ,ModelName(tb.Name),"java");
+        
+	/// 创建文件
+    FileStream fs = new FileStream(strFileName,FileMode.Create,FileAccess.Write);
+    StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.UTF8);
+        
+    // 调用子模板进行创建 
+    TemplateModel template = new TemplateModel();
+    
+    // 子模板所需要的入参
+    template.SourceTable = tb;
+	template.RootTableSpaceName = this.RootTableSpaceName;
+   
+    /// 输出子模板文档
+    template.Render(sw);
+    
+	/// 结束
+    //sw.WriteLine("//end of class " + tb.Name);
+    // 关闭输出流
+    sw.Close();
+    //关闭文档
+    fs.Close();
+}
+
+
+
+///  输出 Dao 模块
+public void CreateTemplateDao( TableSchema tb)
+{
+	/// 输出目录结构  输出最底层\logreport\dao\$ModelName.java
+	string strFileName = GetFileName(OutputPath, "logreport" , "dao"  ,DaoName(tb.Name),"java");
+        
+	/// 创建文件
+    FileStream fs = new FileStream(strFileName,FileMode.Create,FileAccess.Write);
+    StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.UTF8);
+        
+    // 调用子模板进行创建 
+    TemplateDao template = new TemplateDao();
+    
+    // 子模板所需要的入参
+    template.SourceTable = tb;
+	template.RootTableSpaceName = this.RootTableSpaceName;
+   
+    /// 输出子模板文档
+    template.Render(sw);
+    
+	/// 结束
+    //sw.WriteLine("//end of class " + tb.Name);
+    // 关闭输出流
+    sw.Close();
+    //关闭文档
+    fs.Close();
+}
+
+
+
+
+///  输出 Manager 模块
+public void CreateTemplateManager( TableSchema tb)
+{
+	/// 输出目录结构  输出最底层\logreport\dao\$ModelName.java
+	string strFileName = GetFileName(OutputPath, "logreport" , "service"  ,ManagerName(tb.Name),"java");
+        
+	/// 创建文件
+    FileStream fs = new FileStream(strFileName,FileMode.Create,FileAccess.Write);
+    StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.UTF8);
+        
+    // 调用子模板进行创建 
+    TemplateManager template = new TemplateManager();
+    
+    // 子模板所需要的入参
+    template.SourceTable = tb;
+	template.RootTableSpaceName = this.RootTableSpaceName;
+   
+    /// 输出子模板文档
+    template.Render(sw);
+    
+	/// 结束
+    //sw.WriteLine("//end of class " + tb.Name);
+    // 关闭输出流
+    sw.Close();
+    //关闭文档
+    fs.Close();
+}
+
+
+
+///  输出 Manager 模块
+public void CreateTemplateAction( TableSchema tb)
+{
+	/// 输出目录结构  输出最底层\logreport\action\$ModelName.java
+	string strFileName = GetFileName(OutputPath, "logreport" , "action"  ,ActionName(tb.Name),"java");
+        
+	/// 创建文件
+    FileStream fs = new FileStream(strFileName,FileMode.Create,FileAccess.Write);
+    StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.UTF8);
+        
+    // 调用子模板进行创建 
+    TemplateAction template = new TemplateAction();
+    
+    // 子模板所需要的入参
+    template.SourceTable = tb;
+	template.RootTableSpaceName = this.RootTableSpaceName;
+   
+    /// 输出子模板文档
+    template.Render(sw);
+    
+	/// 结束
+    //sw.WriteLine("//end of class " + tb.Name);
+    // 关闭输出流
+    sw.Close();
+    //关闭文档
+    fs.Close();
+}
+
+
+///  输出 JSP 模块
+public void CreateTemplateJsp( TableSchema tb)
+{
+	/// 输出目录结构  输出最底层\logreport\action\$ModelName.java
+	string strFileName = GetFileName(OutputPath, "logreport" , "jsp"  ,ActionName(tb.Name),"jsp");
+        
+	/// 创建文件
+    FileStream fs = new FileStream(strFileName,FileMode.Create,FileAccess.Write);
+    StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.UTF8);
+        
+    // 调用子模板进行创建 
+    TemplateJsp template = new TemplateJsp();
+    
+    // 子模板所需要的入参
+    template.SourceTable = tb;
+	template.RootTableSpaceName = this.RootTableSpaceName;
+   
+    /// 输出子模板文档
+    template.Render(sw);
+    
+	/// 结束
+    //sw.WriteLine("//end of class " + tb.Name);
+    // 关闭输出流
+    sw.Close();
+    //关闭文档
+    fs.Close();
+}
+
+
+
+</script>

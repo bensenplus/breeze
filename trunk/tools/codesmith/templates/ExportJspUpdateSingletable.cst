@@ -1,0 +1,280 @@
+﻿<%-- 
+Name:
+Author: 
+Description: 
+--%>
+<%@ CodeTemplate Language="C#" TargetLanguage="Text" ResponseEncoding="UTF-8" Src="" Inherits="" Debug="True" Description="Template description here." %>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Assembly Name="System.Data" %>
+<%@ Import Namespace="System.Data" %>
+
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+<%@ Import Namespace="System.IO" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+
+<%-- 注册 定义的成员变量 --%>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="DB" Description="请选择名的数据来源" %>
+
+<%-- 启用 MAP方式 System-CSharpAlias  --%>
+<%@ Map Name="CSharpAlias" Src="System-CSharpAlias" Description="System to C# Type Map" %>
+<%@ Map Name="JavaAlias" Src="System-JavaAlias.csmap" Description="Oracle to Java Type Map" %>
+
+<script runat="template">
+<!-- #include file=getNamefunction.cs -->
+//Debugger.Break();
+</script>
+<%%@ page contentType="text/html; charset=GBK" %%>
+<%%@ include file="/taglibs.jsp" %%>
+<html>
+<html:base />
+<head>
+<title><%=SourceTable.Description%></title>
+<base target="_self">
+<meta http-equiv="Content-Type" content="text/html; charset=GBK">
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="0">   
+<link href="<%%=path%%>/css/main.css" rel="stylesheet" type="text/css">
+<link href="<%%=path%%>/css/aa.css" rel="stylesheet" type="text/css">
+<SCRIPT type="text/javascript" src="<%%=path%%>/js/main.js"></SCRIPT>
+<SCRIPT type="text/javascript" src="<%%=path%%>/js/template.js"></SCRIPT>
+<script type="text/javascript" src="<%%=path%%>/js/aa.js"></script>
+<SCRIPT language="javascript">
+<!--
+//判断全部字符串是否为空
+	window.onload  = function(){
+		InitData();
+	}
+	
+		//到代码进行初始化的处理
+	function InitData(){
+	
+		//TODO:拆成相应的数据
+		<% 
+		foreach (ColumnSchema column in this.SourceTable.Columns) 
+		{ 
+		%>
+		//document.forms[0]['<%=IntanceName(SourceTable.Name)%>.<%=GetMemberVariableName(column.Name)%>'].value = "";
+		<% 
+		} 
+		%>
+		
+		//TODO:测试后，请注释
+		<% 
+		foreach (ColumnSchema column in this.SourceTable.Columns) 
+		{ 
+		%>
+		//window.alert("<%=GetMemberVariableName(column.Name)%>:" + <%=GetMemberVariableName(column.Name)%>);
+		<% 
+		} 
+		%>
+		
+		// 以下处理界面其他元系的处理脚本
+	}
+
+ 	//判断全部字符串是否为空
+	function TemplateEmpty(){
+		    return;
+	}
+	
+	//数据的有效性判断
+	function TemplateValiad(){
+	
+		<% 
+		foreach (ColumnSchema column in this.SourceTable.Columns) 
+		{ 
+		%>
+		if (document.forms[0]['<%=IntanceName(SourceTable.Name)%>.<%=GetMemberVariableName(column.Name)%>'].value == ''){
+		window.alert("请输入 <%=FormatDesc(column.Description)%>.");
+		document.forms[0]['<%=IntanceName(SourceTable.Name)%>.<%=GetMemberVariableName(column.Name)%>'].focus();
+		return false;
+		}
+		<% 
+		} 
+		%>
+	    return true;
+	}
+	
+	//提用户端数据整理到实体数据中。
+	//1.按自定义的格式处理;
+	//2.并合存保存在对应实体的数据，
+	function TemplateGatherData(){
+		//TODO:提用户端数据整理到实体数据中
+		<% 
+		foreach (ColumnSchema column in this.SourceTable.Columns) 
+		{ 
+		%>
+		//document.forms[0]['<%=IntanceName(SourceTable.Name)%>.<%=GetMemberVariableName(column.Name)%>'].value = "";
+		<% 
+		} 
+		%>
+		return true;
+	}
+	
+	//查询提交部分
+	function TemplateQuery(){
+		    return;
+	}
+	
+	//部分.	关闭当前窗口
+	function TemplateClose(){
+		window.close();
+	}
+	
+		//回退
+	function TemplateHistoryBack(){
+		window.history.back();
+	}
+	
+	/// 清空当前form
+	function TemplatecleanForm(){
+		<% 
+		foreach (ColumnSchema column in this.SourceTable.Columns) 
+		{ 
+		%>
+		document.forms[0]['<%=IntanceName(SourceTable.Name)%>.<%=GetMemberVariableName(column.Name)%>'].value = "";
+		<% 
+		} 
+		%>
+	}
+	
+	//确定选择内容
+	//确定选择内容
+	function TemplateCommit(){
+		if ( TemplateGatherData() == false){
+			return;
+		}
+		if ( TemplateValiad() == false ){
+			return;
+		}
+		document.forms[0].action='<%%=path%%>/<%=DoName(SourceTable.Name)%>.do?method=update';
+		document.forms[0].submit();	
+		return;
+	}
+
+	
+	///////////////////////////////////////////////////////////////////////////
+	///   BEGIN    自动创造的字段对应的函数模型
+	///////////////////////////////////////////////////////////////////////////
+	//例子	
+	//function TemplateDIAL_TEST_TYPE(){
+	//    ///TODO:自动生成
+	//	var url ='<%%=path%%>/tbdttypedo.do?method=list';
+	//	var jsReturnValues = new Array(2);
+	//	//TODO:需要根据页面的大小情况修改跳出窗口的大小
+	//	jsReturnValues = window.showModalDialog(url,jsReturnValues,'center:yes;help:no;resizable:yes;status:no;scroll:yes;dialogHeight:400px;dialogWidth:300px');
+	//	
+	//	if (jsReturnValues != null && jsReturnValues != undefined )
+	//	{
+	//		var ids = jsReturnValues[0];
+	//		var names = jsReturnValues[1];
+	//	
+	//		len = ids.length;
+	//	
+	//		if ( len == 1 ){
+	//			//TODO:按页面要求处理
+	//			document.forms[0]['tbDtType.dial_test_type'].value = ids[0];
+	//			document.forms[0]['tbDtType.dial_test_name'].value = names[0];
+	//		}
+	//		if ( len > 1 ){
+	//			for ( i = 0 ; i < len; i++  ){
+	//				//TODO:按页面要求处理
+	//	    		window.alert(i );
+	//				document.forms[0]['tbDtType.dial_test_type'].value = ids[i];
+	//				document.forms[0]['tbDtType.dial_test_name'].value = names[i];
+	//			}
+	//		}
+	//	}//if (jsReturnValues != null && jsReturnValues != undefined )
+	//}
+	<% 
+	foreach (ColumnSchema column in this.SourceTable.Columns) 
+	{ 
+	%>
+	//// <%=column.Name %> 自动生成脚本 
+	function Template<%=column.Name%>(){
+	    ///TODO:自动生成
+		return ;
+	}
+	<% 
+	} 
+	%>
+	///////////////////////////////////////////////////////////////////////////
+	///   END    自动创造的字段对应的函数模型
+	///////////////////////////////////////////////////////////////////////////
+	
+	
+//-->
+</SCRIPT>
+</head>
+
+<body>
+<%%-- begin 1）操作成功，不成功处理:  --%%>
+<logic:present name="result">
+	<logic:equal name="result" value="true">
+		<script>
+             alert('操作成功');
+        </script>
+	</logic:equal>
+	<logic:equal name="result" value="false">
+          <script>
+			alert('操作失败');
+        </script>
+	</logic:equal>
+</logic:present>
+<%%-- end 0）操作成功，不成功处理:  --%%>
+
+<%%-- begin 1）题目部分:  --%%>
+<html:form method="post" action="/<%=DoName(SourceTable.Name)%>.do?method=update">
+<div id="listdiv">
+<div id="listedge">修改<%=SourceTable.Description%></div>
+<div id="maindiv">
+<%%-- end 1）题目部分:  --%%>
+
+<%%-- begin 2）新增输入部分:  --%%>
+<div id="queryCondition">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+  <tr>
+	<td>
+		<table align="center" width="60%" border="0" cellspacing="1" cellpadding="1">
+		<% 
+		foreach (ColumnSchema column in this.SourceTable.Columns) 
+		{ 
+		%>
+		 <tr>
+   			<td width="20%" class="fieldname"><SPAN style="color: red;"> * </SPAN><%=column.Description%>：</td>
+   			<td width="40%">
+     			<html:text property="<%=IntanceName(SourceTable.Name)%>.<%=GetMemberVariableName(column.Name)%>" size="40" styleClass="text"/>
+			</td>
+			<td width="20%">
+   			</td>
+			<td width="20%">
+				<input type="hidden" class="button" value="<%=column.Name%>" styleClass="button" onclick="Template<%=column.Name%>();" />
+   			</td>
+ 		</tr>
+		<% 
+		} 
+		%>
+		</table>	
+	</td>
+  </tr>
+</table>
+</div>
+<%%-- end 2）查询条件输入部分:  --%%>
+<%%-- begin 3）操作钮扣部分:  --%%>
+<div id="Operation">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+	<td align="center" width="50%">
+		<input type="button" class="button" value=" 确 认 " onclick="TemplateCommit();" />
+		<input type="button" class="button" value=" 重 置 " onclick="InitData();" />
+		<input type="hidden" class="button" value=" 关 闭 " onclick="TemplateClose();"/>
+		<input type="button" class="button" value=" 返 回 " onclick="TemplateHistoryBack();"/>
+	</td>
+  </tr>
+</table>
+</div>
+<%%-- end 3）操作钮扣部分:  --%%>
+</html:form>
+</body>
+</html>

@@ -1,0 +1,91 @@
+﻿<%-- 
+Name:
+Author: 
+Description: 
+--%>
+<%@ CodeTemplate Language="C#" TargetLanguage="Text" Src="" ResponseEncoding="UTF-8"  Inherits="" Debug="False" Description="Template description here." %>
+
+
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Import Namespace="SchemaExplorer" %>
+
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="System.Design" %>
+<%@ Assembly Name="CodeSmith.BaseTemplates" %>
+<%@ Assembly Name="CodeSmith.CustomProperties" %>
+<%@ Import Namespace="CodeSmith.BaseTemplates" %>
+<%@ Import Namespace="CodeSmith.CustomProperties" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="System.IO" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+<%@ Import Namespace="CodeSmith.CustomProperties" %>
+
+
+<%-- 注册 成员函数 --%>
+<%@ Property Name="SourceData" Type="SchemaExplorer.DatabaseSchema" Optional="False" Category="Context" Description="指定的数据库" %>
+<%@ Property Name="OutputPath" Type="System.String" Default="c:\srbzCode" Optional="False" Category="Context" Description="源码输出目录" %>
+<%@ Property Name="ExportTableName" Type="System.String" Default="TL_FILTER;TL_INDB;TL_PP;TL_ROAMRECEIVE;TL_ROAMSEND;TL_RR;TL_RATE;TL_OUTDB;LOG_CDMA_PREPROC;LOG_CDMA_PREPROC_EXT;LOG_CDMA_SMS;LOG_CDMA_SMS_EXT;LOG_C1X_BILLING_FLOW;LOG_C1X_BILLING_EXT;LOG_C1X_CONTENT;LOG_C1X_CONTENT_EXT;S_FLOW_LOG;S_BILLING_LOG;LOG_DUPCHK;LOG_CDMA_BILLING;LOG_CDMA_SUM;LOG_C1X_BILLING;LOG_ANALYSE_MSC;LOG_RATE_GLOC;LOG_RATE_GRDI;LOG_RATE_GRDN;LOG_RATE_GVHK;LOG_UNITE_ACCT;LOG_UNITE_ACCT_LIST;LOG_RATE_GSMS;SMC_CONVERT_LOG_T;SMC_FEE_LOG_T;VSS_SORT_LOG_T;SMC_INFALL_LOG_T;LOG_C1X_SUM;LOG_GSM_BILLING;LOG_GSM_SUM;S_SUM_LOG;N_BILLING_LOG;N_SUM_LOG;T_ACCT_PICKLOG;T_ACCT_CONVERTFILELOG;T_ACCT_CHANGEFORMATLOG;T_ADT_REPEATLOG;CHECK_UNIFMT_TABLE_MM;CHECK_UNIPICK_TABLE_MM;CHECK_UNIENTY_TABLE_MM" Optional="False" Category="Context" Description="需要输出的表：支撑多个,每个表名之间用“;”分 TABLE_1;TABLE_2;" %>
+<%@ Property Name="RootTableSpaceName" Type="System.String" Default="com.scitel.{modelname模块名称}." Optional="False" Category="Context" Description="源码输出的模块名称 com.scitel.dialtestmgr " %>
+ 
+
+<%-- 注册 子模板 --%>
+	<%@ Register Name="ExportSingleTable" Template="ExportJspNormalTypeSingleTable.cst" %>
+
+	
+<%
+    RenderMain();
+%>
+
+Done and Finish  !!!!!!!!!!!!!!!!!!!!!!!!
+
+<script runat="template">
+
+/// 得到数据源的全部表结构
+/// 并返回一个 表的结合 
+public TableSchemaCollection GetTableCollection(DatabaseSchema dataBase)
+{
+    TableSchemaCollection tables = new TableSchemaCollection(dataBase.Tables);
+    
+    return tables;
+}
+
+/// 创建输出文件
+public void RenderMain()
+{
+    /// Get 
+    TableSchemaCollection tables = GetTableCollection(SourceData);
+    
+    // 判断文最外层目录是否存在,否则创建 
+    if(Directory.Exists(OutputPath) == false)
+    {
+        Directory.CreateDirectory(OutputPath);
+    }
+ 
+    /// 重复调用单个的子模板
+    foreach(TableSchema dt in tables)
+    {
+		System.Diagnostics.Debug.WriteLine(ExportTableName);
+		System.Diagnostics.Debug.WriteLine(dt.Name);
+		
+		///支撑特定表的输出;
+		if ( ExportTableName.ToUpper().IndexOf(dt.Name.ToUpper(),0 )  >= 0 || ExportTableName == string.Empty )
+		{
+			try
+			{
+				ExportSingleTable export = new ExportSingleTable();
+			
+				export.SourceTable = dt; 
+				export.OutputPath  = this.OutputPath;
+				export.RootTableSpaceName = this.RootTableSpaceName;
+			
+				// 输出
+				export.RenderMain();
+			}
+			catch(Exception ex )
+			{
+				Console.WriteLine(ex.Message);	
+			}
+		}
+    }
+}
+</script>

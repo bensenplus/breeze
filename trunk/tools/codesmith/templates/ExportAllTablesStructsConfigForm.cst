@@ -1,0 +1,124 @@
+﻿<%-- 
+Name:
+Author: 
+Description: 
+--%>
+<%@ CodeTemplate Language="C#" TargetLanguage="Text" ResponseEncoding="UTF-8" Src="" Inherits="" Debug="True" Description="Template description here." %>
+
+
+
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Import Namespace="SchemaExplorer" %>
+
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="System.Design" %>
+<%@ Assembly Name="CodeSmith.BaseTemplates" %>
+<%@ Assembly Name="CodeSmith.CustomProperties" %>
+<%@ Import Namespace="CodeSmith.BaseTemplates" %>
+<%@ Import Namespace="CodeSmith.CustomProperties" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="System.IO" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+<%@ Import Namespace="CodeSmith.CustomProperties" %>
+
+
+<%-- 注册 成员函数 --%>
+<%@ Property Name="SourceData" Type="SchemaExplorer.DatabaseSchema" Optional="False" Category="Context" Description="指定的数据库" %>
+<%@ Property Name="OutputPath" Type="System.String" Default="c:\srbzCode" Optional="False" Category="Context" Description="源码输出目录" %>
+<%@ Property Name="ExportTableName" Type="System.String" Default="CT1_FILTER;CT1_INDB;CT1_PP;CT1_ROAMRECEIVE;CT1_ROAMSEND;CT1_RR;CT1_RATE;CT1_OUTDB;LOG_CDMA_PREPROC;LOG_CDMA_PREPROC_EXT;LOG_CDMA_SMS;LOG_CDMA_SMS_EXT;LOG_CDMA_BILLING;LOG_CDMA_SUM;LOG_C1X_BILLING_FLOW;LOG_C1X_BILLING_EXT;LOG_C1X_BILLING;LOG_C1X_CONTENT;LOG_C1X_CONTENT_EXT;S_FLOW_LOG;S_BILLING_LOG;LOG_DUPCHK;" Optional="True" Category="Context" Description="需要输出的表：支撑多个,每个表名之间用“;”分 TABLE_1;TABLE_2;" %>
+<%@ Property Name="RootTableSpaceName" Type="System.String" Default="com.scitel.{modelname模块名称}.model" Optional="False" Category="Context" Description="请输入相应的模块名称" %>
+<%@ Property Name="WebPath" Type="System.String" Default="dialtestmgr" Optional="False" Category="Context" Description="请输入相对应的文件目录:  例子： /dialtestmgr/taskbiz/   /dialtestmgr/taskmgr/ /dialtestmgr/tasktips/" %>
+
+<%-- 注册 子模板 --%>
+	<%@ Register Name="ExportSingleTableStructsConfigForm" Template="ExportSingleTableStructsConfigForm.cst" %>
+	
+	
+<%
+    RenderMain();
+%>
+
+Done and Finish  !!!!!!!!!!!!!!!!!!!!!!!!
+
+<script runat="template">
+// My methods here.
+
+
+/// 得到数据源的全部表结构
+/// 并返回一个 表的结合 
+public TableSchemaCollection GetTableCollection(DatabaseSchema dataBase)
+{
+    TableSchemaCollection tables = new TableSchemaCollection(dataBase.Tables);
+    
+    return tables;
+}
+
+/// 创建输出文件
+public void RenderMain()
+{
+    /// Get 
+    TableSchemaCollection tables = GetTableCollection(SourceData);
+	
+    /// 重复调用单个的子模板
+    foreach(TableSchema dt in tables)
+    {
+
+		///支撑特定表的输出;
+		if ( ExportTableName.ToUpper().IndexOf(dt.Name.ToUpper(),0 )  >= 0 || ExportTableName == string.Empty)
+		{
+			try
+			{
+				/// 输出
+				ExportPage(dt);
+			}
+			catch(Exception ex )
+			{
+				Console.WriteLine(ex.Message);	
+			}
+		}
+    }
+}
+
+public void ExportPage( TableSchema dt )
+{
+    // 调用子模板进行创建 
+	ExportSingleTableStructsConfigForm export = new ExportSingleTableStructsConfigForm();
+    
+    // 子模板所需要的入参
+	export.SourceTable = dt; 
+	export.RootTableSpaceName = this.RootTableSpaceName;
+	
+    /// 输出子模板文档
+    export.Render(this.Response);
+	
+}
+
+
+public void ExportFile( TableSchema dt )
+{
+	string FileFormat = @"{0}\{1}";
+	//string strFileName = string.Format(FileFormat,OutputPath,"struts-config(form).xml");
+	string strFileName = @"c:\txt.txt";
+        
+	/// 创建文件
+    FileStream fs = new FileStream(strFileName,FileMode.OpenOrCreate,FileAccess.Write);
+    StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.UTF8);
+        
+    // 调用子模板进行创建 
+	ExportSingleTableStructsConfigForm export = new ExportSingleTableStructsConfigForm();
+    
+    // 子模板所需要的入参
+	export.SourceTable = dt; 
+	export.RootTableSpaceName = this.RootTableSpaceName;
+	
+    /// 输出子模板文档
+    export.Render(sw);
+    
+    // 关闭输出流
+    sw.Close();
+    //关闭文档
+    fs.Close();
+	
+	Console.WriteLine("操作类接口 文件 完成.  --> {0}",strFileName);	
+}
+
+</script>

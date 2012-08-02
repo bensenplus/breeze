@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<codeSmith xmlns="http://www.codesmithtools.com/schema/csmap.xsd">
+  <map caseSensitive="true" returnKeyWhenNotFound="true" description="System type to C# type alias map">
+<item>
+      <key>TL_FILTER</key>
+      <value>C网分拣信息</value>
+    </item>
+<item>
+      <key>TL_INDB</key>
+      <value>C网入库信息</value>
+    </item>
+<item>
+      <key>TL_PP</key>
+      <value>C网预处理信息</value>
+    </item>
+<item>
+      <key>TL_ROAMRECEIVE</key>
+      <value>C网漫游话单接受信息</value>
+    </item>
+<item>
+      <key>TL_ROAMSEND</key>
+      <value>C漫游话单发送信息</value>
+    </item>
+<item>
+      <key>TL_RR</key>
+      <value>话单排重信息</value>
+    </item>
+<item>
+      <key>TL_RATE</key>
+      <value>C网批价信息</value>
+    </item>
+<item>
+      <key>TL_OUTDB</key>
+      <value>C网下发信息</value>
+    </item>
+<item>
+      <key>LOG_CDMA_PREPROC</key>
+      <value>CDMA语音话单预处理、分流信息</value>
+    </item>
+<item>
+      <key>LOG_CDMA_PREPROC_EXT</key>
+      <value>CDMA语音话单文件转换信息</value>
+    </item>
+<item>
+      <key>LOG_CDMA_SMS</key>
+      <value>CDMA短信话单预处理、分流信息</value>
+    </item>
+<item>
+      <key>LOG_CDMA_SMS_EXT</key>
+      <value>CDMA短信话单文件转换对照信息</value>
+    </item>
+<item>
+      <key>LOG_C1X_BILLING_FLOW</key>
+      <value>CDMA1X流量话单预处理、分流信息</value>
+    </item>
+<item>
+      <key>LOG_C1X_BILLING_EXT</key>
+      <value>CDMA1X流量话单文件转换对照信息</value>
+    </item>
+<item>
+      <key>LOG_C1X_CONTENT</key>
+      <value>内容话单预处理、分流信息</value>
+    </item>
+<item>
+      <key>LOG_C1X_CONTENT_EXT</key>
+      <value>内容话单转换对照信息</value>
+    </item>
+<item>
+      <key>S_FLOW_LOG</key>
+      <value>165/小区宽带话单分流信息</value>
+    </item>
+<item>
+      <key>S_BILLING_LOG</key>
+      <value>165/小区宽带话单批价信息</value>
+    </item>
+<item>
+      <key>LOG_DUPCHK</key>
+      <value>查重日志信息</value>
+    </item>
+<item>
+      <key>LOG_CDMA_BILLING</key>
+      <value>CDMA语音、短信话单批价信息</value>
+    </item>
+<item>
+      <key>LOG_CDMA_SUM</key>
+      <value>CDMA语音、短信话单合帐信息</value>
+    </item>
+<item>
+      <key>LOG_C1X_BILLING</key>
+      <value>CDMA1X流量话单文件批价信息</value>
+    </item>
+<item>
+      <key>LOG_ANALYSE_MSC</key>
+      <value>预处理（分拣）</value>
+    </item>
+<item>
+      <key>LOG_RATE_GLOC</key>
+      <value>本地批价排重(GLOC)</value>
+    </item>
+<item>
+      <key>LOG_RATE_GRDI</key>
+      <value>国际漫游出访批价排重(GRDI)</value>
+    </item>
+<item>
+      <key>LOG_RATE_GRDN</key>
+      <value>国内漫游出访批价排重(GRDN)</value>
+    </item>
+<item>
+      <key>LOG_RATE_GVHK</key>
+      <value>来自香港批价排重(GVHK)</value>
+    </item>
+<item>
+      <key>LOG_UNITE_ACCT</key>
+      <value>合并信息</value>
+    </item>
+<item>
+      <key>LOG_UNITE_ACCT_LIST</key>
+      <value>合并信息明细</value>
+    </item>
+<item>
+      <key>LOG_RATE_GSMS</key>
+      <value>批价排重</value>
+    </item>
+<item>
+      <key>SMC_CONVERT_LOG_T</key>
+      <value>短信预处理日志表</value>
+    </item>
+<item>
+      <key>SMC_FEE_LOG_T</key>
+      <value>短信和1X业务批价日志表</value>
+    </item>
+<item>
+      <key>VSS_SORT_LOG_T</key>
+      <value>1X业务预处理日志表</value>
+    </item>
+<item>
+      <key>SMC_INFALL_LOG_T</key>
+      <value>计费文件</value>
+    </item>
+<item>
+      <key>LOG_C1X_SUM</key>
+      <value>CDMA1X、GPRS流量话单/内容话单合帐</value>
+    </item>
+<item>
+      <key>LOG_GSM_BILLING</key>
+      <value>GSM语音、短信话单批价</value>
+    </item>
+<item>
+      <key>LOG_GSM_SUM</key>
+      <value>GSM语音、短信话单合帐</value>
+    </item>
+<item>
+      <key>S_SUM_LOG</key>
+      <value>165/小区宽带话单合帐</value>
+    </item>
+<item>
+      <key>N_BILLING_LOG</key>
+      <value>193/IP话单批价</value>
+    </item>
+<item>
+      <key>N_SUM_LOG</key>
+      <value>193/IP话单合帐</value>
+    </item>
+<item>
+      <key>T_ACCT_PICKLOG</key>
+      <value>格式化</value>
+    </item>
+<item>
+      <key>T_ACCT_CONVERTFILELOG</key>
+      <value>分拣</value>
+    </item>
+<item>
+      <key>T_ACCT_CHANGEFORMATLOG</key>
+      <value>入库</value>
+    </item>
+<item>
+      <key>T_ADT_REPEATLOG</key>
+      <value>采集</value>
+    </item>
+<item>
+      <key>CHECK_UNIFMT_TABLE_MM</key>
+      <value>业务分析</value>
+    </item>
+<item>
+      <key>CHECK_UNIPICK_TABLE_MM</key>
+      <value>格式转换</value>
+    </item>
+<item>
+      <key>CHECK_UNIENTY_TABLE_MM</key>
+      <value>查重</value>
+    </item>
+
+  </map>
+</codeSmith>
+

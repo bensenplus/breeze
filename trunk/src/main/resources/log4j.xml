@@ -20,10 +20,11 @@
         </layout>
     </appender>
 	
-<!-- 	<logger name="org.apache.ibatis">
+	<logger name="org.apache.ibatis">
 		<level value="DEBUG"/>
 	</logger>
 	
+	<!-- 
 	<logger name="org.mybatis">
 		<level value="DEBUG"/>
 	</logger>
@@ -31,10 +32,7 @@
 	<logger name="org.springframework.jdbc">
 		<level value="DEBUG"/>
 	</logger>
-	
-	<logger name="java.sql.PreparedStatement">
-		<level value="DEBUG"/>
-	</logger> -->
+	-->
 	
 	<root>
 		<level value="WARN"/>

@@ -95,7 +95,7 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
         <property name="typeAliasesPackage" value="org.breeze.entity" />
-        <property name="configLocation" value="classpath:mybatis.cfg.xml"/>        
+<!--          <property name="configLocation" value="classpath:mybatis.cfg.xml"/>  -->
     </bean>
 
     <!-- scan for mappers and let them be autowired -->

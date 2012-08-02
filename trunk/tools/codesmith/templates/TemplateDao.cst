@@ -1,0 +1,384 @@
+﻿<%-- 
+Name:
+Author: 
+Description: 
+--%>
+<%@ CodeTemplate Language="C#" TargetLanguage="Text" Src="" ResponseEncoding="UTF-8" Inherits="" Debug="False" Description="Template description here." %>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Assembly Name="System.Data" %>
+<%@ Import Namespace="System.Data" %>
+
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+<%@ Import Namespace="System.IO" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+
+<%-- 注册 定义的成员变量 --%>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="DB" Description="请选择名的数据来源" %>
+<%@ Property Name="RootTableSpaceName" Type="System.String" Default="com.founder.hcms" Optional="False" Category="Context" Description="源码输出的模块名称" %>
+
+<%-- 启用 MAP方式 System-CSharpAlias  --%>
+<%--@ Map Name="CSharpAlias" Src="System-CSharpAlias" Description="System to C# Type Map" --%>
+<%@ Map Name="JavaAlias" Src="System-JavaAlias.csmap" Description="Oracle to Java Type Map" %>
+
+<script runat="template">
+<!-- #include file=getNamefunction.cs -->
+
+//Debugger.Break();
+
+
+</script>
+
+
+package <%=RootTableSpaceName%>.dao;
+
+
+import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.scitel.dao.DAO;
+import com.scitel.framework.dao.BaseDAO;
+import com.scitel.framework.model.Pagination;
+import <%=RootTableSpaceName%>.model.<%= ModelName(SourceTable.Name)%>;
+import com.scitel.model.BaseObject;
+import com.scitel.model.UserInfo;
+import com.scitel.util.DateCompute;
+
+/**
+ *
+ * <p>
+ * Description: <%=SourceTable.Name%> DAO 处理类</p>
+ * </p>
+ *
+ * <p>
+ * Copyright: Copyright (c) 2007
+ * </p>
+ *
+ */
+public class <%=DaoName(SourceTable.Name)%> implements DAO {
+
+
+	private static Log log = LogFactory.getLog(<%=DaoName(SourceTable.Name)%>.class);
+
+	private static final String TABLENAME = "<%= SourceTable.Name.ToUpper()%>";
+
+	private BaseDAO baseDAO;
+
+  	public <%=DaoName(SourceTable.Name)%>() {
+    	baseDAO = new BaseDAO();
+  	}
+
+	/**
+	 * 获得所有记录的List列表
+	 * @param con
+	 * @param userInfo
+	 * @param object
+	 * @return
+	 * @throws Exception
+	 */
+	public List getList(Connection con, UserInfo userInfo, BaseObject object) throws
+    Exception{
+		// TODO 自动生成方法存根
+		List list = null;
+		
+		return list;
+	}
+	
+	/**
+	 * 根据分页对象获得List列表
+	 * @param con
+	 * @param userInfo
+	 * @param object
+	 * @param pagination
+	 * @return
+	 * @throws Exception
+	 * @author   电话： 
+	 */
+	public List getList(Connection con, UserInfo userInfo, BaseObject object, Pagination pagination) throws Exception{
+		// TODO 自动生成方法存根
+		List list = null;
+		List parms=new ArrayList();
+
+		<%= ModelName(SourceTable.Name)%> obj = (<%= ModelName(SourceTable.Name)%>)object;
+	
+		StringBuffer  sql = new StringBuffer();
+        sql.append(" SELECT <%=GetEtParam(SourceTable)%> ");
+        sql.append(" FROM <%= SourceTable.Name.ToUpper()%> ");
+		sql.append(" WHERE  1 = 1  ");
+		<%
+		bool isTime = false;
+		foreach (ColumnSchema column in this.SourceTable.Columns) 
+		{
+		%>
+		// 字段 <%=column.Name %> 的查询条件
+		if(obj.<%=getFunctionMemberVariableName(column.Name)%>()!=null && !obj.<%=getFunctionMemberVariableName(column.Name)%>().equals("")){
+			sql.append(" and <%= column.Name %> like ?");
+			parms.add("%"+obj.<%=getFunctionMemberVariableName(column.Name)%>()+"%");
+		}
+			<%
+			}
+		%>	
+
+    try {
+		list = baseDAO.selectPagination(con, sql.toString(), parms, <%= ModelName(SourceTable.Name)%>.class,pagination);
+    }
+    catch (Exception e) {
+          log.error(e);
+          log.error(sql.toString());
+          for ( int i = 0 ;i<parms.size() ;i++){
+        	  log.error( (String)parms.get(i));
+          }
+          throw e;
+    }
+
+    return list;
+	}
+	
+	/**
+	 * 
+	 * @param con
+	 * @param userInfo
+	 * @param object
+	 * @param pagination
+	 * @return
+	 * @throws Exception
+	 * @author 
+	 */
+	public List getMinList(Connection con, UserInfo userInfo, BaseObject object, Pagination pagination)
+		throws Exception{
+	    return null;
+	}
+
+	/**
+	 * 由主键ID获得一条记录
+	 * @param con
+	 * @param userInfo
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 * @author   电话： 
+	 */
+    public BaseObject getObject(Connection con, UserInfo userInfo, String id) throws
+    Exception{
+		// TODO 自动生成方法存根
+        StringBuffer  sql = new StringBuffer();
+        sql.append(" SELECT <%=GetEtParam(SourceTable)%> ");
+        sql.append(" FROM <%= SourceTable.Name.ToUpper()%> ");
+		sql.append(" WHERE 1 = 1 ");
+		<% foreach (ColumnSchema column in this.SourceTable.Columns) 
+		{ 
+			// 关于主键查询
+			if ( column.IsPrimaryKeyMember == true  )
+			{
+		%>
+		sql.append(" AND <%= column.Name.ToUpper()%> = ? ");
+		<% 
+			}
+		} 
+		%>
+		try {
+			return baseDAO.selectById(con, sql.toString(), id, <%= ModelName(SourceTable.Name)%>.class);
+		}
+		catch (Exception e) {
+          log.error(e);
+          log.error(sql.toString());
+          throw e;
+		}
+	}
+
+    /**
+     * 新建对象
+     * @param con
+     * @param userInfo
+     * @param object
+     * @throws Exception
+     * @author  电话：
+     */
+    public BaseObject insert(Connection con, UserInfo userInfo, BaseObject object) throws
+    Exception{
+		// TODO 自动生成方法存根
+        StringBuffer  sql = new StringBuffer();
+
+        sql.append(" INSERT INTO <%= SourceTable.Name.ToUpper()%>( <%=GetEtParam(SourceTable)%> ) ");
+        sql.append(" values(<%=GetEtParamAsk(SourceTable)%>)  ");
+        
+        List parms=new ArrayList();
+    	<%= ModelName(SourceTable.Name)%> obj = (<%= ModelName(SourceTable.Name)%>) object;
+    	
+    	/// insert 的入参处理
+		// TODO:检查自动产生的脚本是否需要指定的 序列产生
+		<% foreach (ColumnSchema column in this.SourceTable.Columns) 
+		{ 
+		%>
+		parms.add(obj.<%=getFunctionMemberVariableName(column.Name)%> ());
+		<% 
+		} 
+		%>
+        
+        ///   调用 save 组件
+        try{
+          this.baseDAO.save(con,sql.toString(),parms);
+        }catch(Exception e){
+          log.error(e);
+          log.error(sql.toString());
+          for ( int i = 0 ;i<parms.size() ;i++){
+        	  log.error( (String)parms.get(i));
+          }
+          throw e;
+        }
+        return object;
+	}
+    
+    /**
+     * 修改对象
+     * @param con
+     * @param userInfo
+     * @param object
+     * @throws Exception
+     * @author  电话：
+     */
+    public void update(Connection con, UserInfo userInfo, BaseObject object) throws
+    Exception{
+		// TODO 自动生成方法存根
+		<%= ModelName(SourceTable.Name)%> obj = (<%= ModelName(SourceTable.Name)%>) object;
+				
+        List parms = new ArrayList();
+        StringBuffer  sql = new StringBuffer();
+		
+        sql.append(" UPDATE <%= SourceTable.Name.ToUpper()%> SET ");
+		// TODO:注意,需要删除最后的 更新语句的逗号
+		<% foreach (ColumnSchema column in this.SourceTable.Columns) 
+		{ 
+			int i = 0;
+			if ( column.IsPrimaryKeyMember == false )
+			{
+		%>
+		sql.append(" <%=column.Name.ToUpper() %> = ? ,");
+		<% 
+			}
+		} 
+		%>
+		// TODO:栓查自动产生的脚本是否多主键，多主键不参采用这个方式
+		<% foreach (ColumnSchema column in this.SourceTable.Columns) 
+		{ 
+			if ( column.IsPrimaryKeyMember == true )
+			{
+		%>
+		sql.append(" WHERE  <%=column.Name.ToUpper() %>=? ");
+		<% 
+			}
+		} 
+		%>
+		
+		/// 需要更新的字段：
+		<% foreach (ColumnSchema column in this.SourceTable.Columns) 
+		{ 
+			if ( column.IsPrimaryKeyMember == false )
+			{
+		%>
+		parms.add(obj.<%=getFunctionMemberVariableName(column.Name)%> ());
+		<% 
+			}
+		} 
+		%>
+		
+        /// 输入条件：主键
+		// TODO:栓查自动产生的脚本是否多主键，多主键不参采用这个方式
+		<% foreach (ColumnSchema column in this.SourceTable.Columns) 
+		{ 
+			if ( column.IsPrimaryKeyMember == true )
+			{
+		%>
+		parms.add(obj.<%=getFunctionMemberVariableName(column.Name)%> ());
+		<% 
+			}
+		} 
+		%>
+        
+        ///   调用 save 组件
+        try{
+          baseDAO.save(con,sql.toString(),parms);
+        }catch(Exception e){
+          log.error(e);
+          log.error(sql.toString());
+          for ( int i = 0 ;i<parms.size() ;i++){
+        	  log.error( (String)parms.get(i));
+          }
+          throw e;
+        }
+	}
+
+    /**
+     * 删除对象
+     * @param con
+     * @param userInfo
+     * @param id
+     * @throws Exception
+     * @author  电话：
+     */
+    public void remove(Connection con, UserInfo userInfo, String id) throws
+    Exception{
+		// TODO 自动生成方法存根
+		
+		StringBuffer  sql = new StringBuffer();
+    	
+        sql.append(" DELETE <%= SourceTable.Name.ToUpper()%> WHERE 1 =1  ");
+		// TODO:栓查自动产生的脚本是否多主键，多主键不参采用这个方式
+		<% foreach (ColumnSchema column in this.SourceTable.Columns) 
+		{ 
+			// 关于主键查询
+			if ( column.IsPrimaryKeyMember == true  )
+			{
+		%>
+		sql.append(" AND <%= column.Name.ToUpper()%> = ? ");
+		<% 
+			}
+		} 
+		%>
+		
+        List parms=new ArrayList();
+		parms.add(id);
+       
+        try{
+          this.baseDAO.remove(con,sql.toString(),parms);
+        }catch(Exception e){
+          log.error(e);
+          log.error(sql.toString());
+          for ( int i = 0 ;i<parms.size() ;i++){
+        	  log.error( (String)parms.get(i));
+          }
+          throw e;
+        }
+	}
+	
+	/**
+     * 得到相对应的对象
+     * @param con
+     * @param userInfo
+     * @param id
+     * @throws Exception
+     * @author  电话：
+     */
+	public String getSequenceValue(Connection con) throws Exception{
+		// TODO 自动生成方法存根
+    	String sequenceName ="SEQ_DT_ID";
+    	
+		String SeqId = "";
+     
+        try{
+        	Long id  = this.baseDAO.getSequenceValue(con,sequenceName);
+        	SeqId = id.toString();
+        	return SeqId;
+        }catch(Exception e){
+          log.error(e);
+          log.error("SeqId:" + SeqId);
+          throw e;
+        }
+	}
+	
+}
+

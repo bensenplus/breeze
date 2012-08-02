@@ -1,0 +1,76 @@
+﻿<%-- 
+Name:
+Author: 
+Description: 
+--%>
+<%@ CodeTemplate Language="C#" TargetLanguage="Text" ResponseEncoding="UTF-8" Src="" Inherits="" Debug="True" Description="Template description here." %>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Assembly Name="System.Data" %>
+<%@ Import Namespace="System.Data" %>
+
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+<%@ Import Namespace="System.IO" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+
+<%-- 注册 定义的成员变量 --%>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="DB" Description="请选择名的数据来源" %>
+<%@ Property Name="RootTableSpaceName" Type="System.String" Default="com.founder.hcms" Optional="False" Category="Context" Description="源码输出的模块名称" %>
+
+
+<%-- 启用 MAP方式 System-CSharpAlias  --%>
+<%@ Map Name="CSharpAlias" Src="System-CSharpAlias" Description="System to C# Type Map" %>
+
+
+<script runat="template">
+<!-- #include file=getNamefunction.cs -->
+
+//Debugger.Break();
+
+
+</script>
+<%%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%%>
+<%%@ include file="../common/taglibs.jsp"%%>
+<%%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title><%=SourceTable.Description%>列表</title>
+
+<link rel="stylesheet" href="../resources/css/common.css" />
+<%%@ include file="../common/page.jsp"%%>
+
+</head>
+
+<body>
+
+	<form action="list" id="condition">
+		<input type="hidden" id="current_page" name="currentPage" />
+	</form>
+	<table border=0 cellspacing=0 cellpadding=5 align=center>
+		<thead>
+			<tr>
+				<td colspan=9><div id="Pagination"></div></td>
+			<tr>
+			<tr>
+<% foreach (ColumnSchema column in this.SourceTable.Columns) {%>	
+			    <td><%=column.Description%></td>		
+<% }%>
+				<td colspan=3>操作</td>
+			</tr>
+		</thead>
+		<tbody>
+			<c:forEach var="account" items="${accountList}" varStatus="status">
+                <tr>
+<% foreach (ColumnSchema column in this.SourceTable.Columns) {%>	
+					<td>${<%=IntanceName(SourceTable.Name)%>.<%=GetMemberVariableName(column.Name)%>}</td>		
+<% }%>
+					<td><a href="edit?<%=GetMemberVariableName(this.SourceTable.Columns[0].Name)%>=${<%=IntanceName(SourceTable.Name)%>.<%=GetMemberVariableName(this.SourceTable.Columns[0].Name)%>}">编辑</a></td>
+					<td><a href="delete?<%=GetMemberVariableName(this.SourceTable.Columns[0].Name)%>=${<%=IntanceName(SourceTable.Name)%>.<%=GetMemberVariableName(this.SourceTable.Columns[0].Name)%>}">删除</a></td>
+            	</tr>
+			</c:forEach>
+		</tbody>
+	</table>
+</body>
+</html>
+

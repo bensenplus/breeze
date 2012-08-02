@@ -4,7 +4,7 @@ public class Page {
 	
 	  private int count;
 	  private int currentPage;
-	  private int sizePerPage = 10;
+	  private int sizePerPage = 30;
 	  private int startIndex;
 	  	
 	public int getCount() {

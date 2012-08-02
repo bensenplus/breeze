@@ -1,0 +1,400 @@
+﻿<%-- 
+Name:
+Author: 
+Description: 
+--%>
+<%@ CodeTemplate Language="C#" TargetLanguage="Text" Src="" ResponseEncoding="UTF-8" Inherits="" Debug="False" Description="Template description here." %>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Assembly Name="System.Data" %>
+<%@ Import Namespace="System.Data" %>
+
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+<%@ Import Namespace="System.IO" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+
+<%-- 注册 定义的成员变量 --%>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="DB" Description="请选择名的数据来源" %>
+<%@ Property Name="RootTableSpaceName" Type="System.String" Default="com.scitel.{modelname模块名称}." Optional="False" Category="Context" Description="源码输出的模块名称" %>
+
+<%-- 启用 MAP方式 System-CSharpAlias  --%>
+<%@ Map Name="CSharpAlias" Src="System-CSharpAlias" Description="System to C# Type Map" %>
+<%@ Map Name="JavaAlias" Src="System-JavaAlias.csmap" Description="Oracle to Java Type Map" %>
+
+<script runat="template">
+<!-- #include file=getNamefunction.cs -->
+
+//Debugger.Break();
+
+
+</script>
+
+
+/**
+ *
+ */
+package <%=RootTableSpaceName%>.action;
+
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.struts.action.ActionErrors;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
+import org.apache.struts.action.DynaActionForm;
+import org.apache.struts.actions.DispatchAction;
+
+import com.scitel.framework.model.Pagination;
+import <%=RootTableSpaceName%>.model.<%=ModelName(SourceTable.Name)%>;
+import <%=RootTableSpaceName%>.service.<%=ManagerName(SourceTable.Name)%>;
+import com.scitel.service.Manager;
+import com.scitel.model.UserInfo;
+
+import javax.servlet.http.HttpSession;
+import org.apache.struts.action.ActionErrors;
+import org.apache.struts.action.ActionMessages;
+import org.apache.struts.action.ActionMessage;
+
+
+
+public class <%=ActionName(SourceTable.Name)%>  
+extends DispatchAction {
+		
+	private static final Log log = LogFactory.getLog(<%=ActionName(SourceTable.Name)%>.class);
+		
+		/**
+		* 信息列表
+		* @param mapping ActionMapping
+		* @param form ActionForm
+		* @param request HttpServletRequest
+		* @param response HttpServletResponse
+		* @throws Exception
+		* @return ActionForward
+		* @author  
+		*/
+		public ActionForward list(ActionMapping mapping, ActionForm form,
+								HttpServletRequest request,
+								HttpServletResponse response) throws Exception {
+		/// 取页面数据
+		DynaActionForm dform = (DynaActionForm) form;
+		<%=ModelName(SourceTable.Name)%> modelintance  = (<%=ModelName(SourceTable.Name)%>) dform.get("<%=IntanceName(SourceTable.Name)%>");
+		
+		// 处理分页信息
+		String page = request.getParameter("page");
+		Pagination pagination = new Pagination();
+	
+		if (page != null && page.length() > 0) {
+			pagination.setPage(Integer.parseInt(page));
+		}
+		else {
+		pagination.setPage(1);
+		}
+		pagination.setCount(10); //每页10行
+		
+		// 调用服务器组件
+		Manager managerintance = new <%=ManagerName(SourceTable.Name)%>();
+		try {
+			List data = managerintance.getList(null, modelintance, pagination);
+			if (data != null) {
+				request.setAttribute("data", data);
+			}
+		
+			//配置回复 pagination 分页信息 ; 输出页面信息;  
+			request.setAttribute("pagination", pagination);
+			dform.set("<%=IntanceName(SourceTable.Name)%>", modelintance);
+			
+			//页面跳转
+			return mapping.findForward("list");
+		
+		}
+		catch (Exception e) {
+			log.error(e);
+			ActionErrors errors = new ActionErrors();
+			errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("message.error.list"));
+			saveErrors(request, errors);
+			return mapping.findForward("info");
+		}
+  	}
+	
+	/**
+	* 初始化 新增加的页面
+	* @param mapping ActionMapping
+	* @param form ActionForm
+	* @param request HttpServletRequest
+	* @param response HttpServletResponse
+	* @throws Exception
+	* @return ActionForward
+	* @author  
+	*/
+	public ActionForward initadd(ActionMapping mapping, ActionForm form,
+	                           HttpServletRequest request,
+	                           HttpServletResponse response) throws Exception {
+		  
+		DynaActionForm dform = (DynaActionForm) form;
+		<%=ModelName(SourceTable.Name)%> modelintance  = (<%=ModelName(SourceTable.Name)%>) dform.get("<%=IntanceName(SourceTable.Name)%>");
+	    
+	    UserInfo userInfo = (UserInfo) request.getSession().getAttribute("userInfo");
+   	
+	    Manager manager = new  <%=ManagerName(SourceTable.Name)%>();
+	
+		/// 取得相应的初始化值
+	    try {
+			
+		
+	    }
+	    catch (Exception e) {
+
+	    }
+	    
+		// 其他的初始化信息部分
+		
+	    dform.set("<%=IntanceName(SourceTable.Name)%>",modelintance);
+	
+	
+	    /// 跳转到相应的页面 
+	    return mapping.findForward("add");
+	}
+	
+	
+	/**
+	*  初始化 更新页面
+	* @param mapping ActionMapping
+	* @param form ActionForm
+	* @param request HttpServletRequest
+	* @param response HttpServletResponse
+	* @throws Exception
+	* @return ActionForward
+	* @author  
+	*/
+	public ActionForward initupdate(ActionMapping mapping, ActionForm form,
+	                           HttpServletRequest request,
+	                           HttpServletResponse response) throws Exception {
+		  
+		String id = request.getParameter("id");
+
+		DynaActionForm dform = (DynaActionForm) form;
+		<%=ModelName(SourceTable.Name)%> modelintance  = (<%=ModelName(SourceTable.Name)%>) dform.get("<%=IntanceName(SourceTable.Name)%>");
+	    
+	    UserInfo userInfo = (UserInfo) request.getSession().getAttribute("userInfo");
+   	
+	    Manager manager = new  <%=ManagerName(SourceTable.Name)%>();
+
+	    try {
+	    	modelintance = (<%=ModelName(SourceTable.Name)%>) manager.getObject(userInfo, id);
+	    }
+	    catch (Exception e) {
+
+	    }
+	    
+	    dform.set("<%=IntanceName(SourceTable.Name)%>",modelintance);
+		
+		// 其他的初始化信息部分
+	
+	
+	    /// 跳转到相应的页面 
+	    return mapping.findForward("update");
+	}
+	   
+	
+	/**
+	* 新增的处理
+	* @param mapping ActionMapping
+	* @param form ActionForm
+	* @param request HttpServletRequest
+	* @param response HttpServletResponse
+	* @throws Exception
+	* @return ActionForward
+	* @author  
+	*/
+	public ActionForward add(ActionMapping mapping, ActionForm form,
+	                           HttpServletRequest request,
+	                           HttpServletResponse response) throws Exception {
+		  
+		DynaActionForm dform = (DynaActionForm) form;
+		<%=ModelName(SourceTable.Name)%> modelintance  = (<%=ModelName(SourceTable.Name)%>) dform.get("<%=IntanceName(SourceTable.Name)%>");
+	    
+	    UserInfo userInfo = (UserInfo) request.getSession().getAttribute("userInfo");
+ 	
+	    Manager manager = new  <%=ManagerName(SourceTable.Name)%>();
+	
+	    String state = "false";
+	
+	    try {
+	    	manager.add(userInfo, modelintance);
+			removeFormBean(mapping, request);
+	    	state = "true";
+	    }
+	    catch (Exception e) {
+	    	state = "false";
+	    }
+
+	    dform.set("<%=IntanceName(SourceTable.Name)%>",modelintance);
+	
+	    /// 设置回复参数
+	    request.setAttribute("result", state);
+	
+	    /// 跳转到相应的页面 
+	    return mapping.findForward("add");
+	}
+	
+	/**
+	*  更新的处理
+	* @param mapping ActionMapping
+	* @param form ActionForm
+	* @param request HttpServletRequest
+	* @param response HttpServletResponse
+	* @throws Exception
+	* @return ActionForward
+	* @author  
+	*/
+	public ActionForward update(ActionMapping mapping, ActionForm form,
+	                           HttpServletRequest request,
+	                           HttpServletResponse response) throws Exception {
+		  
+		DynaActionForm dform = (DynaActionForm) form;
+		<%=ModelName(SourceTable.Name)%> modelintance  = (<%=ModelName(SourceTable.Name)%>) dform.get("<%=IntanceName(SourceTable.Name)%>");
+	    
+	    UserInfo userInfo = (UserInfo) request.getSession().getAttribute("userInfo");
+ 	
+	    Manager manager = new  <%=ManagerName(SourceTable.Name)%>();
+	
+	    String state = "false";
+	    
+	    try {
+	    	manager.update(userInfo, modelintance);
+			removeFormBean(mapping, request);
+	    	state = "true";
+	    }
+	    catch (Exception e) {
+	    	state = "false";
+	    }
+	    
+	    dform.set("<%=IntanceName(SourceTable.Name)%>",modelintance);
+	
+	    /// 设置回复参数
+	    request.setAttribute("result", state);
+	
+	    /// 跳转到相应的页面 
+	    return mapping.findForward("update");
+	  }
+	
+
+	/**
+	*  删除的处理 支撑多行删除
+	* @param mapping ActionMapping
+	* @param form ActionForm
+	* @param request HttpServletRequest
+	* @param response HttpServletResponse
+	* @throws Exception
+	* @return ActionForward
+	* @author  
+	*/
+	public ActionForward del(ActionMapping mapping, ActionForm form,
+	                           HttpServletRequest request,
+	                           HttpServletResponse response) throws Exception {
+		  
+		String[] ids = request.getParameterValues("id");
+
+		DynaActionForm dform = (DynaActionForm) form;
+		<%=ModelName(SourceTable.Name)%> modelintance  = (<%=ModelName(SourceTable.Name)%>) dform.get("<%=IntanceName(SourceTable.Name)%>");
+	    
+	    UserInfo userInfo = (UserInfo) request.getSession().getAttribute("userInfo");
+	
+	    //String[] ids = new String[] {id };
+			    
+	    Manager manager = new  <%=ManagerName(SourceTable.Name)%>();
+	
+	    // 调用删除操作
+	    String state = "false";
+	    try {
+	    	manager.remove(userInfo,ids);
+	    	removeFormBean(mapping, request);
+	    	state = "true";
+	    }
+	    catch (Exception e) {
+	    	state = "false";
+	    }
+	    /// 设置回复参数
+	    request.setAttribute("result", state);
+	    
+	    // BEGIN 查询操作 删除后重新查询
+	    //	  处理分页信息
+		Pagination pagination = new Pagination();
+		pagination.setPage(1);   //跳转到首页
+		pagination.setCount(10); //每页10行
+		
+		// 调用服务器组件
+		try {
+			List data = manager.getList(null, modelintance, pagination);
+			if (data != null) {
+				request.setAttribute("data", data);
+			}
+		
+			//配置回复 pagination 分页信息 ; 输出页面信息;  
+			request.setAttribute("pagination", pagination);
+			dform.set("<%=IntanceName(SourceTable.Name)%>", modelintance);
+		}
+		catch (Exception e) {
+			log.error(e);
+			ActionErrors errors = new ActionErrors();
+			errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("message.error.list"));
+			saveErrors(request, errors);
+			return mapping.findForward("info");
+		}
+		//END 查询操作 删除后重新查询
+	
+	    /// 跳转到相应的页面 
+	    return mapping.findForward("list");
+	}
+
+	/**
+	* 信息列表
+	* @param mapping ActionMapping
+	* @param form ActionForm
+	* @param request HttpServletRequest
+	* @param response HttpServletResponse
+	* @throws Exception
+	* @return ActionForward
+	* @author  
+	*/
+	public ActionForward begin(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		try {
+			request.setAttribute("begin", "begin");
+		} catch (Exception ex) {
+			log.error(ex);
+			ActionErrors errors = new ActionErrors();
+			errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
+					"message.error.list"));
+			saveErrors(request, errors);
+			return mapping.findForward("info");
+		}
+		return mapping.findForward("list");
+	}
+	
+	
+	
+	/// 通用部分
+	protected void removeFormBean(ActionMapping mapping,
+                                HttpServletRequest request) {
+    // Remove the obsolete form bean
+    if ( mapping.getAttribute() != null) {
+      if ("request".equals(mapping.getScope())) {
+        request.removeAttribute(mapping.getAttribute());
+      }
+      else {
+        HttpSession session = request.getSession();
+
+        session.removeAttribute(mapping.getAttribute());
+      }
+    }
+  }
+}

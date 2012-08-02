@@ -1,0 +1,31 @@
+﻿<%-- 
+Name:
+Author: 
+Description: 
+--%>
+<%@ CodeTemplate Language="C#" TargetLanguage="Text" Src="" ResponseEncoding="UTF-8" Inherits="" Debug="False" Description="Template description here." %>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Assembly Name="System.Data" %>
+<%@ Import Namespace="System.Data" %>
+
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+<%@ Import Namespace="System.IO" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+
+<%-- 注册 定义的成员变量 --%>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="DB" Description="请选择名的数据来源" %>
+
+<%-- 启用 MAP方式 System-CSharpAlias  --%>
+<%@ Map Name="CSharpAlias" Src="System-CSharpAlias" Description="System to C# Type Map" %>
+<%@ Map Name="JavaAlias" Src="System-JavaAlias.csmap" Description="Oracle to Java Type Map" %>
+
+<script runat="template">
+<!-- #include file=getNamefunction.cs -->
+
+//Debugger.Break();
+
+
+
+</script>
+<%= SourceTable.Name.ToUpper()%>||<%=GetEtParamSrc(SourceTable)%>
