@@ -34,6 +34,10 @@
 	</logger>
 	-->
 	
+	<logger name="org.breeze">
+		<level value="DEBUG"/>
+	</logger>
+	
 	<root>
 		<level value="WARN"/>
 		<appender-ref ref="CONSOLE"/>

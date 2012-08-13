@@ -6,11 +6,9 @@
 
 <configuration>
 	<properties>
-    	      <property name="dialect" value="oracle"/>
-	</properties>
-	    
+    	      <property name="dialect" value="mysql"/>
+	</properties>	    
  	<plugins>
 	        <plugin interceptor="org.mybatis.extend.interceptor.PaginationInterceptor"/>
-	</plugins>
-	   
+	</plugins>	   
 </configuration>

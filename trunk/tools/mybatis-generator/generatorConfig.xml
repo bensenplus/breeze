@@ -4,13 +4,13 @@
   "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
 <generatorConfiguration>
-  <classPathEntry location="C:/Users/chen_maohua/.m2/repository/com/oracle/ojdbc/6/ojdbc-6.jar" />
+  <classPathEntry location="C:/Users/chen_maohua/.m2/repository/mysql/mysql-connector-java/5.1.9/mysql-connector-java-5.1.9.jar" />
 
   <context id="Tables" targetRuntime="MyBatis3">
-    <jdbcConnection driverClass="oracle.jdbc.driver.OracleDriver"
-        connectionURL="jdbc:oracle:thin:@172.29.128.93:1521:orcl"
-        userId="hcmsdev"
-        password="hcmsdev">
+    <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+        connectionURL="jdbc:mysql://192.168.134.128:3306/breeze"
+        userId="breeze"
+        password="breeze">
     </jdbcConnection>
 
     <javaTypeResolver >
@@ -22,7 +22,7 @@
       <property name="trimStrings" value="true" />
     </javaModelGenerator>
 
-    <sqlMapGenerator targetPackage="org.breeze.accout.xml"  targetProject="./src">
+    <sqlMapGenerator targetPackage="org.breeze.dao"  targetProject="./src">
       <property name="enableSubPackages" value="true" />
     </sqlMapGenerator>
 
@@ -30,9 +30,30 @@
       <property name="enableSubPackages" value="true" />
     </javaClientGenerator>
 
-    <table schema="breeze" tableName="account">
+	<!-- tables -->
+    <table schema="breeze" tableName="users">
 		<property name="ignoreQualifiersAtRuntime" value="true" />
-		<property name="runtimeTableName" value="accout" />
+		<property name="runtimeTableName" value="users" />
+    </table>
+
+	<table schema="breeze" tableName="roles">
+		<property name="ignoreQualifiersAtRuntime" value="true" />
+		<property name="runtimeTableName" value="roles" />
+    </table>
+
+	<table schema="breeze" tableName="resources">
+		<property name="ignoreQualifiersAtRuntime" value="true" />
+		<property name="runtimeTableName" value="resources" />
+    </table>
+
+	<table schema="breeze" tableName="users_roles">
+		<property name="ignoreQualifiersAtRuntime" value="true" />
+		<property name="runtimeTableName" value="users_roles" />
+    </table>
+
+	<table schema="breeze" tableName="roles_resources">
+		<property name="ignoreQualifiersAtRuntime" value="true" />
+		<property name="runtimeTableName" value="roles_resources" />
     </table>
 
   </context>

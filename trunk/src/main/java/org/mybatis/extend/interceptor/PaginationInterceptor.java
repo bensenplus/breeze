@@ -66,7 +66,8 @@ public class PaginationInterceptor implements Interceptor {
 			case ORACLE:
 				dialect = new OracleDialect();
 				break;
-			case MYSQL://TODO
+			case MYSQL:
+				dialect = new MysqlDialect();
 				break;
 		}
 		metaStatementHandler.setValue("delegate.boundSql.sql",
