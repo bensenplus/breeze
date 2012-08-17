@@ -1,38 +1,57 @@
 
 
 ***********************************************************************
-Fatal NI connect error 12545, connecting to:
- (DESCRIPTION=(CONNECT_DATA=(SERVICE_NAME=172.29.129.86)(CID=(PROGRAM=C:\Program?Files\CodeSmith\v6.5\CodeSmith.exe)(HOST=CHEN_MAOHUA01)(USER=chen_maohua)))(ADDRESS=(PROTOCOL=TCP)(HOST=172.29.129.86)(PORT=1521:empidev)))
+Fatal NI connect error 12170.
 
   VERSION INFORMATION:
 	TNS for 32-bit Windows: Version 10.2.0.3.0 - Production
 	Windows NT TCP/IP NT Protocol Adapter for 32-bit Windows: Version 10.2.0.3.0 - Production
-  Time: 30-7月 -2012 14:37:37
+  Time: 17-8月 -2012 21:47:42
   Tracing not turned on.
   Tns error struct:
-    ns main err code: 12545
-    TNS-12545: 因目标主机或对象不存在, 连接失败
+    ns main err code: 12535
+    TNS-12535: TNS: 操作超时
     ns secondary err code: 12560
-    nt main err code: 515
-    TNS-00515: 因目标主机或对象不存在, 连接失败
-    nt secondary err code: 1004
+    nt main err code: 505
+    TNS-00505: 操作超时
+    nt secondary err code: 60
     nt OS err code: 0
+  Client address: <unknown>
 
 
 ***********************************************************************
-Fatal NI connect error 12545, connecting to:
- (DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=MyHost)(PORT=MyPort))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=MyOracleSID)(CID=(PROGRAM=C:\Program?Files\CodeSmith\v6.5\CodeSmith.exe)(HOST=CHEN_MAOHUA01)(USER=chen_maohua))))
+Fatal NI connect error 12170.
 
   VERSION INFORMATION:
 	TNS for 32-bit Windows: Version 10.2.0.3.0 - Production
 	Windows NT TCP/IP NT Protocol Adapter for 32-bit Windows: Version 10.2.0.3.0 - Production
-  Time: 30-7月 -2012 14:44:40
+  Time: 17-8月 -2012 21:48:32
   Tracing not turned on.
   Tns error struct:
-    ns main err code: 12545
-    TNS-12545: 因目标主机或对象不存在, 连接失败
+    ns main err code: 12535
+    TNS-12535: TNS: 操作超时
     ns secondary err code: 12560
-    nt main err code: 515
-    TNS-00515: 因目标主机或对象不存在, 连接失败
-    nt secondary err code: 1004
+    nt main err code: 505
+    TNS-00505: 操作超时
+    nt secondary err code: 60
     nt OS err code: 0
+  Client address: <unknown>
+
+
+***********************************************************************
+Fatal NI connect error 12170.
+
+  VERSION INFORMATION:
+	TNS for 32-bit Windows: Version 10.2.0.3.0 - Production
+	Windows NT TCP/IP NT Protocol Adapter for 32-bit Windows: Version 10.2.0.3.0 - Production
+  Time: 17-8月 -2012 21:49:45
+  Tracing not turned on.
+  Tns error struct:
+    ns main err code: 12535
+    TNS-12535: TNS: 操作超时
+    ns secondary err code: 12560
+    nt main err code: 505
+    TNS-00505: 操作超时
+    nt secondary err code: 60
+    nt OS err code: 0
+  Client address: <unknown>

@@ -1,5 +1,3 @@
-
-
 /*
 RootOutputPath:	输出主目录
 ModulName:	模块名
@@ -67,20 +65,22 @@ public string ModelName( string TableName)
 /// 输出 Dao 的类名, 通用类名+DAOImpl
 public string DaoName( string TableName)
 {
-	return ClassName(TableName) + "DAOImpl";
+	return ClassName(TableName) + "DaoImpl";
 }
 
-/// 输出Action 的类名 通用类名+Action
-public string ActionName( string TableName)
+/// 输出Controller 的类名 通用类名+Controller
+public string ControllerName( string TableName)
 {
-	return ClassName(TableName) + "Action";
+	return ClassName(TableName) + "Controller";
 }
 
-/// 输出 Manager 的类名 通用类名+ManagerImpl
-public string ManagerName( string TableName)
+
+/// 输出Service 的类名 通用类名+Service
+public string ServiceName( string TableName)
 {
-	return ClassName(TableName) + "ManagerImpl";
+	return ClassName(TableName) + "Service";
 }
+
 
 
 /// 输出 Form 的类名 通用类名+ManagerImpl
@@ -200,10 +200,10 @@ public string JspNameRelaMgr( string TableName)
 
 #endregion
 
-/// 通过 字段名字 得到 通用的字段名字 ，最后以小写存在；例：  COM_ID   com_id
-public string GetMemberVariableName( string FieldName)
+///  通过 字段名字 得到 通用的字段名字 ，最后以首字母大写，其他小写；例：  COM_ID   Com_id
+public string GetFirstLower( string FieldName)
 {
-	string MemberVariableName = FieldName.ToLower() ;
+	string MemberVariableName =   FieldName.Substring(0,1).ToLower() +  FieldName.Substring(1);//   StringUtil.ToPascalCase(FieldName) ;
 	
 	return MemberVariableName;
 }
@@ -216,16 +216,19 @@ public string GetFirstUpperMemberVariableName( string FieldName)
 	return MemberVariableName;
 }
 
-///   get FunctionMemberVariableName ;get + 最后以首字母大写，其他小写；例：  COM_ID   getCom_id
-public string getFunctionMemberVariableName( string FieldName)
+public string filedName(string FieldName)
 {
-	return "get" + GetFirstUpperMemberVariableName(FieldName);
+	 return StringUtil.ToCamelCase(FieldName);
 }
 
-///   set FunctionMemberVariableName ;set +  最后以首字母大写，其他小写；例：  COM_ID   setCom_id
-public string setFunctionMemberVariableName( string FieldName)
+public string getter( string FieldName)
 {
-	return "set" + GetFirstUpperMemberVariableName(FieldName);
+	return StringUtil.ToCamelCase("get"+FieldName);
+}
+
+public string setter( string FieldName)
+{
+	return StringUtil.ToCamelCase("set" +FieldName);
 }
 
 public string GetFileName(string ClassName)
@@ -251,7 +254,7 @@ public string GetEtParam(TableSchema dt )
 	
 	int count = 0;
 	/// {0} 变量 
-	string Format = "{0}";
+	//string Format = "{0}";
 	foreach (ColumnSchema column in dt.Columns) 
 	{ 
 		if ( count == 0 )
@@ -281,7 +284,7 @@ public string GetEtParamSrc(TableSchema dt )
 	
 	int count = 0;
 	/// {0} 变量 
-	string Format = "{0}";
+	//string Format = "{0}";
 	foreach (ColumnSchema column in dt.Columns) 
 	{ 
 		if(column.Name == "B_TYPE")

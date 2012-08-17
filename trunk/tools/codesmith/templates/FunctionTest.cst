@@ -1,0 +1,32 @@
+﻿<%@ CodeTemplate Language="C#" TargetLanguage="Text" Src="" ResponseEncoding="UTF-8" Inherits="" Debug="False" Description="Template description here." %>
+<%@ Assembly Name="System.Data" %>
+<%@ Assembly Name="SchemaExplorer" %>
+
+<%@ Import Namespace="System.IO" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+
+<%-- 注册 定义的成员变量 --%>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="DB" Description="请选择名的数据来源" %>
+
+<%-- 启用 MAP方式 System-CSharpAlias  --%>
+<%@ Map Name="CSharpAlias" Src="System-CSharpAlias" Description="System to C# Type Map" %>
+<%@ Map Name="JavaAlias" Src="JavaAlias.csmap" Description="Oracle to Java Type Map" %>
+<script runat="template">
+<!-- #include file=Function.cs -->
+//Debugger.Break();
+</script>
+<% foreach (ColumnSchema column in this.SourceTable.Columns) 
+    { 
+    %>
+<%= GetCamelMemberVariableName(column.Name)%>
+<% 
+    } 
+ %>
+ 
+ <%= SourceTable.Name.ToUpper()%>
+
+<%=GetEtParamSrc(SourceTable)%>
+
+<%=GetEtParam(SourceTable)%>

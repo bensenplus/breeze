@@ -11,7 +11,7 @@
     </item>
     <item>
       <key>System.Byte</key>
-      <value>byte</value>
+      <value>Byte</value>
     </item>
     <item>
       <key>System.Char</key>
@@ -23,7 +23,7 @@
     </item>
     <item>
       <key>System.Double</key>
-      <value>Long</value>
+      <value>Double</value>
     </item>
     <item>
       <key>System.Single</key>
@@ -31,11 +31,11 @@
     </item>
     <item>
       <key>System.Int32</key>
-      <value>Long</value>
+      <value>Integer</value>
     </item>
     <item>
       <key>System.Int64</key>
-      <value>long</value>
+      <value>Long</value>
     </item>
     <item>
       <key>System.SByte</key>
@@ -43,11 +43,11 @@
     </item>
     <item>
       <key>System.Int16</key>
-      <value>Long</value>
+      <value>Short</value>
     </item>
     <item>
       <key>System.UInt32</key>
-      <value>Long</value>
+      <value>Integer</value>
     </item>
     <item>
       <key>System.UInt64</key>
@@ -55,15 +55,15 @@
     </item>
     <item>
       <key>System.Object</key>
-      <value>object</value>
+      <value>Object</value>
     </item>
     <item>
       <key>System.UInt16</key>
-      <value>Long</value>
+      <value>Short</value>
     </item>
     <item>
-      <key>Object</key>
-      <value>String</value>
+      <key>System.DateTime</key>
+      <value>Date</value>
     </item>
   </map>
 </codeSmith>

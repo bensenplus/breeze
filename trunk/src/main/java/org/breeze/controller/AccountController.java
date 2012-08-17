@@ -8,6 +8,8 @@ import javax.annotation.Resource;
 import org.breeze.entity.Account;
 import org.breeze.entity.Page;
 import org.breeze.service.AccountService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/account")
 public class AccountController {
+	
+	private final Logger logger = LoggerFactory.getLogger(AccountController.class); 
 
 	@Resource(name = "accountService")
 	private AccountService accountService;

@@ -30,42 +30,58 @@ String Key = JavaAlias[SourceTable.Columns[0].SystemType.FullName];
 String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
 String map = StringUtil.ToCamelCase(SourceTable.Name);
 %>
-package com.founder.hcms.entity;
+package <%=RootTableSpaceName%>.controller;
 
-import java.io.Serializable;
+import java.util.List;
+import javax.annotation.Resource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import <%=RootTableSpaceName%>.entity.Page;
+import <%=RootTableSpaceName%>.model.<%=Mode%>;
+import <%=RootTableSpaceName%>.service.<%=Service%>;
 
-@Entity
-@Table(name="<%= SourceTable.Name%>")
-public class <%= Mode%> implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-	<%-- 成员变量 --%>
-    <% foreach (ColumnSchema column in this.SourceTable.Columns) 
-    { 
-    %>
+@Controller
+@RequestMapping("<%=map%>")
+public class <%=Controller%> {
+
+	private final Logger logger = LoggerFactory.getLogger(<%=Controller%>.class); 
+
+    @Resource(name = "<%=service%>")
+	private <%=Service%> <%=service%>;
+
+
+    @RequestMapping("/list")
+	public String list(ModelMap model, Page page) {
+		List<<%=Mode%>> list = <%=service%>.select(page);
+		model.addAttribute("list", list);
+		model.addAttribute("page", page);
+		return "<%=map%>/list";
+	}
     
-	private <%= JavaAlias[column.SystemType.FullName]%> <%= filedName(column.Name) %>;    
-    <% 
-    }
-    %>
-
-	<% foreach (ColumnSchema column in this.SourceTable.Columns) 
-    { 
-    %>
-
-	public <%= JavaAlias[column.SystemType.FullName]%> <%= getter(column.Name)%>() {
-		return <%= filedName(column.Name) %>;
+    @RequestMapping("/edit")
+	public String edit(Long <%=key%>) {
+	    <%=Mode%> <%=mode%> = <%=service%>.get(<%=key%>);
+		model.addAttribute("<%=mode%>", <%=mode%>);
+		return "<%=map%>/edit";
+	}    
+    
+    @RequestMapping("/save")
+	public String save(<%=Mode%> <%=mode%>) {
+       <%=service%>.save(<%=mode%>)
+		return "redirect:list";
 	}
-
-	public void <%= setter(column.Name)%>(<%= JavaAlias[column.SystemType.FullName]%> <%= filedName(column.Name)%>) {
-		this.<%= filedName(column.Name)%> = <%= filedName(column.Name)%>;
+    
+    @RequestMapping("/delete")
+	public String delete(Long <%=key%>) {
+		<%=service%>.delete(<%=key%>);
+		return "redirect:list";
 	}
-    <% 
-    } 
-    %>
+    
+	
+	
 }

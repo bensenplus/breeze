@@ -8,7 +8,7 @@
 
   <context id="Tables" targetRuntime="MyBatis3">
     <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-        connectionURL="jdbc:mysql://192.168.134.128:3306/breeze"
+        connectionURL="jdbc:mysql://192.168.134.132:3306/breeze"
         userId="breeze"
         password="breeze">
     </jdbcConnection>
@@ -19,7 +19,7 @@
 
     <javaModelGenerator targetPackage="org.breeze.entity" targetProject="./src">
       <property name="enableSubPackages" value="true" />
-      <property name="trimStrings" value="true" />
+      <property name="trimStrings" value="false" />
     </javaModelGenerator>
 
     <sqlMapGenerator targetPackage="org.breeze.dao"  targetProject="./src">
