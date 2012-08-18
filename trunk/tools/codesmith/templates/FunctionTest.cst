@@ -17,15 +17,8 @@
 <!-- #include file=Function.cs -->
 //Debugger.Break();
 </script>
-<% foreach (ColumnSchema column in this.SourceTable.Columns) 
-    { 
-    %>
-<%= GetCamelMemberVariableName(column.Name)%>
-<% 
-    } 
- %>
  
- <%= SourceTable.Name.ToUpper()%>
+<%= SourceTable.Name.ToUpper()%>
 
 <%=GetEtParamSrc(SourceTable)%>
 

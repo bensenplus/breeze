@@ -28,7 +28,7 @@
     RenderMain();
 %>
 
-Done and Finish  !!!!!!!!!!!!!!!!!!!!!!!!
+Done and Finish  !!!!!!!!!!!!!!
 
 <script runat="template">
 
@@ -52,7 +52,7 @@ public void RenderMain()
         Directory.CreateDirectory(OutputPath);
     }
     
-     Response.WriteLine(OutputPath);
+     Response.WriteLine("Output Path " + OutputPath);
  
     /// 重复调用单个的子模板
     foreach(TableSchema dt in tables)
@@ -73,7 +73,7 @@ public void RenderMain()
 				export.RootTableSpaceName = this.RootTableSpaceName;
 				// 输出
 				export.RenderMain();
-                Response.WriteLine("Successed to Create Code File for "+dt.Name);
+                Response.WriteLine("Successed:" + dt.Name);
 			}
 			catch(Exception ex )
 			{

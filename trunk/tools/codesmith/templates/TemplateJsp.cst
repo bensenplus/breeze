@@ -19,6 +19,17 @@
 <!-- #include file=Function.cs -->
 //Debugger.Break();
 </script>
+<% 
+//名称定义
+String Controller = ControllerName(SourceTable.Name);
+String Mode = ModelName(SourceTable.Name);
+String mode = StringUtil.ToCamelCase(SourceTable.Name);
+String Service = ServiceName(SourceTable.Name);
+String service = StringUtil.ToCamelCase(ServiceName(SourceTable.Name));
+String Key = JavaAlias[SourceTable.Columns[0].SystemType.FullName];
+String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
+String map = StringUtil.ToCamelCase(SourceTable.Name);
+%>
 <%%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%%>
 <%%@ include file="../common/taglibs.jsp"%%>
 <%%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%%>
@@ -34,9 +45,6 @@
 
 <body>
 
-	<form action="list" id="condition">
-		<input type="hidden" id="current_page" name="currentPage" />
-	</form>
 	<table border=0 cellspacing=0 cellpadding=5 align=center>
 		<thead>
 			<tr>
@@ -44,19 +52,19 @@
 			<tr>
 			<tr>
 <% foreach (ColumnSchema column in this.SourceTable.Columns) {%>	
-			    <td><%=column.Description%></td>		
+			    <td><%=column.Description%><%=column.Name%></td>		
 <% }%>
 				<td colspan=3>操作</td>
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach var="account" items="${accountList}" varStatus="status">
+			<c:forEach var="<%=mode%>" items="${list}" varStatus="status">
                 <tr>
 <% foreach (ColumnSchema column in this.SourceTable.Columns) {%>	
-					<td>${<%=IntanceName(SourceTable.Name)%>.<%=GetMemberVariableName(column.Name)%>}</td>		
+					<td>${<%=mode%>.<%=fieldName(column.Name)%>}</td>		
 <% }%>
-					<td><a href="edit?<%=GetMemberVariableName(this.SourceTable.Columns[0].Name)%>=${<%=IntanceName(SourceTable.Name)%>.<%=GetMemberVariableName(this.SourceTable.Columns[0].Name)%>}">编辑</a></td>
-					<td><a href="delete?<%=GetMemberVariableName(this.SourceTable.Columns[0].Name)%>=${<%=IntanceName(SourceTable.Name)%>.<%=GetMemberVariableName(this.SourceTable.Columns[0].Name)%>}">删除</a></td>
+					<td><a href="edit?<%=fieldName(this.SourceTable.Columns[0].Name)%>=${<%=IntanceName(SourceTable.Name)%>.<%=fieldName(this.SourceTable.Columns[0].Name)%>}">编辑</a></td>
+					<td><a href="delete?<%=fieldName(this.SourceTable.Columns[0].Name)%>=${<%=IntanceName(SourceTable.Name)%>.<%=fieldName(this.SourceTable.Columns[0].Name)%>}">删除</a></td>
             	</tr>
 			</c:forEach>
 		</tbody>

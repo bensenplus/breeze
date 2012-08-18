@@ -44,7 +44,7 @@
 
 		<!-- 认证过滤器 -->
 		<beans:bean id="myFilter" class="org.breeze.security.MySecurityFilter">
-			<beans:property name="rejectPublicInvocations" value="true"></beans:property>
+			<beans:property name="rejectPublicInvocations" value="false"></beans:property>
 		 	<!-- 用户拥有的权限 --> 
 		     <beans:property name="authenticationManager"     ref="myAuthenticationManager" />
 		      <!-- 用户是否拥有所请求资源的权限 --> 

@@ -19,44 +19,37 @@
 <!-- #include file=Function.cs -->
 //Debugger.Break();
 </script>
+<% 
+//名称定义
+String Controller = ControllerName(SourceTable.Name);
+String Mode = ModelName(SourceTable.Name);
+String mode = StringUtil.ToCamelCase(SourceTable.Name);
+String Service = ServiceName(SourceTable.Name);
+String service = StringUtil.ToCamelCase(ServiceName(SourceTable.Name));
+String Key = JavaAlias[SourceTable.Columns[0].SystemType.FullName];
+String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
+String map = StringUtil.ToCamelCase(SourceTable.Name);
+%>
+package <%=RootTableSpaceName%>.dao;
 
-<%-- 启用 MAP方式 System-CSharpAlias  --%>
-package com.founder.hcms.entity;
+import java.util.List;
 
-import java.io.Serializable;
+import <%=RootTableSpaceName%>.entity.Page;
+import <%=RootTableSpaceName%>.entity.<%= Mode%>;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+public interface <%= Mode%>Mapper {
 
-@Entity
-@Table(name="<%= SourceTable.Name%>")
-public class <%= ModelName(SourceTable.Name)%> implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-	<%-- 成员变量 --%>
-    <% foreach (ColumnSchema column in this.SourceTable.Columns) 
-    { 
-    %>
+	int count();
     
-	private <%= JavaAlias[column.SystemType.FullName]%> <%= GetMemberVariableName(column.Name) %>;    
-    <% 
-    }
-    %>
+    List<<%= Mode%>> select(Page page);
+    
+    int insert(<%= Mode%> <%= mode%>);
+    
+    <%= Mode%> get(<%= Key%> <%= key%>);
+	
+	int update(<%= Mode%> <%= mode%>);
+	
+	int delete(<%= Key%> <%= key%>);
+    
 
-	<% foreach (ColumnSchema column in this.SourceTable.Columns) 
-    { 
-    %>
-
-	public <%= JavaAlias[column.SystemType.FullName]%> <%= getFunctionMemberVariableName(column.Name)%>() {
-		return <%= GetMemberVariableName(column.Name)%>;
-	}
-
-	public void <%= setFunctionMemberVariableName(column.Name)%>(<%= JavaAlias[column.SystemType.FullName]%> <%= GetMemberVariableName(column.Name)%>) {
-		this.<%= GetMemberVariableName(column.Name)%> = <%= GetMemberVariableName(column.Name)%>;
-	}
-    <% 
-    } 
-    %>
 }

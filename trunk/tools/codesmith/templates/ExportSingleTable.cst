@@ -7,6 +7,7 @@
 <%@ Assembly Name="System.Design" %>
 <%@ Assembly Name="CodeSmith.BaseTemplates" %>
 <%@ Assembly Name="CodeSmith.CustomProperties" %>
+
 <%@ Import Namespace="CodeSmith.BaseTemplates" %>
 <%@ Import Namespace="CodeSmith.CustomProperties" %>
 <%@ Import Namespace="SchemaExplorer" %>
@@ -25,6 +26,8 @@
 <%-- 注册 子模板 --%>
 <%@ Register Name="TemplateModel" Template="TemplateModel.cst" %>
 <%@ Register Name="TemplateDao" Template="TemplateDao.cst" %>
+<%@ Register Name="TemplateDaoXml" Template="TemplateDaoXml.cst" %>
+<%@ Register Name="TemplateService" Template="TemplateService.cst" %>
 <%@ Register Name="TemplateController" Template="TemplateController.cst" %>
 <%@ Register Name="TemplateJsp" Template="TemplateJsp.cst" %>
 
@@ -54,6 +57,8 @@ public void RenderMain()
 
 	CreateTemplateModel(SourceTable);
     CreateTemplateDao(SourceTable);
+    CreateTemplateDaoXml(SourceTable);
+    CreateTemplateService(SourceTable);
     CreateTemplateController(SourceTable);
 	CreateTemplateJsp(SourceTable);
     
@@ -63,7 +68,7 @@ public void RenderMain()
 public void CreateTemplateModel( TableSchema tb)
 {
 	/// 输出目录结构  输出最底层\src\model\$ModelName.java
-	string strFileName = GetFileName(OutputPath, "src" , "mode"  ,ModelName(tb.Name),"java");
+	string strFileName = GetFileName(OutputPath, RootTableSpaceName, "entity"  ,ModelName(tb.Name),"java");
         
 	/// 创建文件
     FileStream fs = new FileStream(strFileName,FileMode.Create,FileAccess.Write);
@@ -93,7 +98,7 @@ public void CreateTemplateModel( TableSchema tb)
 public void CreateTemplateDao( TableSchema tb)
 {
 	/// 输出目录结构  输出最底层\src\dao\$ModelName.java
-	string strFileName = GetFileName(OutputPath, "src" , "dao"  ,DaoName(tb.Name),"java");
+	string strFileName = GetFileName(OutputPath, RootTableSpaceName , "dao"  ,DaoName(tb.Name),"java");
         
 	/// 创建文件
     FileStream fs = new FileStream(strFileName,FileMode.Create,FileAccess.Write);
@@ -117,12 +122,69 @@ public void CreateTemplateDao( TableSchema tb)
     fs.Close();
 }
 
+///  输出 Dao xml
+public void CreateTemplateDaoXml( TableSchema tb)
+{
+	/// 输出目录结构  输出最底层\src\action\$ModelName.java
+	string strFileName = GetFileName(OutputPath, RootTableSpaceName , "xml"  ,ModelName(tb.Name),"xml");
+        
+	/// 创建文件
+    FileStream fs = new FileStream(strFileName,FileMode.Create,FileAccess.Write);
+    StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.UTF8);
+        
+    // 调用子模板进行创建 
+    TemplateDaoXml template = new TemplateDaoXml();
+    
+    // 子模板所需要的入参
+    template.SourceTable = tb;
+	template.RootTableSpaceName = this.RootTableSpaceName;
+   
+    /// 输出子模板文档
+    template.Render(sw);
+    
+	/// 结束
+    //sw.WriteLine("//end of class " + tb.Name);
+    // 关闭输出流
+    sw.Close();
+    //关闭文档
+    fs.Close();
+}
+
+///  输出 Dao xml
+public void CreateTemplateService( TableSchema tb)
+{
+	/// 输出目录结构  输出最底层\src\action\$ModelName.java
+	string strFileName = GetFileName(OutputPath, RootTableSpaceName , "service"  ,ServiceName(tb.Name),"java");
+        
+	/// 创建文件
+    FileStream fs = new FileStream(strFileName,FileMode.Create,FileAccess.Write);
+    StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.UTF8);
+        
+    // 调用子模板进行创建 
+    TemplateService template = new TemplateService();
+    
+    // 子模板所需要的入参
+    template.SourceTable = tb;
+	template.RootTableSpaceName = this.RootTableSpaceName;
+   
+    /// 输出子模板文档
+    template.Render(sw);
+    
+	/// 结束
+    //sw.WriteLine("//end of class " + tb.Name);
+    // 关闭输出流
+    sw.Close();
+    //关闭文档
+    fs.Close();
+}
+
+
 
 ///  输出 Controller 模块
 public void CreateTemplateController( TableSchema tb)
 {
 	/// 输出目录结构  输出最底层\src\dao\$ModelName.java
-	string strFileName = GetFileName(OutputPath, "src" , "controller"  ,ControllerName(tb.Name),"java");
+	string strFileName = GetFileName(OutputPath, RootTableSpaceName , "controller"  ,ControllerName(tb.Name),"java");
         
 	/// 创建文件
     FileStream fs = new FileStream(strFileName,FileMode.Create,FileAccess.Write);
@@ -148,12 +210,11 @@ public void CreateTemplateController( TableSchema tb)
 
 
 
-
 ///  输出 JSP 模块
 public void CreateTemplateJsp( TableSchema tb)
 {
 	/// 输出目录结构  输出最底层\src\action\$ModelName.java
-	string strFileName = GetFileName(OutputPath, "src" , "jsp"  ,ModelName(tb.Name),"jsp");
+	string strFileName = GetFileName(OutputPath, "jsp" , StringUtil.ToCamelCase(tb.Name), "list","jsp");
         
 	/// 创建文件
     FileStream fs = new FileStream(strFileName,FileMode.Create,FileAccess.Write);
@@ -176,8 +237,5 @@ public void CreateTemplateJsp( TableSchema tb)
     //关闭文档
     fs.Close();
 }
-
-
-
 
 </script>

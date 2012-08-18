@@ -39,10 +39,10 @@
 	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
 	<context:component-scan base-package="org.breeze">
-		<context:include-filter type="regex" expression="org.breeze\..*?\.dao\..*"/>
+<!-- 		<context:include-filter type="regex" expression="org.breeze\..*?\.dao\..*"/>
 		<context:include-filter type="regex" expression="org.breeze\..*?\.security\..*"/>
 		<context:include-filter type="regex" expression="org.breeze\..*?\.service\..*"/>
-		<context:include-filter type="regex" expression="org.breeze\..*?\.controller\..*"/>
+		<context:include-filter type="regex" expression="org.breeze\..*?\.controller\..*"/> -->
 	</context:component-scan>
 
     <!-- transaction manager, use JtaTransactionManager for global tx -->

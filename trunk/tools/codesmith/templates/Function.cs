@@ -10,8 +10,9 @@ Filename:文件名.java
 处理逻辑：
 首先逐层判断 目录是否存在,不存在的话，创建目录
 */
-public string GetFileName(string RootOutputPath,string ModulName, string  ActionName,string Filename,string FileExtType )
+public string GetFileName(string RootOutputPath,string packageName, string  ActionName,string Filename,string FileExtType )
 {
+    string ModulName = packageName.Replace(".",@"\");
 	string RootOutputPathFormat = @"{0}";
 	string ModulNamePathFormat = @"{0}\{1}";
 	string ActionNamePathFormat = @"{0}\{1}\{2}";
@@ -65,7 +66,7 @@ public string ModelName( string TableName)
 /// 输出 Dao 的类名, 通用类名+DAOImpl
 public string DaoName( string TableName)
 {
-	return ClassName(TableName) + "DaoImpl";
+	return ClassName(TableName) + "Mapper";
 }
 
 /// 输出Controller 的类名 通用类名+Controller
@@ -79,28 +80,6 @@ public string ControllerName( string TableName)
 public string ServiceName( string TableName)
 {
 	return ClassName(TableName) + "Service";
-}
-
-
-
-/// 输出 Form 的类名 通用类名+ManagerImpl
-public string FormName( string TableName)
-{
-	return ClassName(TableName) + "Form";
-}
-
-public string doName( string TableName)
-{
-	string tname = ClassName(TableName) + "doreport";
-	
-	return tname.ToLower();
-}
-
-public string DoName( string TableName)
-{
-	string tname = ClassName(TableName) + "Do";
-	
-	return tname.ToLower();
 }
 
 
@@ -195,40 +174,22 @@ public string JspNameRelaMgr( string TableName)
 }
 
 
-
-
-
 #endregion
 
-///  通过 字段名字 得到 通用的字段名字 ，最后以首字母大写，其他小写；例：  COM_ID   Com_id
-public string GetFirstLower( string FieldName)
-{
-	string MemberVariableName =   FieldName.Substring(0,1).ToLower() +  FieldName.Substring(1);//   StringUtil.ToPascalCase(FieldName) ;
-	
-	return MemberVariableName;
-}
 
-///  通过 字段名字 得到 通用的字段名字 ，最后以首字母大写，其他小写；例：  COM_ID   Com_id
-public string GetFirstUpperMemberVariableName( string FieldName)
-{
-	string MemberVariableName =   FieldName.Substring(0,1).ToUpper() +  FieldName.Substring(1).ToLower();//   StringUtil.ToPascalCase(FieldName) ;
-	
-	return MemberVariableName;
-}
-
-public string filedName(string FieldName)
+public string fieldName(string FieldName)
 {
 	 return StringUtil.ToCamelCase(FieldName);
 }
 
-public string getter( string FieldName)
+public string getter(string FieldName)
 {
-	return StringUtil.ToCamelCase("get"+FieldName);
+	return StringUtil.ToCamelCase("get_"+fieldName(FieldName));
 }
 
 public string setter( string FieldName)
 {
-	return StringUtil.ToCamelCase("set" +FieldName);
+	return StringUtil.ToCamelCase("set_" +fieldName(FieldName));
 }
 
 public string GetFileName(string ClassName)
@@ -272,25 +233,13 @@ public string GetEtParam(TableSchema dt )
 	return param;
 }
 
-
-
-///
-///
-///将*改成   各个字段 
-//根据采集数据的字段来  把自己加的字段字段去除掉
+//根据采集数据的字段来
 public string GetEtParamSrc(TableSchema dt )
 {
-	string param = string.Empty;
-	
+	string param = string.Empty;	
 	int count = 0;
-	/// {0} 变量 
-	//string Format = "{0}";
 	foreach (ColumnSchema column in dt.Columns) 
 	{ 
-		if(column.Name == "B_TYPE")
-		{
-			break;
-		}
 		
 		if ( count == 0 )
 		{
@@ -321,14 +270,39 @@ public string GetEtParamAsk(TableSchema dt )
 	{ 
 		if ( count == 0 )
 		{
-			param = "?" ;
+			param = "#{" + fieldName(column.Name) + "}";
 		}
 		else
 		{
-			param = param + "," + "?";
+			param = param + ",#{" + fieldName(column.Name) + "}";
 		}
 		count = count + 1;
 	}
 	return param;
 }
+
+
+//根据采集数据的字段来
+public string GetUpdateString(TableSchema dt )
+{
+	string param = string.Empty;	
+	int count = 0;
+	foreach (ColumnSchema column in dt.Columns) 
+	{ 
+		
+		if ( count == 0 )
+		{
+
+			param = column.Name + "=#{" + fieldName(column.Name) + "}";
+		}
+		else
+		{
+			param = param + "," + column.Name + "=#{" + fieldName(column.Name) + "}";
+		}
+		count = count + 1;
+	}
+	
+	return param;
+}
+
 

@@ -22,40 +22,61 @@
 <% 
 //名称定义
 String Controller = ControllerName(SourceTable.Name);
+String table = SourceTable.Name;
 String Mode = ModelName(SourceTable.Name);
 String mode = StringUtil.ToCamelCase(SourceTable.Name);
-String Service = ServiceName(SourceTable.Name);
-String service = StringUtil.ToCamelCase(ServiceName(SourceTable.Name));
+
+String KeyName = SourceTable.Columns[0].Name;
 String Key = JavaAlias[SourceTable.Columns[0].SystemType.FullName];
 String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
 String map = StringUtil.ToCamelCase(SourceTable.Name);
 %>
-package <%=RootTableSpaceName%>.entity;
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-import java.io.Serializable;
-import java.util.Date;
+<mapper namespace="<%=RootTableSpaceName%>.dao.<%= Mode%>Mapper">
 
-public class <%= Mode%> implements Serializable {
+  <cache />
 
-    private static final long serialVersionUID = 1L;
-	<%-- 成员变量 --%>
-    <% foreach (ColumnSchema column in this.SourceTable.Columns) {%>
-    
-	private <%= JavaAlias[column.SystemType.FullName]%> <%= fieldName(column.Name) %>;    
-    <% }%>
-
-	<% foreach (ColumnSchema column in this.SourceTable.Columns) 
-    { 
-    %>
-
-	public <%= JavaAlias[column.SystemType.FullName]%> <%= getter(column.Name)%>() {
-		return <%= fieldName(column.Name) %>;
-	}
-
-	public void <%= setter(column.Name)%>(<%= JavaAlias[column.SystemType.FullName]%> <%= fieldName(column.Name)%>) {
-		this.<%= fieldName(column.Name)%> = <%= fieldName(column.Name)%>;
-	}
-    <% 
-    } 
-    %>
-}
+  <!--count -->
+  <select id="count" resultType="int">
+    SELECT COUNT(*)  FROM <%= SourceTable.Name%>
+  </select>
+  
+  <!--select -->
+  <select id="select"  resultType="<%= Mode%>">
+    SELECT
+        <%=GetEtParamSrc(this.SourceTable)%>
+    FROM <%= table%>
+  </select>
+  
+  <!--get -->
+  <select id="get" parameterType="<%=Key%>" resultType="<%=Mode%>">
+    SELECT
+        <%=GetEtParamSrc(this.SourceTable)%>
+    FROM <%= table%>
+    WHERE <%= KeyName%> = #{<%= key%>}
+  </select>
+  
+  <!--delete -->
+  <delete id="delete" parameterType="<%=Key%>">
+    DELETE FROM <%= table%> WHERE <%= KeyName%> = #{<%=key%>}
+  </delete>
+  
+  <!--insert -->
+  <insert id="insert" parameterType="<%=Mode%>">
+    INSERT INTO <%= table%>
+      (<%=GetEtParamSrc(this.SourceTable)%>)
+    VALUES
+      (<%=GetEtParamAsk(this.SourceTable)%>)
+  </insert>
+  
+   <!--update -->
+  <update id="update" parameterType="<%=Mode%>">
+    UPDATE <%= table%> SET
+    (<%=GetUpdateString(this.SourceTable)%>)
+    WHERE <%= KeyName%> = #{<%=key%>}
+ </update>
+  
+</mapper>

@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.breeze.dao.PatientMapper">
+
+  <cache />
+
+  <!--count -->
+  <select id="count" resultType="int">
+    SELECT COUNT(*)  FROM PATIENT
+  </select>
+  
+  <!--select -->
+  <select id="select"  resultType="Patient">
+    SELECT
+        PATIENT_ID,PATIENT_HIS_ID,HEALTH_CARD_ID,DEFRAY_TYPE,NAME,GENDER,BIRTH_DATE,CERT_TYPE,CERT_ID,UNIT_NAME,UNIT_ADDRESS,UNIT_POSTCODE,UNIT_TELEPHONE,CLINIC_NAME,CELLPHONE,CONTACT_NAME,CONTACT_TELEPHONE,RELATION_OF_PATIENT,NATIONALITY,REGISTER_PLACE,BIRTH_PLACE,ETHNIC_GROUP,RESIDENCE_ADDR,MARITAL_STATUS,POSTCODE,JOB_TYPE,ABO_BLOOD_TYPE,RH_BLOOD_TYPE,UPDATER,UPDATE_TIME,HOSPITAL_NAME,CLINIC_CODE
+    FROM PATIENT
+  </select>
+  
+  <!--get -->
+  <select id="get" parameterType="Long" resultType="Patient">
+    SELECT
+        PATIENT_ID,PATIENT_HIS_ID,HEALTH_CARD_ID,DEFRAY_TYPE,NAME,GENDER,BIRTH_DATE,CERT_TYPE,CERT_ID,UNIT_NAME,UNIT_ADDRESS,UNIT_POSTCODE,UNIT_TELEPHONE,CLINIC_NAME,CELLPHONE,CONTACT_NAME,CONTACT_TELEPHONE,RELATION_OF_PATIENT,NATIONALITY,REGISTER_PLACE,BIRTH_PLACE,ETHNIC_GROUP,RESIDENCE_ADDR,MARITAL_STATUS,POSTCODE,JOB_TYPE,ABO_BLOOD_TYPE,RH_BLOOD_TYPE,UPDATER,UPDATE_TIME,HOSPITAL_NAME,CLINIC_CODE
+    FROM PATIENT
+    WHERE PATIENT_ID = #{patientId}
+  </select>
+  
+  <!--delete -->
+  <delete id="delete" parameterType="Long">
+    DELETE FROM PATIENT WHERE PATIENT_ID = #{patientId}
+  </delete>
+  
+  <!--insert -->
+  <insert id="insert" parameterType="Patient">
+    INSERT INTO PATIENT
+      (PATIENT_ID,PATIENT_HIS_ID,HEALTH_CARD_ID,DEFRAY_TYPE,NAME,GENDER,BIRTH_DATE,CERT_TYPE,CERT_ID,UNIT_NAME,UNIT_ADDRESS,UNIT_POSTCODE,UNIT_TELEPHONE,CLINIC_NAME,CELLPHONE,CONTACT_NAME,CONTACT_TELEPHONE,RELATION_OF_PATIENT,NATIONALITY,REGISTER_PLACE,BIRTH_PLACE,ETHNIC_GROUP,RESIDENCE_ADDR,MARITAL_STATUS,POSTCODE,JOB_TYPE,ABO_BLOOD_TYPE,RH_BLOOD_TYPE,UPDATER,UPDATE_TIME,HOSPITAL_NAME,CLINIC_CODE)
+    VALUES
+      (#{patientId},#{patientHisId},#{healthCardId},#{defrayType},#{name},#{gender},#{birthDate},#{certType},#{certId},#{unitName},#{unitAddress},#{unitPostcode},#{unitTelephone},#{clinicName},#{cellphone},#{contactName},#{contactTelephone},#{relationOfPatient},#{nationality},#{registerPlace},#{birthPlace},#{ethnicGroup},#{residenceAddr},#{maritalStatus},#{postcode},#{jobType},#{aboBloodType},#{rhBloodType},#{updater},#{updateTime},#{hospitalName},#{clinicCode})
+  </insert>
+  
+   <!--update -->
+  <update id="update" parameterType="Patient">
+    UPDATE PATIENT SET
+    (PATIENT_ID=#{patientId},PATIENT_HIS_ID=#{patientHisId},HEALTH_CARD_ID=#{healthCardId},DEFRAY_TYPE=#{defrayType},NAME=#{name},GENDER=#{gender},BIRTH_DATE=#{birthDate},CERT_TYPE=#{certType},CERT_ID=#{certId},UNIT_NAME=#{unitName},UNIT_ADDRESS=#{unitAddress},UNIT_POSTCODE=#{unitPostcode},UNIT_TELEPHONE=#{unitTelephone},CLINIC_NAME=#{clinicName},CELLPHONE=#{cellphone},CONTACT_NAME=#{contactName},CONTACT_TELEPHONE=#{contactTelephone},RELATION_OF_PATIENT=#{relationOfPatient},NATIONALITY=#{nationality},REGISTER_PLACE=#{registerPlace},BIRTH_PLACE=#{birthPlace},ETHNIC_GROUP=#{ethnicGroup},RESIDENCE_ADDR=#{residenceAddr},MARITAL_STATUS=#{maritalStatus},POSTCODE=#{postcode},JOB_TYPE=#{jobType},ABO_BLOOD_TYPE=#{aboBloodType},RH_BLOOD_TYPE=#{rhBloodType},UPDATER=#{updater},UPDATE_TIME=#{updateTime},HOSPITAL_NAME=#{hospitalName},CLINIC_CODE=#{clinicCode})
+    WHERE PATIENT_ID = #{patientId}
+ </update>
+  
+</mapper>
