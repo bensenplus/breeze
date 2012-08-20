@@ -3,9 +3,9 @@ package org.breeze.entity;
 public class Page {
 	
 	  private int count;
-	  private int currentPage;
-	  private int sizePerPage = 30;
-	  private int startIndex;
+	  private int page;
+	  private int size = 20;
+	  private int start;
 	  	
 	public int getCount() {
 		return count;
@@ -15,31 +15,25 @@ public class Page {
 		this.count = count;
 	}
 
-	public int getCurrentPage() {
-		return currentPage;
+	public int getPage() {
+		return page;
 	}
 
-	public void setCurrentPage(int currentPage) {
-		this.currentPage = currentPage;
+	public void setPage(int page) {
+		this.page = page;
 	}
 
-	public int getSizePerPage() {
-		return sizePerPage;
+	public int getSize() {
+		return size;
 	}
 
-	public void setSizePerPage(int sizePerPage) {
-		this.sizePerPage = sizePerPage;
+	public void setSize(int size) {
+		this.size = size;
 	}
 
-	public int getStartIndex() {
-		startIndex = currentPage * sizePerPage;
-		return startIndex;
-	}
-
-	@Override
-	public String toString(){
-		return "Page result: count{"+count+"} currentPage{"+currentPage+"} sizePerPage{"+ sizePerPage + "} startIndex{" + startIndex+"}";
-	}
-	  
+	public int getStart() {
+		start = page * size;
+		return start;
+	}	  
 
 }

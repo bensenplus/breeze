@@ -49,10 +49,11 @@ String map = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
   </select>
   
   <!--select -->
-  <select id="select"  resultMap="<%= Mode%>">
+  <select id="select" parameterType="<%=RootTableSpaceName%>.entity.Page" resultMap="<%= Mode%>">
     SELECT
         <%=GetEtParamSrc(this.SourceTable)%>
     FROM <%= table%>
+	LIMIT #{start}, #{size}
   </select>
   
   <!--get -->
