@@ -24,20 +24,24 @@
 String Controller = ControllerName(SourceTable.Name);
 String table = SourceTable.Name;
 String Mode = ModelName(SourceTable.Name);
-String mode = StringUtil.ToCamelCase(SourceTable.Name);
+String mode = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
 
 String KeyName = SourceTable.Columns[0].Name;
 String Key = JavaAlias[SourceTable.Columns[0].SystemType.FullName];
-String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
-String map = StringUtil.ToCamelCase(SourceTable.Name);
+String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name.ToLower());
+String map = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
 %>
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="<%=RootTableSpaceName%>.dao.<%= Mode%>Mapper">
-
   <cache />
+  <resultMap id="<%= Mode%>" type="<%=RootTableSpaceName%>.entity.<%= Mode%>" >
+	<% foreach (ColumnSchema column in this.SourceTable.Columns) {%>
+    <result column="<%= column.Name%>" property="<%= fieldName(column.Name)%>"/>
+	<%}%>
+  </resultMap>
 
   <!--count -->
   <select id="count" resultType="int">
@@ -45,14 +49,14 @@ String map = StringUtil.ToCamelCase(SourceTable.Name);
   </select>
   
   <!--select -->
-  <select id="select"  resultType="<%= Mode%>">
+  <select id="select"  resultMap="<%= Mode%>">
     SELECT
         <%=GetEtParamSrc(this.SourceTable)%>
     FROM <%= table%>
   </select>
   
   <!--get -->
-  <select id="get" parameterType="<%=Key%>" resultType="<%=Mode%>">
+  <select id="get" parameterType="<%=Key%>" resultMap="<%=Mode%>">
     SELECT
         <%=GetEtParamSrc(this.SourceTable)%>
     FROM <%= table%>
@@ -75,7 +79,7 @@ String map = StringUtil.ToCamelCase(SourceTable.Name);
    <!--update -->
   <update id="update" parameterType="<%=Mode%>">
     UPDATE <%= table%> SET
-    (<%=GetUpdateString(this.SourceTable)%>)
+    <%=GetUpdateString(this.SourceTable)%>
     WHERE <%= KeyName%> = #{<%=key%>}
  </update>
   

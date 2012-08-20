@@ -7,22 +7,10 @@
 <title>用户列表</title>
 <link rel="stylesheet" href="../resources/css/common.css" />
 <%@ include file="../common/page.jsp"%>
-<script type="text/javascript">
-	function pageselectCallback(page_index, jq) {
-		var prev_page = $("current_page").val();
-		if (page_index != prev_page) {
-			$("#current_page").val(page_index);
-			$("#condition").submit();
-		}
-		return false;
-	}
-</script>
 </head>
 <body>
 
-	<form action="list" id="condition">
-		<input type="hidden" id="current_page" name="currentPage" />
-	</form>
+
 	<table border=0 cellspacing=0 cellpadding=5 align=center>
 		<thead>
 			<tr>

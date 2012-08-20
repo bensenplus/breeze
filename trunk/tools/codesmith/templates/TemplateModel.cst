@@ -44,9 +44,7 @@ public class <%= Mode%> implements Serializable {
 	private <%= JavaAlias[column.SystemType.FullName]%> <%= fieldName(column.Name) %>;    
     <% }%>
 
-	<% foreach (ColumnSchema column in this.SourceTable.Columns) 
-    { 
-    %>
+	<% foreach (ColumnSchema column in this.SourceTable.Columns) {%>
 
 	public <%= JavaAlias[column.SystemType.FullName]%> <%= getter(column.Name)%>() {
 		return <%= fieldName(column.Name) %>;
@@ -55,7 +53,5 @@ public class <%= Mode%> implements Serializable {
 	public void <%= setter(column.Name)%>(<%= JavaAlias[column.SystemType.FullName]%> <%= fieldName(column.Name)%>) {
 		this.<%= fieldName(column.Name)%> = <%= fieldName(column.Name)%>;
 	}
-    <% 
-    } 
-    %>
+    <%}%>
 }

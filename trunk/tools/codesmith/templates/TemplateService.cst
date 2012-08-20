@@ -21,15 +21,15 @@
 </script>
 <% 
 //名称定义
-String Mode = ModelName(SourceTable.Name);
-String mode = StringUtil.ToCamelCase(SourceTable.Name);
+String Mode = ModelName(SourceTable.Name.ToLower());
+String mode = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
 String Dao = DaoName(SourceTable.Name);
 String dao = StringUtil.ToCamelCase(Dao);
 String Service = ServiceName(SourceTable.Name);
-String service = StringUtil.ToCamelCase(ServiceName(SourceTable.Name));
+String service = StringUtil.ToCamelCase(ServiceName(SourceTable.Name.ToLower()));
 String Key = JavaAlias[SourceTable.Columns[0].SystemType.FullName];
-String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
-String map = StringUtil.ToCamelCase(SourceTable.Name);
+String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name.ToLower());
+String map = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
 %>
 package <%=RootTableSpaceName%>.service;
 
@@ -68,7 +68,7 @@ public class <%=Service%> {
     
 	public int save(<%=Mode%> <%=mode%>) {
     
-       if(<%=mode%>.<%= getter(key)%>() == null) {
+       if(<%=mode%>.<%= getter(SourceTable.Columns[0].Name)%>() == null) {
             return <%=dao%>.insert(<%=mode%>);
        }else{
             return <%=dao%>.update(<%=mode%>);

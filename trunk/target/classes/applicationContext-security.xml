@@ -59,10 +59,10 @@
 	        </authentication-provider>
 	    </authentication-manager>
     
-<!-- 	    <beans:bean id="myUserDetailService"     class="org.breeze.security.MyUserDetailService" />
-	    访问决策器，决定某个用户具有的角色，是否有足够的权限去访问某个资源
+ 	   <beans:bean id="myUserDetailService"     class="org.breeze.security.MyUserDetailService" />
+	    <!-- 访问决策器，决定某个用户具有的角色，是否有足够的权限去访问某个资源 -->
 	    <beans:bean id="myAccessDecisionManager"    class="org.breeze.security.MyAccessDecisionManager"/> 
-	    资源源数据定义，即定义某一资源可以被哪些角色访问
-	    <beans:bean id="mySecurityMetadataSource"   class="org.breeze.security.MySecurityMetadataSource" /> -->
+	    <!-- 资源源数据定义，即定义某一资源可以被哪些角色访问 -->
+	    <beans:bean id="mySecurityMetadataSource"   class="org.breeze.security.MySecurityMetadataSource" /> 
   
    </beans:beans>

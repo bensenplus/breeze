@@ -214,7 +214,7 @@ public void CreateTemplateController( TableSchema tb)
 public void CreateTemplateJsp( TableSchema tb)
 {
 	/// 输出目录结构  输出最底层\src\action\$ModelName.java
-	string strFileName = GetFileName(OutputPath, "jsp" , StringUtil.ToCamelCase(tb.Name), "list","jsp");
+	string strFileName = GetFileName(OutputPath, "jsp" , StringUtil.ToCamelCase(tb.Name.ToLower()), "list","jsp");
         
 	/// 创建文件
     FileStream fs = new FileStream(strFileName,FileMode.Create,FileAccess.Write);

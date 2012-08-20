@@ -4,6 +4,12 @@
 <script type="text/javascript" src="../resources/js/jquery.min.js"></script>
 <script type="text/javascript" src="../resources/js/jquery.pagination.js"></script>
 <script type="text/javascript">
+
+			// When document is ready, initialize pagination
+			$(document).ready(function(){      
+			    initPagination();
+			});
+
             /** 
              * Initialisation function for pagination
              */
@@ -22,8 +28,15 @@
                 });
             }
             
-            // When document is ready, initialize pagination
-            $(document).ready(function(){      
-                initPagination();
-            });
+            
+        	function pageselectCallback(page_index, jq) {
+        		var prev_page = $("current_page").val();
+        		if (page_index != prev_page) {
+        			$("#current_page").val(page_index);
+        			$("#condition").submit();
+        		}
+        		return false;
+        	}
+            
+
 </script>

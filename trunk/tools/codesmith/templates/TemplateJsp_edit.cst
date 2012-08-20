@@ -36,7 +36,7 @@ String map = StringUtil.ToCamelCase(SourceTable.Name);
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title><%=SourceTable.Description%>列表</title>
+<title><%=SourceTable.Description%></title>
 
 <link rel="stylesheet" href="../resources/css/common.css" />
 <%%@ include file="../common/page.jsp"%%>
@@ -44,31 +44,22 @@ String map = StringUtil.ToCamelCase(SourceTable.Name);
 </head>
 
 <body>
-
-	<table border=0 cellspacing=0 cellpadding=5 align=center>
-		<thead>
+	<form action="save">
+		<input type="hidden" name="<%=key%>" value="${<%=mode%>.<%=key%>}" />
+		<table border=0 cellspacing=0 cellpadding=5 align=center>
 			<tr>
-				<td colspan=9><div id="Pagination"></div></td>
-			<tr>
-			<tr>
-<% foreach (ColumnSchema column in this.SourceTable.Columns) {%>	
-			    <td><%=column.Description%></td>		
-<% }%>
-				<td colspan=3>操作</td>
+		<%int i=0;foreach (ColumnSchema column in this.SourceTable.Columns) {%>	
+			<% if(column.IsPrimaryKeyMember) continue; %>
+			<% if(i++%2==1) {%></tr><tr><%}%>
+				<td><%=column.Description%>:</td>
+				<td><input type="text"  name ="<%=fieldName(column.Name)%>" value="${<%=mode%>.<%=fieldName(column.Name)%>}" size="20" /></td>
+		<%}%>
 			</tr>
-		</thead>
-		<tbody>
-			<c:forEach var="<%=mode%>" items="${list}" varStatus="status">
-                <tr>
-<% foreach (ColumnSchema column in this.SourceTable.Columns) {%>	
-					<td>${<%=mode%>.<%=fieldName(column.Name)%>}</td>	
-<% }%>
-					<td><a href="edit?<%=fieldName(this.SourceTable.Columns[0].Name)%>=${<%=IntanceName(SourceTable.Name)%>.<%=fieldName(this.SourceTable.Columns[0].Name)%>}">编辑</a></td>
-					<td><a href="delete?<%=fieldName(this.SourceTable.Columns[0].Name)%>=${<%=IntanceName(SourceTable.Name)%>.<%=fieldName(this.SourceTable.Columns[0].Name)%>}">删除</a></td>
-            	</tr>
-			</c:forEach>
-		</tbody>
-	</table>
+		</table>
+		<p align=center>
+			<input type="submit" value="更新" />
+		</p>
+	</form>
 </body>
 </html>
 

@@ -23,7 +23,7 @@
 //名称定义
 String Controller = ControllerName(SourceTable.Name);
 String Mode = ModelName(SourceTable.Name);
-String mode = StringUtil.ToCamelCase(SourceTable.Name);
+String mode = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
 String Service = ServiceName(SourceTable.Name);
 String service = StringUtil.ToCamelCase(ServiceName(SourceTable.Name));
 String Key = JavaAlias[SourceTable.Columns[0].SystemType.FullName];

@@ -57,6 +57,13 @@ public string GetFileName(string RootOutputPath,string packageName, string  Acti
 	
 #region Naming 
 
+public string ClassName( string TableName)
+{
+	string classname = StringUtil.ToPascalCase(TableName.ToLower());
+	
+	return classname;
+}
+
 /// 输出 Model 的类名
 public string ModelName( string TableName)
 {
@@ -91,15 +98,6 @@ public string IntanceName( string TableName)
 	string intanceName = tname.Substring(0,1).ToLower() +  tname.Substring(1);
 	
 	return intanceName;
-}
-
-
-/// 通过 字段名字 得到 通用的字段名字 ，最后以小写存在；例：  COM_ID   com_id
-public string ClassName( string TableName)
-{
-	string classname = StringUtil.ToPascalCase(TableName);
-	
-	return classname;
 }
 
 
@@ -179,17 +177,17 @@ public string JspNameRelaMgr( string TableName)
 
 public string fieldName(string FieldName)
 {
-	 return StringUtil.ToCamelCase(FieldName);
+	 return StringUtil.ToCamelCase(FieldName.ToLower());
 }
 
 public string getter(string FieldName)
 {
-	return StringUtil.ToCamelCase("get_"+fieldName(FieldName));
+	return StringUtil.ToCamelCase("get_"+FieldName.ToLower());
 }
 
 public string setter( string FieldName)
 {
-	return StringUtil.ToCamelCase("set_" +fieldName(FieldName));
+	return StringUtil.ToCamelCase("set_" +FieldName.ToLower());
 }
 
 public string GetFileName(string ClassName)
