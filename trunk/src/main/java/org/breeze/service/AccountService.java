@@ -24,7 +24,7 @@ public class AccountService {
 
 	public List<Account> select(Page page) {
 		page.setCount(accountMapper.count());
-		RowBounds rowBounds = new RowBounds(page.getStartIndex(), page.getSize());
+		RowBounds rowBounds = new RowBounds(page.getStart(), page.getSize());
 		return accountDao.select(rowBounds);
 	}
 
