@@ -50,11 +50,14 @@ String map = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
   
   <!--select -->
   <select id="select" parameterType="<%=RootTableSpaceName%>.entity.Page" resultMap="<%= Mode%>">
-    SELECT
+    <if test="start != null" >
+	SELECT * FROM ( SELECT ROW_.*, ROWNUM ROWNUM_ FROM (
+	</if>
+	SELECT
         <%=GetEtParamSrc(this.SourceTable)%>
     FROM <%= table%>
 	<if test="start != null" >
-	LIMIT #{start}, #{size}
+	) ROW_ ) WHERE ROWNUM_ &gt;#{start} and ROWNUM_ &lt; (#{start} + #{size})
 	</if>
   </select>
   

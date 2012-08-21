@@ -1,0 +1,54 @@
+﻿<%@ CodeTemplate Language="C#" TargetLanguage="Text" Src="" ResponseEncoding="UTF-8" Inherits="" Debug="False" Description="Template description here." %>
+<%@ Assembly Name="System.Data" %>
+<%@ Assembly Name="SchemaExplorer" %>
+
+<%@ Import Namespace="System.IO" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+
+<%-- 注册 成员函数 --%>
+<%@ Property Name="SourceData" Type="SchemaExplorer.DatabaseSchema" Optional="False" Category="Context" Description="指定的数据库" %>
+<%@ Property Name="OutputPath" Type="System.String" Default="e:\autocode" Optional="False" Category="Context" Description="源码输出目录" %>
+<%@ Property Name="ExportTableName" Type="System.String" Default="users" Optional="False" Category="Context" Description="需要输出的表：支撑多个,每个表名之间用“;”分 TABLE_1;TABLE_2;" %>
+<%@ Property Name="RootTableSpaceName" Type="System.String" Default="org.breeze" Optional="False" Category="Context" Description="源码输出的模块名称 com.scitel.dialtestmgr " %>
+ 
+<script runat="template">
+<!-- #include file=Function.cs -->
+//Debugger.Break();
+public TableSchemaCollection GetTableCollection(DatabaseSchema dataBase)
+{
+    TableSchemaCollection tables = new TableSchemaCollection(dataBase.Tables);
+    return tables;
+}
+</script>
+
+<%%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>列表</title>
+<style type="text/css">
+#left {position:absolute;width: 20%;height:100%; border: 1px solid #000;}
+#right {position:absolute; margin-left:20%; width: 80%; height:100%;border: 1px solid #000;}
+</style>
+</head>
+<body>
+	<div id="left">
+		<ul>
+			<li><a href="./j_spring_security_logout">logout</a></li>
+		<% 
+			TableSchemaCollection tables = GetTableCollection(SourceData);
+			/// 重复调用单个的子模板
+			foreach(TableSchema dt in tables)
+			{ %>
+			<li><a href="./<%=StringUtil.ToCamelCase(dt.Name.ToLower())%>/list" target="mainframe"><%=StringUtil.ToCamelCase(dt.Name.ToLower())%></a></li>
+		<%} %>
+		</ul>
+	</div>
+	<div id="right">
+		<iframe frameborder="0"  name="mainframe"  id="mainframe" width="100%" height="100%"></iframe>
+	</div>
+</body>
+</html>
+
