@@ -126,7 +126,7 @@ public void CreateTemplateDao( TableSchema tb)
 public void CreateTemplateDaoXml( TableSchema tb)
 {
 	/// 输出目录结构  输出最底层\src\action\$ModelName.java
-	string strFileName = GetFileName(OutputPath, RootTableSpaceName , "xml"  ,ModelName(tb.Name)+"Mapper","xml");
+	string strFileName = GetFileName(OutputPath, RootTableSpaceName , "dao"  ,ModelName(tb.Name)+"Mapper","xml");
         
 	/// 创建文件
     FileStream fs = new FileStream(strFileName,FileMode.Create,FileAccess.Write);

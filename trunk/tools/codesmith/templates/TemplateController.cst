@@ -64,7 +64,7 @@ public class <%=Controller%> {
 	}
     
     @RequestMapping("/edit")
-	public String edit(ModelMap model, Long <%=key%>) {
+	public String edit(ModelMap model, <%=Key%> <%=key%>) {
 	    <%=Mode%> <%=mode%> = <%=service%>.get(<%=key%>);
 		model.addAttribute("<%=mode%>", <%=mode%>);
 		return "<%=map%>/edit";
@@ -77,7 +77,7 @@ public class <%=Controller%> {
 	}
     
     @RequestMapping("/delete")
-	public String delete(Long <%=key%>) {
+	public String delete(<%=Key%> <%=key%>) {
 		<%=service%>.delete(<%=key%>);
 		return "redirect:list";
 	}

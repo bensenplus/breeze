@@ -75,7 +75,7 @@ public class <%=Service%> {
        }
 	}
 
-	public int delete(Long <%=key%>) {
+	public int delete(<%=Key%> <%=key%>) {
 		return <%=dao%>.delete(<%=key%>);
 	}
 
