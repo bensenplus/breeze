@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.breeze.dao.UserMapper">
+  <cache />
+  <resultMap id="User" type="org.breeze.entity.User" >
+    <result column="USER_ID" property="userId"/>
+    <result column="ENABLE" property="enable"/>
+    <result column="ACCOUNT" property="account"/>
+    <result column="PASSWORD" property="password"/>
+  </resultMap>
+
+  <!--count -->
+  <select id="count" resultType="int">
+    SELECT COUNT(*)  FROM USER
+  </select>
+  
+  <!--select -->
+  <select id="select" parameterType="org.breeze.entity.Page" resultMap="User">
+    SELECT
+        USER_ID,ENABLE,ACCOUNT,PASSWORD
+    FROM USER
+	<if test="start != null" >
+	LIMIT #{start}, #{size}
+	</if>
+  </select>
+  
+  <!--get -->
+  <select id="get" parameterType="Integer" resultMap="User">
+    SELECT
+        USER_ID,ENABLE,ACCOUNT,PASSWORD
+    FROM USER
+    WHERE USER_ID = #{userId}
+  </select>
+  
+  <!--delete -->
+  <delete id="delete" parameterType="Integer">
+    DELETE FROM USER WHERE USER_ID = #{userId}
+  </delete>
+  
+  <!--insert -->
+  <insert id="insert" parameterType="User">
+    INSERT INTO USER
+      (USER_ID,ENABLE,ACCOUNT,PASSWORD)
+    VALUES
+      (#{userId},#{enable},#{account},#{password})
+  </insert>
+  
+   <!--update -->
+  <update id="update" parameterType="User">
+    UPDATE USER SET
+    USER_ID=#{userId},ENABLE=#{enable},ACCOUNT=#{account},PASSWORD=#{password}
+    WHERE USER_ID = #{userId}
+ </update>
+  
+</mapper>

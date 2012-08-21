@@ -1,53 +1,49 @@
-
-package org.breeze.service;
+﻿package org.breeze.service;
 
 import java.util.List;
-
 import javax.annotation.Resource;
-
-import org.apache.ibatis.session.RowBounds;
-import org.breeze.dao.AccountDao;
-import org.breeze.dao.AccountMapper;
-import org.breeze.entity.Account;
-import org.breeze.entity.Page;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.ModelMap;
+
+import org.breeze.entity.Page;
+import org.breeze.entity.Account;
+import org.breeze.dao.AccountMapper;
+
 
 @Service("accountService")
 public class AccountService {
 
-	@Resource(name = "accountMapper")
+	private final Logger logger = LoggerFactory.getLogger(AccountService.class); 
+
+    @Resource(name = "accountMapper")
 	private AccountMapper accountMapper;
 
-	@Resource(name = "accountDao")
-	private AccountDao accountDao;
 
 	public List<Account> select(Page page) {
-		page.setCount(accountMapper.count());
-		RowBounds rowBounds = new RowBounds(page.getStart(), page.getSize());
-		return accountDao.select(rowBounds);
+        page.setCount(accountMapper.count());
+		List<Account> list = accountMapper.select(page);
+		return list;
 	}
 
 	public Account get(Long userid) {
-		return accountMapper.get(userid);
-	}
-
-	public Account get(String username, String password) {
-		Account account = new Account();
-		account.setPassword(password);
-		return accountMapper.get(account);
-	}
-
-	public void create(Account account) {
-		accountMapper.insert(account);
-	}
-
-	@Transactional
-	public int updateAccount(Account account) {
-		return accountMapper.update(account);
+	    Account account = accountMapper.get(userid);
+        return account;
+	}    
+    
+	public int save(Account account) {
+    
+       if(account.getUserid() == null) {
+            return accountMapper.insert(account);
+       }else{
+            return accountMapper.update(account);
+       }
 	}
 
 	public int delete(Long userid) {
 		return accountMapper.delete(userid);
 	}
+
 }

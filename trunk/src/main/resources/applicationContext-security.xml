@@ -30,7 +30,7 @@
 			<beans:property name="authenticationSuccessHandler" ref="loginLogAuthenticationSuccessHandler"></beans:property>
 			<beans:property name="authenticationFailureHandler" ref="simpleUrlAuthenticationFailureHandler"></beans:property>
 			<beans:property name="authenticationManager" ref="myAuthenticationManager"></beans:property>
-			<beans:property name="usersDao" ref="usersMapper"></beans:property>
+			<beans:property name="userMapper" ref="userMapper"></beans:property>
 		</beans:bean>
 		<beans:bean id="loginLogAuthenticationSuccessHandler"
 			class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">

@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.breeze.dao.ResourceUrlMapper">
+  <cache />
+  <resultMap id="ResourceUrl" type="org.breeze.entity.ResourceUrl" >
+    <result column="RESOURCE_ID" property="resourceId"/>
+    <result column="NAME" property="name"/>
+    <result column="URL" property="url"/>
+  </resultMap>
+
+  <!--count -->
+  <select id="count" resultType="int">
+    SELECT COUNT(*)  FROM RESOURCE_URL
+  </select>
+  
+  <!--select -->
+  <select id="select" parameterType="org.breeze.entity.Page" resultMap="ResourceUrl">
+    SELECT
+        RESOURCE_ID,NAME,URL
+    FROM RESOURCE_URL
+	<if test="start != null" >
+	LIMIT #{start}, #{size}
+	</if>
+  </select>
+  
+  <!--get -->
+  <select id="get" parameterType="Integer" resultMap="ResourceUrl">
+    SELECT
+        RESOURCE_ID,NAME,URL
+    FROM RESOURCE_URL
+    WHERE RESOURCE_ID = #{resourceId}
+  </select>
+  
+  <!--delete -->
+  <delete id="delete" parameterType="Integer">
+    DELETE FROM RESOURCE_URL WHERE RESOURCE_ID = #{resourceId}
+  </delete>
+  
+  <!--insert -->
+  <insert id="insert" parameterType="ResourceUrl">
+    INSERT INTO RESOURCE_URL
+      (RESOURCE_ID,NAME,URL)
+    VALUES
+      (#{resourceId},#{name},#{url})
+  </insert>
+  
+   <!--update -->
+  <update id="update" parameterType="ResourceUrl">
+    UPDATE RESOURCE_URL SET
+    RESOURCE_ID=#{resourceId},NAME=#{name},URL=#{url}
+    WHERE RESOURCE_ID = #{resourceId}
+ </update>
+  
+</mapper>

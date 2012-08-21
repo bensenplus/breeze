@@ -1,19 +1,23 @@
-package org.breeze.dao;
+﻿package org.breeze.dao;
 
+import java.util.List;
+
+import org.breeze.entity.Page;
 import org.breeze.entity.Account;
 
 public interface AccountMapper {
 
 	int count();
-	
-	Account get(Account account);
-	
-	Account get(Long userid);
-
-	int insert(Account account);
+    
+    List<Account> select(Page page);
+    
+    int insert(Account account);
+    
+    Account get(Long uSERID);
 	
 	int update(Account account);
 	
-	int delete(Long userid);
+	int delete(Long uSERID);
+    
 
 }

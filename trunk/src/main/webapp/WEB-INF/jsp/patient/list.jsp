@@ -91,7 +91,6 @@
 					<td>${patient.clinicCode}</td>	
 					<td><a href="edit?patientId=${patient.patientId}">编辑</a></td>
 					<td><a href="delete?patientId=${patient.patientId}">删除</a></td>
-					<td><a href="copy?patientId=${patient.patientId}">复制</a></td>
             	</tr>
 			</c:forEach>
 		</tbody>

@@ -1,128 +1,140 @@
-package org.breeze.entity;
+﻿package org.breeze.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Account implements Serializable {
 
-  private static final long serialVersionUID = 8751282105532159742L;
+    private static final long serialVersionUID = 1L;
+    
+	private Long userid;    
+    
+	private String password;    
+    
+	private String email;    
+    
+	private String firstname;    
+    
+	private String lastname;    
+    
+	private Integer status;    
+    
+	private String address1;    
+    
+	private String address2;    
+    
+	private String city;    
+    
+	private String state;    
+    
+	private String zip;    
+    
+	private String country;    
+    
+	private String phone;    
 
-  private Long userid;
-  private String password;
-  private String email;
-  private String firstName;
-  private String lastName;
-  private int status;
-  private String address1;
-  private String address2;
-  private String city;
-  private String state;
-  private String zip;
-  private String country;
-  private String phone;
 
-  
-  public Long getUserid() {
-	return userid;
-  }
+	public Long getUserid() {
+		return userid;
+	}
 
 	public void setUserid(Long userid) {
 		this.userid = userid;
 	}
 
-  public String getPassword() {
-    return password;
-  }
+	public String getPassword() {
+		return password;
+	}
 
-  public void setPassword(String password) {
-    this.password = password;
-  }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-  public String getEmail() {
-    return email;
-  }
+	public String getEmail() {
+		return email;
+	}
 
-  public void setEmail(String email) {
-    this.email = email;
-  }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-  public String getFirstName() {
-    return firstName;
-  }
+	public String getFirstname() {
+		return firstname;
+	}
 
-  public void setFirstName(String firstName) {
-    this.firstName = firstName;
-  }
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
 
-  public String getLastName() {
-    return lastName;
-  }
+	public String getLastname() {
+		return lastname;
+	}
 
-  public void setLastName(String lastName) {
-    this.lastName = lastName;
-  }
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
 
-  public int getStatus() {
-    return status;
-  }
+	public Integer getStatus() {
+		return status;
+	}
 
-  public void setStatus(int status) {
-    this.status = status;
-  }
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
 
-  public String getAddress1() {
-    return address1;
-  }
+	public String getAddress1() {
+		return address1;
+	}
 
-  public void setAddress1(String address1) {
-    this.address1 = address1;
-  }
+	public void setAddress1(String address1) {
+		this.address1 = address1;
+	}
 
-  public String getAddress2() {
-    return address2;
-  }
+	public String getAddress2() {
+		return address2;
+	}
 
-  public void setAddress2(String address2) {
-    this.address2 = address2;
-  }
+	public void setAddress2(String address2) {
+		this.address2 = address2;
+	}
 
-  public String getCity() {
-    return city;
-  }
+	public String getCity() {
+		return city;
+	}
 
-  public void setCity(String city) {
-    this.city = city;
-  }
+	public void setCity(String city) {
+		this.city = city;
+	}
 
-  public String getState() {
-    return state;
-  }
+	public String getState() {
+		return state;
+	}
 
-  public void setState(String state) {
-    this.state = state;
-  }
+	public void setState(String state) {
+		this.state = state;
+	}
 
-  public String getZip() {
-    return zip;
-  }
+	public String getZip() {
+		return zip;
+	}
 
-  public void setZip(String zip) {
-    this.zip = zip;
-  }
+	public void setZip(String zip) {
+		this.zip = zip;
+	}
 
-  public String getCountry() {
-    return country;
-  }
+	public String getCountry() {
+		return country;
+	}
 
-  public void setCountry(String country) {
-    this.country = country;
-  }
+	public void setCountry(String country) {
+		this.country = country;
+	}
 
-  public String getPhone() {
-    return phone;
-  }
+	public String getPhone() {
+		return phone;
+	}
 
-  public void setPhone(String phone) {
-    this.phone = phone;
-  }
-
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
 }

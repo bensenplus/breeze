@@ -53,7 +53,9 @@ String map = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
     SELECT
         <%=GetEtParamSrc(this.SourceTable)%>
     FROM <%= table%>
+	<if test="start != null" >
 	LIMIT #{start}, #{size}
+	</if>
   </select>
   
   <!--get -->

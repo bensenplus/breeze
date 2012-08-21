@@ -51,7 +51,7 @@ public string GetFileName(string RootOutputPath,string packageName, string  Acti
 	
 	/// 返回相应的文件名
 	FileName = 	string.Format(FilenameFormat,RootOutputPath,ModulName,ActionName,Filename,FileExtType);
-
+    Response.WriteLine("Creating:" + FileName);
 	return FileName;
 }
 	

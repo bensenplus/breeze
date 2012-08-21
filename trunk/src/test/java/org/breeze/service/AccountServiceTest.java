@@ -56,7 +56,7 @@ public class AccountServiceTest {
 		
 		Account account = accountService.get(10001l);
 		account.setCity("shanghai");
-		int count = accountService.updateAccount(account);
+		int count = accountService.save(account);
 		log.debug(count);
 		account = accountService.get(10001l);
 		assertEquals("shanghai",account.getCity());
@@ -67,7 +67,7 @@ public class AccountServiceTest {
 		Account account = accountService.get(10001l);
 		accountService.delete(99999l);
 		account.setUserid(99999l);
-		accountService.create(account);
+		accountService.save(account);
 	}
 
 }

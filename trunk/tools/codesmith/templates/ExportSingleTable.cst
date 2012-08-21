@@ -30,6 +30,7 @@
 <%@ Register Name="TemplateService" Template="TemplateService.cst" %>
 <%@ Register Name="TemplateController" Template="TemplateController.cst" %>
 <%@ Register Name="TemplateJsp" Template="TemplateJsp.cst" %>
+<%@ Register Name="TemplateJsp_edit" Template="TemplateJsp_edit.cst" %>
 
 <%
     //Debugger.Break();    
@@ -56,11 +57,12 @@ public void RenderMain()
     }
 
 	CreateTemplateModel(SourceTable);
+	CreateTemplateDaoXml(SourceTable);
     CreateTemplateDao(SourceTable);
-    CreateTemplateDaoXml(SourceTable);
     CreateTemplateService(SourceTable);
     CreateTemplateController(SourceTable);
 	CreateTemplateJsp(SourceTable);
+	CreateTemplateJsp_edit(SourceTable);
     
 }
 
@@ -222,6 +224,34 @@ public void CreateTemplateJsp( TableSchema tb)
         
     // 调用子模板进行创建 
     TemplateJsp template = new TemplateJsp();
+    
+    // 子模板所需要的入参
+    template.SourceTable = tb;
+	template.RootTableSpaceName = this.RootTableSpaceName;
+   
+    /// 输出子模板文档
+    template.Render(sw);
+    
+	/// 结束
+    //sw.WriteLine("//end of class " + tb.Name);
+    // 关闭输出流
+    sw.Close();
+    //关闭文档
+    fs.Close();
+}
+
+///  输出 JSP 模块
+public void CreateTemplateJsp_edit( TableSchema tb)
+{
+	/// 输出目录结构  输出最底层\src\action\$ModelName.java
+	string strFileName = GetFileName(OutputPath, "jsp" , StringUtil.ToCamelCase(tb.Name.ToLower()), "edit","jsp");
+        
+	/// 创建文件
+    FileStream fs = new FileStream(strFileName,FileMode.Create,FileAccess.Write);
+    StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.UTF8);
+        
+    // 调用子模板进行创建 
+    TemplateJsp_edit template = new TemplateJsp_edit();
     
     // 子模板所需要的入参
     template.SourceTable = tb;

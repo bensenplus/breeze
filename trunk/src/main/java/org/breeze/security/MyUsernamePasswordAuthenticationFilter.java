@@ -4,9 +4,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.breeze.dao.UsersMapper;
-import org.breeze.entity.Users;
-import org.breeze.entity.UsersExample;
+import org.breeze.dao.UserMapper;
+import org.breeze.entity.User;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,7 +15,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 public class MyUsernamePasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter{
 	
-    private UsersMapper usersDao; 	
+	private UserMapper userMapper; 	
 	
 	public static final String VALIDATE_CODE = "validateCode";
 	public static final String USERNAME = "username";
@@ -37,11 +36,9 @@ public class MyUsernamePasswordAuthenticationFilter extends UsernamePasswordAuth
 		//验证用户账号与密码是否对应
 		username = username.trim();
 		
-        UsersExample example = new UsersExample();
-        example.createCriteria().andAccountEqualTo(username);
-		Users users = this.usersDao.selectByExample(example).get(0);
+		User user = this.userMapper.select(null).get(0);
 		
-		if(users == null || !users.getPassword().equals(password)) {
+		if(user == null || !user.getPassword().equals(password)) {
 	/*
 		if (forwardToDestination) {
             request.setAttribute(WebAttributes.AUTHENTICATION_EXCEPTION, exception);
@@ -100,20 +97,19 @@ public class MyUsernamePasswordAuthenticationFilter extends UsernamePasswordAuth
 		Object obj = request.getParameter(PASSWORD);
 		return null == obj ? "" : obj.toString();
 	}
-	
+
 	/**
-	 * @return the usersDao
+	 * @return the userMapper
 	 */
-	public UsersMapper getUsersDao() {
-		return usersDao;
+	public UserMapper getUserMapper() {
+		return userMapper;
 	}
 
-	
 	/**
-	 * @param usersDao the usersDao to set
+	 * @param userMapper the userMapper to set
 	 */
-	public void setUsersDao(UsersMapper usersDao) {
-		this.usersDao = usersDao;
+	public void setUserMapper(UserMapper userMapper) {
+		this.userMapper = userMapper;
 	}
 	
 	

@@ -5,13 +5,10 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.breeze.dao.ResourcesMapper;
-import org.breeze.dao.RolesResourcesMapper;
-import org.breeze.entity.Resources;
-import org.breeze.entity.ResourcesExample;
-import org.breeze.entity.RolesResources;
-import org.breeze.entity.RolesResourcesExample;
-import org.mortbay.log.Log;
+import org.breeze.dao.ResourceUrlMapper;
+import org.breeze.dao.RoleResourceMapper;
+import org.breeze.entity.ResourceUrl;
+import org.breeze.entity.RoleResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.ConfigAttribute;
@@ -33,11 +30,11 @@ public class MySecurityMetadataSource implements FilterInvocationSecurityMetadat
 
 	final Logger logger = LoggerFactory.getLogger(MySecurityMetadataSource.class);
 	
-	@Resource(name="resourcesMapper")
-	private ResourcesMapper resourcesMapper;
+	@Resource(name="resourceUrlMapper")
+	private ResourceUrlMapper resourceUrlMapper;
 	
-	@Resource(name="rolesResourcesMapper")
-	private RolesResourcesMapper rolesResourcesMapper;
+	@Resource(name="roleResourceMapper")
+	private RoleResourceMapper roleResourceMapper;
 
 	public MySecurityMetadataSource() {
 		super();
@@ -46,8 +43,8 @@ public class MySecurityMetadataSource implements FilterInvocationSecurityMetadat
 	public Collection<ConfigAttribute> getAllConfigAttributes() {
 		logger.debug("getAllConfigAttributes");
 		Collection<ConfigAttribute> configAttributeList= new ArrayList<ConfigAttribute>();
-		List<Resources> resources = this.resourcesMapper.selectByExample(null );
-		for (Resources resource : resources) {
+		List<ResourceUrl> resourceUrl = this.resourceUrlMapper.select(null );
+		for (ResourceUrl resource : resourceUrl) {
 			ConfigAttribute configAttribute = new SecurityConfig(resource.getUrl());
 			configAttributeList.add(configAttribute);
 		}
@@ -64,18 +61,14 @@ public class MySecurityMetadataSource implements FilterInvocationSecurityMetadat
 		
 		Collection<ConfigAttribute> configAttributeList= new ArrayList<ConfigAttribute>();
 		FilterInvocation fi = (FilterInvocation)obj;
-		
-		ResourcesExample example1 = new ResourcesExample() ;
-		example1.createCriteria().andUrlEqualTo(fi.getHttpRequest().getServletPath());
-		List<Resources> resources = this.resourcesMapper.selectByExample(example1);
+	
+		List<ResourceUrl> resourceUrl = this.resourceUrlMapper.select(null);
 		 
-		if (resources != null && resources.size() > 0) {
-			RolesResourcesExample example2 = new RolesResourcesExample();
-			example2.createCriteria().andRsidEqualTo(resources.get(0).getId());
-			List<RolesResources> rolesResources = rolesResourcesMapper.selectByExample(example2);
-			if (rolesResources != null && rolesResources.size() > 0) {
-				for (RolesResources roleResource : rolesResources) {
-					configAttributeList.add(new SecurityConfig(String.valueOf(roleResource.getRid())));
+		if (resourceUrl != null && resourceUrl.size() > 0) {
+			List<RoleResource> rolesResource = roleResourceMapper.select(null);
+			if (rolesResource != null && rolesResource.size() > 0) {
+				for (RoleResource roleResource : rolesResource) {
+					configAttributeList.add(new SecurityConfig(String.valueOf(roleResource.getRoleId())));
 				}
 			}
 		}
