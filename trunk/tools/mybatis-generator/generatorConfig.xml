@@ -4,13 +4,21 @@
   "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
 <generatorConfiguration>
+<!--
   <classPathEntry location="C:/Users/chen_maohua/.m2/repository/mysql/mysql-connector-java/5.1.9/mysql-connector-java-5.1.9.jar" />
-
   <context id="Tables" targetRuntime="MyBatis3">
     <jdbcConnection driverClass="com.mysql.jdbc.Driver"
         connectionURL="jdbc:mysql://192.168.134.132:3306/breeze"
         userId="breeze"
         password="breeze">
+    </jdbcConnection>
+-->
+<classPathEntry location="C:/Users/chen_maohua/.m2/repository/com/oracle/ojdbc/6/ojdbc-6.jar" />
+<context id="Tables" targetRuntime="MyBatis3">
+    <jdbcConnection driverClass="oracle.jdbc.driver.OracleDriver"
+        connectionURL="jdbc:oracle:thin:@172.29.129.86:1521:empidev"
+        userId="hcmstest"
+        password="hcmstest">
     </jdbcConnection>
 
     <javaTypeResolver >
@@ -31,29 +39,14 @@
     </javaClientGenerator>
 
 	<!-- tables -->
-    <table schema="breeze" tableName="users">
+    <table schema="hcmstest" tableName="users">
 		<property name="ignoreQualifiersAtRuntime" value="true" />
 		<property name="runtimeTableName" value="users" />
     </table>
 
-	<table schema="breeze" tableName="roles">
+    <table schema="hcmstest" tableName="CONSULTATION_CLINIC">
 		<property name="ignoreQualifiersAtRuntime" value="true" />
-		<property name="runtimeTableName" value="roles" />
-    </table>
-
-	<table schema="breeze" tableName="resources">
-		<property name="ignoreQualifiersAtRuntime" value="true" />
-		<property name="runtimeTableName" value="resources" />
-    </table>
-
-	<table schema="breeze" tableName="users_roles">
-		<property name="ignoreQualifiersAtRuntime" value="true" />
-		<property name="runtimeTableName" value="users_roles" />
-    </table>
-
-	<table schema="breeze" tableName="roles_resources">
-		<property name="ignoreQualifiersAtRuntime" value="true" />
-		<property name="runtimeTableName" value="roles_resources" />
+		<property name="runtimeTableName" value="CONSULTATION_CLINIC" />
     </table>
 
   </context>
