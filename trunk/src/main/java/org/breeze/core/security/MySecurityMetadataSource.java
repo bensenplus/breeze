@@ -1,4 +1,4 @@
-package org.breeze.security;
+package org.breeze.core.security;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;

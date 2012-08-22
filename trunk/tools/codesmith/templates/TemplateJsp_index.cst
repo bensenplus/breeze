@@ -12,7 +12,11 @@
 <%@ Property Name="OutputPath" Type="System.String" Default="e:\autocode" Optional="False" Category="Context" Description="源码输出目录" %>
 <%@ Property Name="ExportTableName" Type="System.String" Default="users" Optional="False" Category="Context" Description="需要输出的表：支撑多个,每个表名之间用“;”分 TABLE_1;TABLE_2;" %>
 <%@ Property Name="RootTableSpaceName" Type="System.String" Default="org.breeze" Optional="False" Category="Context" Description="源码输出的模块名称 com.scitel.dialtestmgr " %>
- 
+
+<%-- 启用 MAP方式 System-CSharpAlias  --%>
+<%@ Map Name="CSharpAlias" Src="System-CSharpAlias" Description="System to C# Type Map" %>
+<%@ Map Name="JavaAlias" Src="JavaAlias.csmap" Description="Oracle to Java Type Map" %>
+
 <script runat="template">
 <!-- #include file=Function.cs -->
 //Debugger.Break();

@@ -1,4 +1,4 @@
-package org.breeze.security;
+package org.breeze.core.security;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

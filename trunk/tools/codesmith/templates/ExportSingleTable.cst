@@ -70,8 +70,8 @@ public void RenderMain()
 ///  输出 Model 模块
 public void CreateTemplateModel( TableSchema tb)
 {
-	/// 输出目录结构  输出最底层\src\model\$ModelName.java
-	string strFileName = GetFileName(OutputPath, RootTableSpaceName, "entity"  ,ModelName(tb.Name),"java");
+	String package = "java."+RootTableSpaceName;
+	string strFileName = GetFileName(OutputPath, package, "entity"  ,ModelName(tb.Name),"java");
         
 	/// 创建文件
     FileStream fs = new FileStream(strFileName,FileMode.Create,FileAccess.Write);
@@ -100,8 +100,8 @@ public void CreateTemplateModel( TableSchema tb)
 ///  输出 Dao 模块
 public void CreateTemplateDao( TableSchema tb)
 {
-	/// 输出目录结构  输出最底层\src\dao\$ModelName.java
-	string strFileName = GetFileName(OutputPath, RootTableSpaceName , "dao"  ,DaoName(tb.Name),"java");
+	String package = "java."+RootTableSpaceName;
+	string strFileName = GetFileName(OutputPath, package , "dao"  ,DaoName(tb.Name),"java");
         
 	/// 创建文件
     FileStream fs = new FileStream(strFileName,FileMode.Create,FileAccess.Write);
@@ -128,8 +128,8 @@ public void CreateTemplateDao( TableSchema tb)
 ///  输出 Dao xml
 public void CreateTemplateDaoXml( TableSchema tb)
 {
-	/// 输出目录结构  输出最底层\src\action\$ModelName.java
-	string strFileName = GetFileName(OutputPath, RootTableSpaceName , "dao"  ,ModelName(tb.Name)+"Mapper","xml");
+	String package = "java."+RootTableSpaceName;
+	string strFileName = GetFileName(OutputPath, package , "dao"  ,ModelName(tb.Name)+"Mapper","xml");
         
 	/// 创建文件
     FileStream fs = new FileStream(strFileName,FileMode.Create,FileAccess.Write);
@@ -156,8 +156,8 @@ public void CreateTemplateDaoXml( TableSchema tb)
 ///  输出 Dao xml
 public void CreateTemplateService( TableSchema tb)
 {
-	/// 输出目录结构  输出最底层\src\action\$ModelName.java
-	string strFileName = GetFileName(OutputPath, RootTableSpaceName , "service"  ,ServiceName(tb.Name),"java");
+	String package = "java."+RootTableSpaceName;
+	string strFileName = GetFileName(OutputPath, package , "service"  ,ServiceName(tb.Name),"java");
         
 	/// 创建文件
     FileStream fs = new FileStream(strFileName,FileMode.Create,FileAccess.Write);
@@ -186,8 +186,8 @@ public void CreateTemplateService( TableSchema tb)
 ///  输出 Controller 模块
 public void CreateTemplateController( TableSchema tb)
 {
-	/// 输出目录结构  输出最底层\src\dao\$ModelName.java
-	string strFileName = GetFileName(OutputPath, RootTableSpaceName , "controller"  ,ControllerName(tb.Name),"java");
+	String package = "java."+RootTableSpaceName;
+	string strFileName = GetFileName(OutputPath, package , "controller"  ,ControllerName(tb.Name),"java");
         
 	/// 创建文件
     FileStream fs = new FileStream(strFileName,FileMode.Create,FileAccess.Write);
@@ -216,8 +216,8 @@ public void CreateTemplateController( TableSchema tb)
 ///  输出 JSP 模块
 public void CreateTemplateJsp( TableSchema tb)
 {
-	/// 输出目录结构  输出最底层\src\action\$ModelName.java
-	string strFileName = GetFileName(OutputPath, "jsp" , StringUtil.ToCamelCase(tb.Name.ToLower()), "list","jsp");
+	String package = "webapp.jsp";
+	string strFileName = GetFileName(OutputPath, package , StringUtil.ToCamelCase(tb.Name.ToLower()), "list","jsp");
         
 	/// 创建文件
     FileStream fs = new FileStream(strFileName,FileMode.Create,FileAccess.Write);
@@ -244,8 +244,8 @@ public void CreateTemplateJsp( TableSchema tb)
 ///  输出 JSP 模块
 public void CreateTemplateJsp_edit( TableSchema tb)
 {
-	/// 输出目录结构  输出最底层\src\action\$ModelName.java
-	string strFileName = GetFileName(OutputPath, "jsp" , StringUtil.ToCamelCase(tb.Name.ToLower()), "edit","jsp");
+	String package = "webapp.jsp";
+	string strFileName = GetFileName(OutputPath, package , StringUtil.ToCamelCase(tb.Name.ToLower()), "edit","jsp");
         
 	/// 创建文件
     FileStream fs = new FileStream(strFileName,FileMode.Create,FileAccess.Write);

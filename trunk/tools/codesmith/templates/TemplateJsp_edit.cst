@@ -31,7 +31,7 @@ String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
 String map = StringUtil.ToCamelCase(SourceTable.Name);
 %>
 <%%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%%>
-<%%@ include file="../common/taglibs.jsp"%%>
+<%%@ include file="/common/taglibs.jsp"%%>
 <%%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -39,7 +39,6 @@ String map = StringUtil.ToCamelCase(SourceTable.Name);
 <title><%=SourceTable.Description%></title>
 
 <link rel="stylesheet" href="../resources/css/common.css" />
-<%%@ include file="../common/page.jsp"%%>
 
 </head>
 
@@ -52,7 +51,12 @@ String map = StringUtil.ToCamelCase(SourceTable.Name);
 			<% if(column.IsPrimaryKeyMember) continue; %>
 			<% if(i++%2==1) {%></tr><tr><%}%>
 				<td><%=column.Description%>:</td>
-				<td><input type="text"  name ="<%=fieldName(column.Name)%>" value="${<%=mode%>.<%=fieldName(column.Name)%>}" size="20" /></td>
+						<% if (column.DataType.ToString().Equals("DateTime")) { %> 
+							<td><input type="text"  name ="<%=fieldName(column.Name)%>" value='<fmt:formatDate value="${<%=mode%>.<%=fieldName(column.Name)%>}" pattern="yyyy/MM/dd HH:mm" />' size="20" /></td>
+						<% } else{%>
+							<td><input type="text"  name ="<%=fieldName(column.Name)%>" value="${<%=mode%>.<%=fieldName(column.Name)%>}" size="20" /></td>
+						<% }%>
+				
 		<%}%>
 			</tr>
 		</table>

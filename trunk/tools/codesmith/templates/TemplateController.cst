@@ -38,7 +38,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import <%=RootTableSpaceName%>.entity.Page;
+import <%=RootTableSpaceName%>.core.web.Page;
 import <%=RootTableSpaceName%>.entity.<%=Mode%>;
 import <%=RootTableSpaceName%>.service.<%=Service%>;
 

@@ -33,7 +33,7 @@ package <%=RootTableSpaceName%>.dao;
 
 import java.util.List;
 
-import <%=RootTableSpaceName%>.entity.Page;
+import <%=RootTableSpaceName%>.core.web.Page;
 import <%=RootTableSpaceName%>.entity.<%= Mode%>;
 
 public interface <%= Mode%>Mapper {

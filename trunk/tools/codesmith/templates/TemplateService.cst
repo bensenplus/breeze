@@ -39,7 +39,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 
-import <%=RootTableSpaceName%>.entity.Page;
+import <%=RootTableSpaceName%>.core.web.Page;
 import <%=RootTableSpaceName%>.entity.<%=Mode%>;
 import <%=RootTableSpaceName%>.dao.<%=Dao%>;
 

@@ -24,13 +24,13 @@
 	    
 		 <!-- 登录验证器 -->
 	    <beans:bean id="loginFilter"
-			class="org.breeze.security.MyUsernamePasswordAuthenticationFilter">
+			class="org.breeze.org.security.MyUsernamePasswordAuthenticationFilter">
 			<!-- 处理登录 -->
 			<beans:property name="filterProcessesUrl" value="/j_spring_security_check"></beans:property>
 			<beans:property name="authenticationSuccessHandler" ref="loginLogAuthenticationSuccessHandler"></beans:property>
 			<beans:property name="authenticationFailureHandler" ref="simpleUrlAuthenticationFailureHandler"></beans:property>
 			<beans:property name="authenticationManager" ref="myAuthenticationManager"></beans:property>
-			<beans:property name="usersDao" ref="usersMapper"></beans:property>
+			<beans:property name="userMapper" ref="userMapper"></beans:property>
 		</beans:bean>
 		<beans:bean id="loginLogAuthenticationSuccessHandler"
 			class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
@@ -43,7 +43,7 @@
 		</beans:bean>
 
 		<!-- 认证过滤器 -->
-		<beans:bean id="myFilter" class="org.breeze.security.MySecurityFilter">
+		<beans:bean id="myFilter" class="org.breeze.org.security.MySecurityFilter">
 			<beans:property name="rejectPublicInvocations" value="false"></beans:property>
 		 	<!-- 用户拥有的权限 --> 
 		     <beans:property name="authenticationManager"     ref="myAuthenticationManager" />
@@ -59,10 +59,10 @@
 	        </authentication-provider>
 	    </authentication-manager>
     
- 	   <beans:bean id="myUserDetailService"     class="org.breeze.security.MyUserDetailService" />
+ 	   <beans:bean id="myUserDetailService"     class="org.breeze.org.security.MyUserDetailService" />
 	    <!-- 访问决策器，决定某个用户具有的角色，是否有足够的权限去访问某个资源 -->
-	    <beans:bean id="myAccessDecisionManager"    class="org.breeze.security.MyAccessDecisionManager"/> 
+	    <beans:bean id="myAccessDecisionManager"    class="org.breeze.org.security.MyAccessDecisionManager"/> 
 	    <!-- 资源源数据定义，即定义某一资源可以被哪些角色访问 -->
-	    <beans:bean id="mySecurityMetadataSource"   class="org.breeze.security.MySecurityMetadataSource" /> 
+	    <beans:bean id="mySecurityMetadataSource"   class="org.breeze.org.security.MySecurityMetadataSource" /> 
   
    </beans:beans>

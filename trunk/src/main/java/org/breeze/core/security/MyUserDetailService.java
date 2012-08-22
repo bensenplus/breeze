@@ -1,4 +1,4 @@
-package org.breeze.security;
+package org.breeze.core.security;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -64,7 +64,7 @@ public class MyUserDetailService implements UserDetailsService {
         List<UserRole>  userRoleList = userRoleMapper.select(null);
           
         for(UserRole userRole : userRoleList) {  
-                authSet.add(new SimpleGrantedAuthority(String.valueOf(userRole.getRolId())));  
+                authSet.add(new SimpleGrantedAuthority(String.valueOf(userRole.getRoleId())));  
         }  
         return authSet;  
     }  

@@ -1,4 +1,4 @@
-package org.breeze.entity;
+package org.breeze.core.web;
 
 public class Page {
 	

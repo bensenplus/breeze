@@ -29,15 +29,16 @@ String service = StringUtil.ToCamelCase(ServiceName(SourceTable.Name));
 String map = StringUtil.ToCamelCase(SourceTable.Name);
 %>
 <%%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%%>
-<%%@ include file="../common/taglibs.jsp"%%>
+<%%@ include file="/common/taglibs.jsp"%%>
 <%%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%%>
+<%%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <title><%=SourceTable.Description%>列表</title>
 
 <link rel="stylesheet" href="../resources/css/common.css" />
-<%%@ include file="../common/page.jsp"%%>
+<%%@ include file="/common/page.jsp"%%>
 
 </head>
 
@@ -58,8 +59,12 @@ String map = StringUtil.ToCamelCase(SourceTable.Name);
 		<tbody>
 			<c:forEach var="<%=mode%>" items="${list}" varStatus="status">
                 <tr>
-<% foreach (ColumnSchema column in this.SourceTable.Columns) {%>	
-					<td>${<%=mode%>.<%=fieldName(column.Name)%>}</td>	
+<% foreach (ColumnSchema column in this.SourceTable.Columns) {%>
+		<% if (column.DataType.ToString().Equals("DateTime")) { %> 
+					<td><fmt:formatDate value="${<%=mode%>.<%=fieldName(column.Name)%>}" pattern="yyyy/MM/dd HH:mm" /></td>
+		<% } else{%>
+					<td>${<%=mode%>.<%=fieldName(column.Name)%>}</td>
+		<% }%>
 <% }%>
 					<td><a href="edit?<%=parameterURL(SourceTable)%>">编辑</a></td>
 					<td><a href="delete?<%=parameterURL(SourceTable)%>">删除</a></td>
