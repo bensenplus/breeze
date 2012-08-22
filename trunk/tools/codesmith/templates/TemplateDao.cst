@@ -26,9 +26,8 @@ String Mode = ModelName(SourceTable.Name);
 String mode = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
 String Service = ServiceName(SourceTable.Name);
 String service = StringUtil.ToCamelCase(ServiceName(SourceTable.Name));
-String Key = JavaAlias[SourceTable.Columns[0].SystemType.FullName];
-String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
 String map = StringUtil.ToCamelCase(SourceTable.Name);
+
 %>
 package <%=RootTableSpaceName%>.dao;
 
@@ -45,11 +44,11 @@ public interface <%= Mode%>Mapper {
     
     int insert(<%= Mode%> <%= mode%>);
     
-    <%= Mode%> get(<%= Key%> <%= key%>);
+    <%= Mode%> get(<%=GetKeys(SourceTable,true)%>);
 	
 	int update(<%= Mode%> <%= mode%>);
 	
-	int delete(<%= Key%> <%= key%>);
+	int delete(<%=GetKeys(SourceTable,true)%>);
     
 
 }

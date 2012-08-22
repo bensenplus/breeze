@@ -26,8 +26,6 @@ String Mode = ModelName(SourceTable.Name);
 String mode = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
 String Service = ServiceName(SourceTable.Name);
 String service = StringUtil.ToCamelCase(ServiceName(SourceTable.Name));
-String Key = JavaAlias[SourceTable.Columns[0].SystemType.FullName];
-String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
 String map = StringUtil.ToCamelCase(SourceTable.Name);
 %>
 <%%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%%>
@@ -63,8 +61,8 @@ String map = StringUtil.ToCamelCase(SourceTable.Name);
 <% foreach (ColumnSchema column in this.SourceTable.Columns) {%>	
 					<td>${<%=mode%>.<%=fieldName(column.Name)%>}</td>	
 <% }%>
-					<td><a href="edit?<%=fieldName(this.SourceTable.Columns[0].Name)%>=${<%=IntanceName(SourceTable.Name)%>.<%=fieldName(this.SourceTable.Columns[0].Name)%>}">编辑</a></td>
-					<td><a href="delete?<%=fieldName(this.SourceTable.Columns[0].Name)%>=${<%=IntanceName(SourceTable.Name)%>.<%=fieldName(this.SourceTable.Columns[0].Name)%>}">删除</a></td>
+					<td><a href="edit?<%=parameterURL(SourceTable)%>">编辑</a></td>
+					<td><a href="delete?<%=parameterURL(SourceTable)%>">删除</a></td>
             	</tr>
 			</c:forEach>
 		</tbody>

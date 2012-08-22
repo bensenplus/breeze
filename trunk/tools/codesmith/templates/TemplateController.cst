@@ -26,8 +26,6 @@ String Mode = ModelName(SourceTable.Name);
 String mode = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
 String Service = ServiceName(SourceTable.Name);
 String service = StringUtil.ToCamelCase(ServiceName(SourceTable.Name));
-String Key = JavaAlias[SourceTable.Columns[0].SystemType.FullName];
-String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name.ToLower());
 String map = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
 %>
 package <%=RootTableSpaceName%>.controller;
@@ -64,8 +62,8 @@ public class <%=Controller%> {
 	}
     
     @RequestMapping("/edit")
-	public String edit(ModelMap model, <%=Key%> <%=key%>) {
-	    <%=Mode%> <%=mode%> = <%=service%>.get(<%=key%>);
+	public String edit(ModelMap model, <%=GetKeys(SourceTable,true)%>) {
+	    <%=Mode%> <%=mode%> = <%=service%>.get(<%=GetKeys(SourceTable,false)%>);
 		model.addAttribute("<%=mode%>", <%=mode%>);
 		return "<%=map%>/edit";
 	}    
@@ -77,8 +75,8 @@ public class <%=Controller%> {
 	}
     
     @RequestMapping("/delete")
-	public String delete(<%=Key%> <%=key%>) {
-		<%=service%>.delete(<%=key%>);
+	public String delete(<%=GetKeys(SourceTable,true)%>) {
+		<%=service%>.delete(<%=GetKeys(SourceTable,false)%>);
 		return "redirect:list";
 	}
     

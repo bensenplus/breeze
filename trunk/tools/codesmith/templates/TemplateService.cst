@@ -27,8 +27,6 @@ String Dao = DaoName(SourceTable.Name);
 String dao = StringUtil.ToCamelCase(Dao);
 String Service = ServiceName(SourceTable.Name);
 String service = StringUtil.ToCamelCase(ServiceName(SourceTable.Name.ToLower()));
-String Key = JavaAlias[SourceTable.Columns[0].SystemType.FullName];
-String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name.ToLower());
 String map = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
 %>
 package <%=RootTableSpaceName%>.service;
@@ -61,8 +59,8 @@ public class <%=Service%> {
 		return list;
 	}
 
-	public <%=Mode%> get(<%=Key%> <%=key%>) {
-	    <%=Mode%> <%=mode%> = <%=dao%>.get(<%=key%>);
+	public <%=Mode%> get(<%=GetKeys(SourceTable,true)%>) {
+	    <%=Mode%> <%=mode%> = <%=dao%>.get(<%=GetKeys(SourceTable,false)%>);
         return <%=mode%>;
 	}    
     
@@ -75,8 +73,8 @@ public class <%=Service%> {
        }
 	}
 
-	public int delete(<%=Key%> <%=key%>) {
-		return <%=dao%>.delete(<%=key%>);
+	public int delete(<%=GetKeys(SourceTable,true)%>) {
+		return <%=dao%>.delete(<%=GetKeys(SourceTable,false)%>);
 	}
 
 }

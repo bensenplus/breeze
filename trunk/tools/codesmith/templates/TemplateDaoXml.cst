@@ -27,8 +27,6 @@ String Mode = ModelName(SourceTable.Name);
 String mode = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
 
 String KeyName = SourceTable.Columns[0].Name;
-String Key = JavaAlias[SourceTable.Columns[0].SystemType.FullName];
-String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name.ToLower());
 String map = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
 %>
 <?xml version="1.0" encoding="UTF-8"?>
@@ -62,16 +60,16 @@ String map = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
   </select>
   
   <!--get -->
-  <select id="get" parameterType="<%=Key%>" resultMap="<%=Mode%>">
+  <select id="get" <%=parameterType(SourceTable)%> resultMap="<%=Mode%>">
     SELECT
         <%=GetEtParamSrc(this.SourceTable)%>
     FROM <%= table%>
-    WHERE <%= KeyName%> = #{<%= key%>}
+    WHERE <%= parameterSQL(SourceTable)%>
   </select>
   
   <!--delete -->
-  <delete id="delete" parameterType="<%=Key%>">
-    DELETE FROM <%= table%> WHERE <%= KeyName%> = #{<%=key%>}
+  <delete id="delete" <%=parameterType(SourceTable)%>>
+    DELETE FROM <%= table%> WHERE <%= parameterSQL(SourceTable)%>
   </delete>
   
   <!--insert -->
@@ -86,7 +84,7 @@ String map = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
   <update id="update" parameterType="<%=Mode%>">
     UPDATE <%= table%> SET
     <%=GetUpdateString(this.SourceTable)%>
-    WHERE <%= KeyName%> = #{<%=key%>}
+    WHERE <%= parameterSQL(SourceTable)%>
  </update>
   
 </mapper>

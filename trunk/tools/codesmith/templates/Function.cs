@@ -255,6 +255,7 @@ public string GetEtParamSrc(TableSchema dt )
 }
 
 
+
 ///
 ///
 ///将*改成   各个字段 
@@ -302,5 +303,141 @@ public string GetUpdateString(TableSchema dt )
 	
 	return param;
 }
+
+
+
+#region Keys 
+public string GetKeys(TableSchema dt, bool hasType)
+{
+	string param = string.Empty;	
+	string  instance = StringUtil.ToCamelCase(dt.Name.ToLower());
+	int count = 0;
+	
+	if(!dt.HasPrimaryKey) {
+		if(hasType){
+			param = ModelName(dt.Name) + " p_" + instance;
+		}else{
+			param = "p_"+instance;
+		}
+		return param;
+	}
+
+	foreach (ColumnSchema column in dt.PrimaryKey.MemberColumns) 
+	{ 
+		
+		if ( count == 0 )
+		{
+			if(hasType){
+				param = JavaAlias[column.SystemType.FullName] + " " + StringUtil.ToCamelCase(column.Name.ToLower());
+			}else{
+				param = StringUtil.ToCamelCase(column.Name.ToLower());
+			}
+		}
+		else
+		{
+			if(hasType){
+				param = ModelName(dt.Name) + " p_" + instance;
+			}else{
+				param = "p_"+instance;
+			}
+			break;
+		}
+		count = count + 1;
+	}
+	
+	return param;
+}
+
+public string parameterType(TableSchema dt)
+{
+	string param = string.Empty;
+	int count = 0;
+	
+	if(!dt.HasPrimaryKey) {
+		param = "parameterType=\""+ ModelName(dt.Name) +"\"";
+		return param;
+	}
+	
+	foreach (ColumnSchema column in dt.PrimaryKey.MemberColumns) 
+	{ 
+		if ( count == 0 )
+		{
+			param = "parameterType=\""+JavaAlias[column.SystemType.FullName]+"\"";
+		}
+		else
+		{
+			param = "parameterType=\""+ ModelName(dt.Name) +"\"";
+			break;
+		}
+		count = count + 1;
+	}
+	
+	return param;
+}
+
+public string parameterSQL(TableSchema dt)
+{
+	string param = string.Empty;	
+	int count = 0;
+	
+	if(!dt.HasPrimaryKey) {
+
+		param = dt.Columns[0].Name +" = #{"+ StringUtil.ToCamelCase(dt.Columns[0].Name.ToLower())+"}";
+
+		return param;
+	}
+	
+	foreach (ColumnSchema column in dt.PrimaryKey.MemberColumns) 
+	{ 
+		
+		if ( count == 0 )
+		{
+			param = column.Name +" = #{"+ StringUtil.ToCamelCase(column.Name.ToLower())+"}";
+		}
+		else
+		{
+			param = param + " AND " + column.Name +" = #{"+ StringUtil.ToCamelCase(column.Name.ToLower())+"}";
+		}
+		count = count + 1;
+	}
+	
+	return param;
+}
+
+public string parameterURL(TableSchema dt)
+{
+
+	string param = string.Empty;	
+	int count = 0;
+	string  instance = StringUtil.ToCamelCase(dt.Name.ToLower());
+	
+	if(!dt.HasPrimaryKey) {
+		string  strCol = StringUtil.ToCamelCase(dt.Columns[0].Name.ToLower());
+		param = strCol +"=${"+ instance + "." + strCol+"}";
+
+		return param;
+	}
+	
+
+	
+	foreach (ColumnSchema column in dt.PrimaryKey.MemberColumns) 
+	{ 
+		string  strCol = StringUtil.ToCamelCase(column.Name.ToLower());
+		
+		if ( count == 0 )
+		{
+			param = strCol +"=${"+ instance + "." + strCol+"}";
+		}
+		else
+		{
+			param = param + "&" + strCol +"=${"+ instance + "." + strCol+"}";
+		}
+		count = count + 1;
+	}
+	
+	return param;
+}
+
+#endregion
 
 

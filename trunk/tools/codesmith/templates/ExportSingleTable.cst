@@ -23,6 +23,7 @@
 
 <%-- 启用 MAP方式 System-CSharpAlias  --%>
 <%@ Map Name="CSharpAlias" Src="System-CSharpAlias" Description="System to C# Type Map" %>
+<%@ Map Name="JavaAlias" Src="JavaAlias.csmap" Description="Oracle to Java Type Map" %>
 <%-- 注册 子模板 --%>
 <%@ Register Name="TemplateModel" Template="TemplateModel.cst" %>
 <%@ Register Name="TemplateDao" Template="TemplateDao.cst" %>
