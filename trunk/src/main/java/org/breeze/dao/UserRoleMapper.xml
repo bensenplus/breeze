@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.breeze.dao.UserRoleMapper">
+  <cache />
+  <resultMap id="UserRole" type="org.breeze.entity.UserRole" >
+    <result column="ID" property="id"/>
+    <result column="USER_ID" property="userId"/>
+    <result column="ROLE_ID" property="roleId"/>
+  </resultMap>
+
+  <!--count -->
+  <select id="count" resultType="int">
+    SELECT COUNT(*)  FROM USER_ROLE
+  </select>
+  
+  <!--select -->
+  <select id="select" parameterType="org.breeze.core.web.Page" resultMap="UserRole">
+    <if test="start != null" >
+	SELECT * FROM ( SELECT ROW_.*, ROWNUM ROWNUM_ FROM (
+	</if>
+	SELECT
+        ID,USER_ID,ROLE_ID
+    FROM USER_ROLE
+	<if test="start != null" >
+	) ROW_ ) WHERE ROWNUM_ &gt;#{start} and ROWNUM_ &lt; (#{start} + #{size})
+	</if>
+  </select>
+  
+  <!--get -->
+  <select id="get" parameterType="Integer" resultMap="UserRole">
+    SELECT
+        ID,USER_ID,ROLE_ID
+    FROM USER_ROLE
+    WHERE ID = #{id}
+  </select>
+  
+  <!--delete -->
+  <delete id="delete" parameterType="Integer">
+    DELETE FROM USER_ROLE WHERE ID = #{id}
+  </delete>
+  
+  <!--insert -->
+  <insert id="insert" parameterType="UserRole">
+    INSERT INTO USER_ROLE
+      (ID,USER_ID,ROLE_ID)
+    VALUES
+      (#{id},#{userId},#{roleId})
+  </insert>
+  
+   <!--update -->
+  <update id="update" parameterType="UserRole">
+    UPDATE USER_ROLE SET
+    ID=#{id},USER_ID=#{userId},ROLE_ID=#{roleId}
+    WHERE ID = #{id}
+ </update>
+  
+</mapper>

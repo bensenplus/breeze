@@ -74,6 +74,9 @@
 	</bean>
 
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<!-- <property name="url" value="jdbc:mysql://192.168.134.132:3306/breeze" />
+		<property name="username" value="breeze" />
+		<property name="password" value="breeze" /> -->
 		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
 		<property name="url" value="jdbc:oracle:thin:@172.29.129.86:1521:empidev" />
 		<property name="username" value="hcmstest" />
