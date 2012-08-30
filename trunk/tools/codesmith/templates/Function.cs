@@ -10,6 +10,23 @@ Filename:文件名.java
 处理逻辑：
 首先逐层判断 目录是否存在,不存在的话，创建目录
 */
+
+public void SafeCopyFileTo(string path, string destination)
+{
+	if(Directory.Exists(destination) == false)
+    {
+        Directory.CreateDirectory(destination);
+    }
+	System.IO.FileInfo file1 = new System.IO.FileInfo(path);
+	file1.CopyTo(destination +"/"+ file1.Name, true);
+}
+
+public void SafeCopyFile(string path, string destination)
+{
+	System.IO.FileInfo file1 = new System.IO.FileInfo(path);
+	file1.CopyTo(destination, true);
+}
+
 public string GetFileName(string RootOutputPath,string packageName, string  ActionName,string Filename,string FileExtType )
 {
     string ModulName = packageName.Replace(".",@"\");

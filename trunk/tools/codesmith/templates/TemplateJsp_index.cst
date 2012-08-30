@@ -9,9 +9,6 @@
 
 <%-- 注册 成员函数 --%>
 <%@ Property Name="SourceData" Type="SchemaExplorer.DatabaseSchema" Optional="False" Category="Context" Description="指定的数据库" %>
-<%@ Property Name="OutputPath" Type="System.String" Default="e:\autocode" Optional="False" Category="Context" Description="源码输出目录" %>
-<%@ Property Name="ExportTableName" Type="System.String" Default="users" Optional="False" Category="Context" Description="需要输出的表：支撑多个,每个表名之间用“;”分 TABLE_1;TABLE_2;" %>
-<%@ Property Name="RootTableSpaceName" Type="System.String" Default="org.breeze" Optional="False" Category="Context" Description="源码输出的模块名称 com.scitel.dialtestmgr " %>
 
 <%-- 启用 MAP方式 System-CSharpAlias  --%>
 <%@ Map Name="CSharpAlias" Src="System-CSharpAlias" Description="System to C# Type Map" %>
