@@ -14,6 +14,9 @@
 <%@ Import Namespace="System.Text.RegularExpressions" %>
 <%@ Import Namespace="CodeSmith.CustomProperties" %>
 
+<%-- 启用 MAP方式 System-CSharpAlias  --%>
+<%@ Map Name="CSharpAlias" Src="System-CSharpAlias" Description="System to C# Type Map" %>
+<%@ Map Name="JavaAlias" Src="JavaAlias.csmap" Description="Oracle to Java Type Map" %>
 
 <%-- 注册 成员函数 --%>
 <%@ Property Name="SourceData" Type="SchemaExplorer.DatabaseSchema" Optional="False" Category="Context" Description="指定的数据库" %>
@@ -22,7 +25,8 @@
 <%@ Property Name="RootTableSpaceName" Type="System.String" Default="org.breeze" Optional="False" Category="Context" Description="源码输出的模块名称 com.scitel.dialtestmgr " %>
 
 <%-- 注册 子模板 --%>
-	<%@ Register Name="ExportSingleTable" Template="ExportSingleTable.cst" %>	
+	<%@ Register Name="ExportSingleTable" Template="ExportSingleTable.cst" %>
+	<%@ Register Name="TemplateJsp_index" Template="TemplateJsp_index.cst" %>
 <%
     RenderMain();
 %>
@@ -30,6 +34,8 @@
 Done and Finish  !!!!!!!!!!!!!!
 
 <script runat="template">
+
+<!-- #include file=Function.cs -->
 
 /// 得到数据源的全部表结构
 /// 并返回一个 表的结合 
@@ -80,5 +86,35 @@ public void RenderMain()
 			}
 		}
     }
+	
+	CreateTemplateJsp_index();
 }
+
+///  输出 JSP 模块
+public void CreateTemplateJsp_index()
+{
+	String package = "webapp";
+	string strFileName = GetFileName(OutputPath, package , "", "index","jsp");
+        
+	/// 创建文件
+    FileStream fs = new FileStream(strFileName,FileMode.Create,FileAccess.Write);
+    StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.UTF8);
+        
+    // 调用子模板进行创建 
+    TemplateJsp_index template = new TemplateJsp_index();
+    
+    // 子模板所需要的入参
+    template.SourceData = SourceData;
+   
+    /// 输出子模板文档
+    template.Render(sw);
+    
+	/// 结束
+    //sw.WriteLine("//end of class " + tb.Name);
+    // 关闭输出流
+    sw.Close();
+    //关闭文档
+    fs.Close();
+}
+
 </script>
