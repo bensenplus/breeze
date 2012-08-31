@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		   xmlns:s="library://ns.adobe.com/flex/spark" 
+		   xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%"
+		   label="{consultation.consultationId>0?consultation.consultationId:'New Record'}">
+	
+	<fx:Metadata>
+		[Event(name="Created", type="org.breeze.core.web.FormEvent")]
+		[Event(name="Updated", type="org.breeze.core.web.FormEvent")]
+		[Event(name="Deleted", type="org.breeze.core.web.FormEvent")]
+	</fx:Metadata>
+	
+	<fx:Script>
+		<![CDATA[
+			import org.breeze.core.web.FormEvent;
+			import org.breeze.flex.entity.Consultation;
+			
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.controls.Alert;
+			
+			[Bindable] public var consultation:Consultation;
+			
+			private function save():void
+			{
+				consultation.consultationId = Number(_consultationId.text);
+				consultation.consultationCode = _consultationCode.text;
+				consultation.processTypeId = Number(_processTypeId.text);
+				consultation.consultationType = Number(_consultationType.text);
+				consultation.isurgency = Number(_isurgency.text);
+				consultation.isafterwards = Number(_isafterwards.text);
+				consultation.status = Number(_status.text);
+				consultation.applyClinicId = Number(_applyClinicId.text);
+				consultation.applyDoctorId = Number(_applyDoctorId.text);
+				consultation.applyReason = _applyReason.text;
+				consultation.applyPurpose = _applyPurpose.text;
+				consultation.consultationPlace = _consultationPlace.text;
+				consultation.bookStartDatetime = Date(_bookStartDatetime.text);
+				consultation.bookEndDatetime = Date(_bookEndDatetime.text);
+				consultation.startDatetime = Date(_startDatetime.text);
+				consultation.endDatetime = Date(_endDatetime.text);
+				consultation.patientId = Number(_patientId.text);
+				consultation.inpatientId = _inpatientId.text;
+				consultation.inpatientTimes = Number(_inpatientTimes.text);
+				consultation.bedNo = _bedNo.text;
+				consultation.ward = _ward.text;
+				consultation.medicalAdviceId = _medicalAdviceId.text;
+				consultation.medicalAdviceStatus = _medicalAdviceStatus.text;
+				consultation.consultationFees = Number(_consultationFees.text);
+				consultation.paymentPrintFlag = Number(_paymentPrintFlag.text);
+				consultation.paymentStatus = Number(_paymentStatus.text);
+				consultation.remarks = _remarks.text;
+				consultation.deleteFlag = Number(_deleteFlag.text);
+				consultation.deleteReason = _deleteReason.text;
+				consultation.creator = Number(_creator.text);
+				consultation.createTime = Date(_createTime.text);
+				consultation.updateTime = Date(_updateTime.text);
+				consultation.updater = Number(_updater.text);
+				consultation.updateCount = Number(_updateCount.text);
+				consultation.approvalDoctorId = Number(_approvalDoctorId.text);
+				consultation.room = _room.text;
+				consultation.patientSource = Number(_patientSource.text);
+				consultation.outpatientNumber = _outpatientNumber.text;
+				consultation.submitTime = Date(_submitTime.text);
+				consultation.outpatientTimes = Number(_outpatientTimes.text);
+				consultation.inpatientNumber = _inpatientNumber.text;
+				consultation.patientGo = Number(_patientGo.text);
+				consultation.outClinicId = Number(_outClinicId.text);
+				consultation.outHospitalName = _outHospitalName.text;
+				consultation.outClinicName = _outClinicName.text;
+				consultation.outApplyTime = Date(_outApplyTime.text);
+				if (consultation.consultationId == 0)
+				{
+					ro.create(consultation);	
+				}
+				else
+				{
+					ro.update(consultation);
+				}
+			}			
+			
+			private function deleteItem():void
+			{
+				ro.remove(consultation);		
+			}
+			
+			private function create_resultHandler(event:ResultEvent):void
+			{
+				consultation.consultationId = event.result.consultationId;
+				dispatchEvent(new FormEvent(FormEvent.CREATED, consultation));			
+			}
+			
+			private function update_resultHandler(event:ResultEvent):void
+			{
+				dispatchEvent(new FormEvent(FormEvent.UPDATED, consultation));			
+			}
+			
+			private function remove_resultHandler(event:ResultEvent):void
+			{
+				dispatchEvent(new FormEvent(FormEvent.DELETED, consultation));			
+			}
+			
+			private function faultHandler(event:FaultEvent):void
+			{
+				Alert.show(event.fault.faultDetail);
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<mx:RemoteObject id="ro" destination="consultationService" fault="faultHandler(event)" endpoint="http://localhost:8080/breeze/messagebroker/amf">
+			<mx:method name="create" result="create_resultHandler(event)"/>
+			<mx:method name="update" result="update_resultHandler(event)"/>
+			<mx:method name="remove" result="remove_resultHandler(event)"/>
+		</mx:RemoteObject>
+	</fx:Declarations>
+	
+	<mx:Form>
+		<mx:FormItem label="会诊单标识">
+			<mx:TextInput id="_consultationId" text="{consultation.consultationId}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="会诊单编码">
+			<mx:TextInput id="_consultationCode" text="{consultation.consultationCode}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="会诊申请类型">
+			<mx:TextInput id="_processTypeId" text="{consultation.processTypeId}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="会诊主题">
+			<mx:TextInput id="_consultationType" text="{consultation.consultationType}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="是否加急">
+			<mx:TextInput id="_isurgency" text="{consultation.isurgency}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="是否补录">
+			<mx:TextInput id="_isafterwards" text="{consultation.isafterwards}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="会诊状态">
+			<mx:TextInput id="_status" text="{consultation.status}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="申请科室">
+			<mx:TextInput id="_applyClinicId" text="{consultation.applyClinicId}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="申请医生">
+			<mx:TextInput id="_applyDoctorId" text="{consultation.applyDoctorId}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="会诊申请理由">
+			<mx:TextInput id="_applyReason" text="{consultation.applyReason}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="会诊申请目的">
+			<mx:TextInput id="_applyPurpose" text="{consultation.applyPurpose}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="会诊地点">
+			<mx:TextInput id="_consultationPlace" text="{consultation.consultationPlace}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="会诊预订开始时间">
+			<mx:DateField id="_bookStartDatetime" text="{consultation.bookStartDatetime}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="会诊预订结束时间">
+			<mx:TextInput id="_bookEndDatetime" text="{consultation.bookEndDatetime}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="会诊实际开始时间">
+			<mx:TextInput id="_startDatetime" text="{consultation.startDatetime}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="会诊实际结束时间">
+			<mx:TextInput id="_endDatetime" text="{consultation.endDatetime}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="患者标识">
+			<mx:TextInput id="_patientId" text="{consultation.patientId}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="病案号">
+			<mx:TextInput id="_inpatientId" text="{consultation.inpatientId}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="住院次数">
+			<mx:TextInput id="_inpatientTimes" text="{consultation.inpatientTimes}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="床号">
+			<mx:TextInput id="_bedNo" text="{consultation.bedNo}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="病区">
+			<mx:TextInput id="_ward" text="{consultation.ward}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="医嘱号">
+			<mx:TextInput id="_medicalAdviceId" text="{consultation.medicalAdviceId}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="医嘱状态">
+			<mx:TextInput id="_medicalAdviceStatus" text="{consultation.medicalAdviceStatus}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="会诊费额">
+			<mx:TextInput id="_consultationFees" text="{consultation.consultationFees}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="是否打印缴费单">
+			<mx:TextInput id="_paymentPrintFlag" text="{consultation.paymentPrintFlag}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="缴费状态">
+			<mx:TextInput id="_paymentStatus" text="{consultation.paymentStatus}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="备注">
+			<mx:TextInput id="_remarks" text="{consultation.remarks}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="删除标记">
+			<mx:TextInput id="_deleteFlag" text="{consultation.deleteFlag}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="删除原因">
+			<mx:TextInput id="_deleteReason" text="{consultation.deleteReason}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="创建者标识">
+			<mx:TextInput id="_creator" text="{consultation.creator}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="创建时间">
+			<mx:TextInput id="_createTime" text="{consultation.createTime}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="更新时间">
+			<mx:TextInput id="_updateTime" text="{consultation.updateTime}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="更新者标识">
+			<mx:TextInput id="_updater" text="{consultation.updater}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="更新次数">
+			<mx:TextInput id="_updateCount" text="{consultation.updateCount}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="当前待审批者">
+			<mx:TextInput id="_approvalDoctorId" text="{consultation.approvalDoctorId}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="病房">
+			<mx:TextInput id="_room" text="{consultation.room}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="患者来源">
+			<mx:TextInput id="_patientSource" text="{consultation.patientSource}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="门诊号">
+			<mx:TextInput id="_outpatientNumber" text="{consultation.outpatientNumber}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="提交时间">
+			<mx:DateField id="_submitTime" text="{consultation.submitTime}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="门诊次数">
+			<mx:TextInput id="_outpatientTimes" text="{consultation.outpatientTimes}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="住院号">
+			<mx:TextInput id="_inpatientNumber" text="{consultation.inpatientNumber}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="患者是否去外院">
+			<mx:TextInput id="_patientGo" text="{consultation.patientGo}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="外院科室ID">
+			<mx:TextInput id="_outClinicId" text="{consultation.outClinicId}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="外院名称">
+			<mx:TextInput id="_outHospitalName" text="{consultation.outHospitalName}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="外院科室名称">
+			<mx:TextInput id="_outClinicName" text="{consultation.outClinicName}" enabled="true"/>
+		</mx:FormItem>
+		<mx:FormItem label="外院申请时间">
+			<mx:TextInput id="_outApplyTime" text="{consultation.outApplyTime}" enabled="true"/>
+		</mx:FormItem>
+	</mx:Form>
+	
+	<s:HGroup right="8" bottom="8">
+		<s:Button label="Close" click="parent.removeChild(this)"/>
+		<s:Button label="Save" click="save()"/>
+		<s:Button label="Delete" click="deleteItem()"/>
+	</s:HGroup>
+
+	
+</mx:Canvas>
+

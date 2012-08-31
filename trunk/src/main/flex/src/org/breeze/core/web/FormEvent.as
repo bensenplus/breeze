@@ -11,7 +11,7 @@ package org.breeze.core.web
 	
 		public var object:Object;
 		
-		public function FormEvent(type:String, contact:Clinic, bubbles:Boolean = true, cancelable:Boolean = false)
+		public function FormEvent(type:String, contact:Object, bubbles:Boolean = true, cancelable:Boolean = false)
    		{
    			this.object = object;
 			super(type, bubbles, cancelable);

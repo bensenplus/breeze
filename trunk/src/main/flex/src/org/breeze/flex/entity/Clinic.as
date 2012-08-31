@@ -1,17 +1,20 @@
 package org.breeze.flex.entity
 {
 	[Bindable]
-	[RemoteClass(alias="org.springframework.flex.samples.contact.Contact")]
+	[RemoteClass(alias="org.breeze.entity.Clinic")]
 	public class Clinic
 	{
-		public var id:int;
-		public var firstName:String;
-		public var lastName:String;
-		public var email:String;
-		public var phone:String;
-		public var address:String;
-		public var city:String;
-		public var state:String;
-		public var zip:String;
+		public var clinicId:int;    
+		public var hospitalId:int;    
+		public var parentId:int;    
+		public var code:String;    
+		public var name:String;    
+		public var introduction:String;    
+		public var delFlag:int;    
+		public var pyCode:String;    
+		public var dCode:String;    
+		public var outCode:String;    
+		public var inCode:String;    
+		public var version:Number;    
 	}
 }

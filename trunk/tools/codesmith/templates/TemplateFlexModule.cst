@@ -1,0 +1,136 @@
+﻿<%@ CodeTemplate Language="C#" TargetLanguage="Text" Src="" ResponseEncoding="UTF-8" Inherits="" Debug="False" Description="Template description here." %>
+<%@ Assembly Name="System.Data" %>
+<%@ Assembly Name="SchemaExplorer" %>
+
+<%@ Import Namespace="System.IO" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+
+<%-- 注册 定义的成员变量 --%>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="DB" Description="请选择名的数据来源" %>
+<%@ Property Name="RootTableSpaceName" Type="System.String" Default="org.breeze" Optional="False" Category="Context" Description="源码输出的模块名称" %>
+
+<%-- 启用 MAP方式 System-CSharpAlias  --%>
+<%@ Map Name="CSharpAlias" Src="System-CSharpAlias" Description="System to C# Type Map" %>
+<%@ Map Name="JavaAlias" Src="FlexAlias.csmap" Description="Oracle to Java Type Map" %>
+<%@ Map Name="FlexAlias" Src="FlexAlias.csmap" Description="Oracle to Flex Type Map" %>
+
+<script runat="template">
+<!-- #include file=Function.cs -->
+//Debugger.Break();
+</script>
+<% 
+//名称定义
+String Controller = ControllerName(SourceTable.Name);
+String Mode = ModelName(SourceTable.Name);
+String mode = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
+String Service = ServiceName(SourceTable.Name);
+String service = StringUtil.ToCamelCase(ServiceName(SourceTable.Name));
+String map = StringUtil.ToCamelCase(SourceTable.Name);
+String Key = JavaAlias[SourceTable.Columns[0].SystemType.FullName];
+String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
+%>
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  width="100%" height="100%">
+	
+	<fx:Script>
+		<![CDATA[
+			import org.breeze.core.web.FormEvent;
+			import org.breeze.core.web.Page;
+			import <%=RootTableSpaceName%>.flex.entity.<%=Mode%>;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Bindable] private var <%=mode%>s:ArrayCollection;
+			
+			private function resultHandler(event:ResultEvent):void
+			{
+				<%=mode%>s = event.result as ArrayCollection
+			}
+			
+			private function faultHandler(event:FaultEvent):void
+			{
+				Alert.show(event.fault.faultDetail);
+			}
+			
+			public function openRecord(<%=mode%>:<%=Mode%>):void
+			{
+				var children:Array = tn.getChildren();
+				for (var i:int = 0; i<children.length; i++)
+				{
+					if (<%=Mode%>Form(children[i]).<%=mode%>.<%=key%> == <%=mode%>.<%=key%>)
+					{
+						tn.selectedChild = children[i];
+						return;
+					}
+				}
+				
+				var form:<%=Mode%>Form = new <%=Mode%>Form();
+				form.addEventListener(FormEvent.CREATED, <%=mode%>CreatedHandler);
+				form.addEventListener(FormEvent.UPDATED, <%=mode%>UpdatedHandler);
+				form.addEventListener(FormEvent.DELETED, <%=mode%>DeletedHandler);
+				tn.addChild(form);
+				form.<%=mode%> = <%=mode%>;
+				tn.selectedChild = form;
+			}
+
+			private function search():void
+			{
+				var page:Page = new Page();
+				ro.select(page);
+			}
+			
+			private function <%=mode%>CreatedHandler(event:FormEvent):void
+			{
+				search();				
+			}
+			
+			private function <%=mode%>UpdatedHandler(event:FormEvent):void
+			{
+				search();				
+			}
+			
+			private function <%=mode%>DeletedHandler(event:FormEvent):void
+			{
+				tn.removeChild(event.target as <%=Mode%>Form);
+				search();				
+			}
+			
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<s:RemoteObject id="ro" destination="<%=mode%>Service" fault="faultHandler(event)" endpoint="http://localhost:8080/breeze/messagebroker/amf">
+			<s:method name="select" result="resultHandler(event)"/>
+		</s:RemoteObject>
+	</fx:Declarations>
+	
+
+	<s:TextInput id="searchStr"/>
+	<s:Button x="143" y="2" label="Search" click="search()"/>
+	<mx:Button x="221" y="2" label="New <%=mode%>" click="openRecord(new <%=Mode%>())"/>
+
+	
+	<mx:VDividedBox top="40" width="100%" height="100%">
+		<mx:DataGrid id="dg" width="100%" height="50%" dataProvider="{<%=mode%>s}"
+					 doubleClick="openRecord(dg.selectedItem as <%=Mode%>)" doubleClickEnabled="true">
+			<mx:columns>
+			<% foreach (ColumnSchema column in this.SourceTable.Columns) {%>
+    			<mx:DataGridColumn dataField="<%= fieldName(column.Name) %>" headerText="<%=column.Description%>" />  
+  			<% }%>
+			</mx:columns>
+		</mx:DataGrid>
+		<mx:TabNavigator id="tn" width="100%" height="50%"/>
+	</mx:VDividedBox>
+	
+</s:Module>
+
+

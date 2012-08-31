@@ -7,6 +7,7 @@
 	<fx:Script>
 		<![CDATA[
 			import org.breeze.core.web.FormEvent;
+			import org.breeze.core.web.Page;
 			import org.breeze.flex.entity.Clinic;
 			
 			import mx.collections.ArrayCollection;
@@ -14,11 +15,11 @@
 			import mx.rpc.events.FaultEvent;
 			import mx.rpc.events.ResultEvent;
 			
-			[Bindable] private var contacts:ArrayCollection;
+			[Bindable] private var clinics:ArrayCollection;
 			
 			private function resultHandler(event:ResultEvent):void
 			{
-				contacts = event.result as ArrayCollection
+				clinics = event.result as ArrayCollection
 			}
 			
 			private function faultHandler(event:FaultEvent):void
@@ -26,12 +27,12 @@
 				Alert.show(event.fault.faultDetail);
 			}
 			
-			public function openContact(contact:Clinic):void
+			public function openRecord(clinic:Clinic):void
 			{
 				var children:Array = tn.getChildren();
 				for (var i:int = 0; i<children.length; i++)
 				{
-					if (ClinicForm(children[i]).contact.id == contact.id)
+					if (ClinicForm(children[i]).clinic.clinicId == clinic.clinicId)
 					{
 						tn.selectedChild = children[i];
 						return;
@@ -39,30 +40,31 @@
 				}
 				
 				var form:ClinicForm = new ClinicForm();
-				form.addEventListener(FormEvent.CREATED, contactCreatedHandler);
-				form.addEventListener(FormEvent.UPDATED, contactUpdatedHandler);
-				form.addEventListener(FormEvent.DELETED, contactDeletedHandler);
+				form.addEventListener(FormEvent.CREATED, clinicCreatedHandler);
+				form.addEventListener(FormEvent.UPDATED, clinicUpdatedHandler);
+				form.addEventListener(FormEvent.DELETED, clinicDeletedHandler);
 				tn.addChild(form);
-				form.contact = contact;
+				form.clinic = clinic;
 				tn.selectedChild = form;
 			}
-
+			
 			private function search():void
 			{
-				ro.findByName(searchStr.text);
+				var page:Page = new Page();
+				ro.select(page);
 			}
 			
-			private function contactCreatedHandler(event:FormEvent):void
+			private function clinicCreatedHandler(event:FormEvent):void
 			{
 				search();				
 			}
 			
-			private function contactUpdatedHandler(event:FormEvent):void
+			private function clinicUpdatedHandler(event:FormEvent):void
 			{
 				search();				
 			}
 			
-			private function contactDeletedHandler(event:FormEvent):void
+			private function clinicDeletedHandler(event:FormEvent):void
 			{
 				tn.removeChild(event.target as ClinicForm);
 				search();				
@@ -73,26 +75,37 @@
 	</fx:Script>
 	
 	<fx:Declarations>
-		<s:RemoteObject id="ro" destination="contactService" fault="faultHandler(event)" endpoint="http://localhost:8080/testdrive/messagebroker/amf">
-			<s:method name="findByName" result="resultHandler(event)"/>
+		<s:RemoteObject id="ro" destination="clinicService" fault="faultHandler(event)" endpoint="http://localhost:8080/breeze/messagebroker/amf">
+			<s:method name="select" result="resultHandler(event)"/>
 		</s:RemoteObject>
 	</fx:Declarations>
 	
-
+	
 	<s:TextInput id="searchStr"/>
 	<s:Button x="143" y="2" label="Search" click="search()"/>
-	<mx:Button x="221" y="2" label="New Contact" click="openContact(new Clinic())"/>
-
+	<mx:Button x="221" y="2" label="New clinic" click="openRecord(new Clinic())"/>
 	
-	<mx:HDividedBox top="40" width="100%" height="100%">
-		<mx:DataGrid id="dg" width="30%" height="100%" dataProvider="{contacts}"
-					 doubleClick="openContact(dg.selectedItem as Clinic)" doubleClickEnabled="true">
+	
+	<mx:VDividedBox top="40" width="100%" height="100%">
+		<mx:DataGrid id="dg" width="100%" height="50%" dataProvider="{clinics}"
+					 doubleClick="openRecord(dg.selectedItem as Clinic)" doubleClickEnabled="true">
 			<mx:columns>
-				<mx:DataGridColumn dataField="firstName" headerText="First Name"/>
-				<mx:DataGridColumn dataField="lastName" headerText="Last Name"/>
+				<mx:DataGridColumn dataField="clinicId" headerText="科室标识"/>  
+				<mx:DataGridColumn dataField="hospitalId" headerText="医院标识"/>  
+				<mx:DataGridColumn dataField="parentId" headerText="上级科室标识"/>  
+				<mx:DataGridColumn dataField="code" headerText="科室编码"/>  
+				<mx:DataGridColumn dataField="name" headerText="科室名称"/>  
+				<mx:DataGridColumn dataField="introduction" headerText="科室介绍"/>  
+				<mx:DataGridColumn dataField="delFlag" headerText="删除标志"/>  
+				<mx:DataGridColumn dataField="pyCode" headerText="拼音码"/>  
+				<mx:DataGridColumn dataField="dCode" headerText="自定义编码"/>  
+				<mx:DataGridColumn dataField="outCode" headerText="HIS门诊编码"/>  
+				<mx:DataGridColumn dataField="inCode" headerText="HIS住院编码"/>  
 			</mx:columns>
 		</mx:DataGrid>
-		<mx:TabNavigator id="tn" width="70%" height="100%"/>
-	</mx:HDividedBox>
+		<mx:TabNavigator id="tn" width="100%" height="50%"/>
+	</mx:VDividedBox>
 	
 </s:Module>
+
+

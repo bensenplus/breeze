@@ -34,7 +34,7 @@ String map = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="<%=RootTableSpaceName%>.dao.<%= Mode%>Mapper">
-  <cache />
+  <!--cache /-->
   <resultMap id="<%= Mode%>" type="<%=RootTableSpaceName%>.entity.<%= Mode%>" >
 	<% foreach (ColumnSchema column in this.SourceTable.Columns) {%>
     <result column="<%= column.Name%>" property="<%= fieldName(column.Name)%>"/>
