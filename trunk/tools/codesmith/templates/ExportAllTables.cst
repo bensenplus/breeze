@@ -29,6 +29,7 @@
 	<%@ Register Name="TemplateJsp_index" Template="TemplateJsp_index.cst" %>
 <%
     RenderMain();
+	SafeCopyFileTo("./resoureces/pom.xml" , OutputPath+"/src/dd/dd/dd");
 %>
 
 Done and Finish  !!!!!!!!!!!!!!
