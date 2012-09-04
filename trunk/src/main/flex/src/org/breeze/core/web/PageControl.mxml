@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%">
+	<fx:Metadata>
+		[Event(name="PAGED", type="org.breeze.core.web.PageEvent")]
+	</fx:Metadata>
+	<fx:Script>
+		<![CDATA[
+			[Bindable] public var page:Page = new Page();			
+			
+			protected function pre_page(event:MouseEvent):void
+			{
+				if(page.page >1){
+					page.page --;
+					_page.text = String(page.page);
+					dispatchEvent(new PageEvent(PageEvent.PAGED, page));
+				}
+				
+			}
+			
+			protected function next_page(event:MouseEvent):void
+			{
+				if(page.page < Number(_total.text)){
+					page.page ++;
+					_page.text = String(page.page);
+					dispatchEvent(new PageEvent(PageEvent.PAGED, page));				
+				}
+				
+			}
+			
+			public function setTotal(count:int):void
+			{
+				page.count = count;
+				var total:int = count / page.size;
+				if(count % page.size >0){
+					total++;
+				}
+				_total.text = String(total);
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<s:HGroup width="100%" height="100%">
+		<s:Button label="前一页" click="pre_page(event)"/>
+		<s:Label id="_page" width="20" height="25" text="1"/>
+		<s:Label width="20" height="25" text="/"/>
+		<s:Label id="_total" width="20" height="25" text="1"/>
+		<s:Button label="后一页" click="next_page(event)"/>
+	</s:HGroup>
+</s:Group>
