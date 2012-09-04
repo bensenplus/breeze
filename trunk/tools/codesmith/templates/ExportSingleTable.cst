@@ -33,6 +33,10 @@
 <%@ Register Name="TemplateJsp" Template="TemplateJsp.cst" %>
 <%@ Register Name="TemplateJsp_edit" Template="TemplateJsp_edit.cst" %>
 
+<%@ Register Name="TemplateFlexForm" Template="TemplateFlexForm.cst" %>
+<%@ Register Name="TemplateFlexModel" Template="TemplateFlexModel.cst" %>
+<%@ Register Name="TemplateFlexModule" Template="TemplateFlexModule.cst" %>
+
 <%
     //Debugger.Break();    
     //this.Progress.MaximumValue = 100;
@@ -50,223 +54,46 @@ Done and Finish  !!!!!!!!!!!!!!!!!!!!!!!!
 
 /// 创建输出文件
 public void RenderMain()
+{    
+    CreateTemplate<TemplateModel>(SourceTable, "java."+RootTableSpaceName+".entity", ModelName(SourceTable.Name)+"."+"java");
+    CreateTemplate<TemplateDao>(SourceTable, "java."+RootTableSpaceName+".dao", ModelName(SourceTable.Name)+"."+"java");
+    CreateTemplate<TemplateDaoXml>(SourceTable, "java."+RootTableSpaceName+".dao", ModelName(SourceTable.Name)+"Mapper."+"java");
+    CreateTemplate<TemplateService>(SourceTable, "java."+RootTableSpaceName+".service", ServiceName(SourceTable.Name)+"."+"java");
+    CreateTemplate<TemplateController>(SourceTable, "java."+RootTableSpaceName+".controller", ControllerName(SourceTable.Name)+"."+"java");
+    CreateTemplate<TemplateJsp>(SourceTable, "webapp.jsp."+StringUtil.ToCamelCase(SourceTable.Name.ToLower()), "list.jsp");
+    CreateTemplate<TemplateJsp_edit>(SourceTable, "webapp.jsp."+StringUtil.ToCamelCase(SourceTable.Name.ToLower()), "edit.jsp");
+    
+    CreateTemplate<TemplateFlexModel>(SourceTable,  "flex.src."+RootTableSpaceName+".flex.entity", ModelName(SourceTable.Name)+"."+"as");
+    CreateTemplate<TemplateFlexModule>(SourceTable, "flex.src.module.",  ModelName(SourceTable.Name)+"Form."+"mxml");
+    CreateTemplate<TemplateFlexForm>(SourceTable, "flex.src.module.",  ModelName(SourceTable.Name)+"Module."+"mxml");
+}
+
+
+///  输出模块
+public void CreateTemplate<T>(TableSchema tb, string path, string filename)
 {
-    // 判断文最外层目录是否存在,否则创建 
-    if(Directory.Exists(OutputPath) == false)
+    path = OutputPath +"/"+ path.Replace(".",@"/");
+    if(Directory.Exists(path) == false)
     {
-        Directory.CreateDirectory(OutputPath);
+        Directory.CreateDirectory(path);
     }
-
-	CreateTemplateModel(SourceTable);
-	CreateTemplateDaoXml(SourceTable);
-    CreateTemplateDao(SourceTable);
-    CreateTemplateService(SourceTable);
-    CreateTemplateController(SourceTable);
-	CreateTemplateJsp(SourceTable);
-	CreateTemplateJsp_edit(SourceTable);
-    
-}
-
-///  输出 Model 模块
-public void CreateTemplateModel( TableSchema tb)
-{
-	String package = "java."+RootTableSpaceName;
-	string strFileName = GetFileName(OutputPath, package, "entity"  ,ModelName(tb.Name),"java");
+    path = path +"/"+ filename;
         
 	/// 创建文件
-    FileStream fs = new FileStream(strFileName,FileMode.Create,FileAccess.Write);
+    FileStream fs = new FileStream(path,FileMode.Create,FileAccess.Write);
     StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.UTF8);
         
     // 调用子模板进行创建 
-    TemplateModel template = new TemplateModel();
+    T template = System.Activator.CreateInstance<T>();
     
-    // 子模板所需要的入参
-    template.SourceTable = tb;
-	template.RootTableSpaceName = this.RootTableSpaceName;
-   
-    /// 输出子模板文档
-    template.Render(sw);
-    
-	/// 结束
-    //sw.WriteLine("//end of class " + tb.Name);
-    // 关闭输出流
+    Type type = typeof(T);
+    type.GetProperty("SourceTable").SetValue(template, tb,null);
+    type.GetProperty("RootTableSpaceName").SetValue(template, this.RootTableSpaceName,null);
+    type.GetMethod("Render").Invoke(template, new Object[]{sw});
     sw.Close();
     //关闭文档
     fs.Close();
-}
-
-
-
-///  输出 Dao 模块
-public void CreateTemplateDao( TableSchema tb)
-{
-	String package = "java."+RootTableSpaceName;
-	string strFileName = GetFileName(OutputPath, package , "dao"  ,DaoName(tb.Name),"java");
-        
-	/// 创建文件
-    FileStream fs = new FileStream(strFileName,FileMode.Create,FileAccess.Write);
-    StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.UTF8);
-        
-    // 调用子模板进行创建 
-    TemplateDao template = new TemplateDao();
-    
-    // 子模板所需要的入参
-    template.SourceTable = tb;
-	template.RootTableSpaceName = this.RootTableSpaceName;
-   
-    /// 输出子模板文档
-    template.Render(sw);
-    
-	/// 结束
-    //sw.WriteLine("//end of class " + tb.Name);
-    // 关闭输出流
-    sw.Close();
-    //关闭文档
-    fs.Close();
-}
-
-///  输出 Dao xml
-public void CreateTemplateDaoXml( TableSchema tb)
-{
-	String package = "java."+RootTableSpaceName;
-	string strFileName = GetFileName(OutputPath, package , "dao"  ,ModelName(tb.Name)+"Mapper","xml");
-        
-	/// 创建文件
-    FileStream fs = new FileStream(strFileName,FileMode.Create,FileAccess.Write);
-    StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.UTF8);
-        
-    // 调用子模板进行创建 
-    TemplateDaoXml template = new TemplateDaoXml();
-    
-    // 子模板所需要的入参
-    template.SourceTable = tb;
-	template.RootTableSpaceName = this.RootTableSpaceName;
-   
-    /// 输出子模板文档
-    template.Render(sw);
-    
-	/// 结束
-    //sw.WriteLine("//end of class " + tb.Name);
-    // 关闭输出流
-    sw.Close();
-    //关闭文档
-    fs.Close();
-}
-
-///  输出 Dao xml
-public void CreateTemplateService( TableSchema tb)
-{
-	String package = "java."+RootTableSpaceName;
-	string strFileName = GetFileName(OutputPath, package , "service"  ,ServiceName(tb.Name),"java");
-        
-	/// 创建文件
-    FileStream fs = new FileStream(strFileName,FileMode.Create,FileAccess.Write);
-    StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.UTF8);
-        
-    // 调用子模板进行创建 
-    TemplateService template = new TemplateService();
-    
-    // 子模板所需要的入参
-    template.SourceTable = tb;
-	template.RootTableSpaceName = this.RootTableSpaceName;
-   
-    /// 输出子模板文档
-    template.Render(sw);
-    
-	/// 结束
-    //sw.WriteLine("//end of class " + tb.Name);
-    // 关闭输出流
-    sw.Close();
-    //关闭文档
-    fs.Close();
-}
-
-
-
-///  输出 Controller 模块
-public void CreateTemplateController( TableSchema tb)
-{
-	String package = "java."+RootTableSpaceName;
-	string strFileName = GetFileName(OutputPath, package , "controller"  ,ControllerName(tb.Name),"java");
-        
-	/// 创建文件
-    FileStream fs = new FileStream(strFileName,FileMode.Create,FileAccess.Write);
-    StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.UTF8);
-        
-    // 调用子模板进行创建 
-    TemplateController template = new TemplateController();
-    
-    // 子模板所需要的入参
-    template.SourceTable = tb;
-	template.RootTableSpaceName = this.RootTableSpaceName;
-   
-    /// 输出子模板文档
-    template.Render(sw);
-    
-	/// 结束
-    //sw.WriteLine("//end of class " + tb.Name);
-    // 关闭输出流
-    sw.Close();
-    //关闭文档
-    fs.Close();
-}
-
-
-
-///  输出 JSP 模块
-public void CreateTemplateJsp( TableSchema tb)
-{
-	String package = "webapp.jsp";
-	string strFileName = GetFileName(OutputPath, package , StringUtil.ToCamelCase(tb.Name.ToLower()), "list","jsp");
-        
-	/// 创建文件
-    FileStream fs = new FileStream(strFileName,FileMode.Create,FileAccess.Write);
-    StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.UTF8);
-        
-    // 调用子模板进行创建 
-    TemplateJsp template = new TemplateJsp();
-    
-    // 子模板所需要的入参
-    template.SourceTable = tb;
-	template.RootTableSpaceName = this.RootTableSpaceName;
-   
-    /// 输出子模板文档
-    template.Render(sw);
-    
-	/// 结束
-    //sw.WriteLine("//end of class " + tb.Name);
-    // 关闭输出流
-    sw.Close();
-    //关闭文档
-    fs.Close();
-}
-
-///  输出 JSP 模块
-public void CreateTemplateJsp_edit( TableSchema tb)
-{
-	String package = "webapp.jsp";
-	string strFileName = GetFileName(OutputPath, package , StringUtil.ToCamelCase(tb.Name.ToLower()), "edit","jsp");
-        
-	/// 创建文件
-    FileStream fs = new FileStream(strFileName,FileMode.Create,FileAccess.Write);
-    StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.UTF8);
-        
-    // 调用子模板进行创建 
-    TemplateJsp_edit template = new TemplateJsp_edit();
-    
-    // 子模板所需要的入参
-    template.SourceTable = tb;
-	template.RootTableSpaceName = this.RootTableSpaceName;
-   
-    /// 输出子模板文档
-    template.Render(sw);
-    
-	/// 结束
-    //sw.WriteLine("//end of class " + tb.Name);
-    // 关闭输出流
-    sw.Close();
-    //关闭文档
-    fs.Close();
+    Response.WriteLine(path);
 }
 
 </script>

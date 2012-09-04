@@ -29,7 +29,6 @@
 	<%@ Register Name="TemplateJsp_index" Template="TemplateJsp_index.cst" %>
 <%
     RenderMain();
-	SafeCopyFileTo("./resoureces/pom.xml" , OutputPath+"/src/dd/dd/dd");
 %>
 
 Done and Finish  !!!!!!!!!!!!!!
@@ -96,25 +95,12 @@ public void CreateTemplateJsp_index()
 {
 	String package = "webapp";
 	string strFileName = GetFileName(OutputPath, package , "", "index","jsp");
-        
-	/// 创建文件
     FileStream fs = new FileStream(strFileName,FileMode.Create,FileAccess.Write);
-    StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.UTF8);
-        
-    // 调用子模板进行创建 
-    TemplateJsp_index template = new TemplateJsp_index();
-    
-    // 子模板所需要的入参
-    template.SourceData = SourceData;
-   
-    /// 输出子模板文档
-    template.Render(sw);
-    
-	/// 结束
-    //sw.WriteLine("//end of class " + tb.Name);
-    // 关闭输出流
+    StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.UTF8);        
+    TemplateJsp_index template = new TemplateJsp_index();    
+    template.SourceData = SourceData;   
+    template.Render(sw);   
     sw.Close();
-    //关闭文档
     fs.Close();
 }
 

@@ -45,12 +45,21 @@ String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
 	
 	<fx:Script>
 		<![CDATA[
-			import org.breeze.core.web.FormEvent;
-			import org.breeze.flex.entity.<%=Mode%>;
-
+			import mx.collections.ArrayCollection;
+			import mx.containers.TitleWindow;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.managers.PopUpManager;
 			import mx.rpc.events.FaultEvent;
 			import mx.rpc.events.ResultEvent;
-			import mx.controls.Alert;
+			
+			import org.breeze.core.web.FormEvent;
+			import org.breeze.core.web.Page;
+			import org.breeze.core.web.PageEvent;
+            
+			import org.breeze.flex.entity.<%=Mode%>;
+
 			
 			[Bindable] public var <%=mode%>:<%=Mode%>;
 			
@@ -67,11 +76,11 @@ String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
                 <% }%>
 				if (<%=mode%>.<%=key%> == 0)
 				{
-					ro.create(<%=mode%>);	
+					ro.save(<%=mode%>);	
 				}
 				else
 				{
-					ro.update(<%=mode%>);
+					ro.save(<%=mode%>);
 				}
 			}			
 			
