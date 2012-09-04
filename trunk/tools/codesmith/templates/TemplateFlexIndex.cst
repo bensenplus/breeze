@@ -48,7 +48,7 @@ public TableSchemaCollection GetTableCollection(DatabaseSchema dataBase)
         <% TableSchemaCollection tables = GetTableCollection(SourceData);
 			foreach(TableSchema dt in tables)
 			{ %>
-           <s:ModuleLoader width="100%" height="100%" label="<%=ModelName(dt.Name)%>" url="./module/<%=ModelName(dt.Name)%>Moudle.swf"></s:ModuleLoader>
+           <s:ModuleLoader width="100%" height="100%" label="<%=ModelName(dt.Name)%>" url="./module/<%=ModelName(dt.Name)%>Module.swf"></s:ModuleLoader>
 		<%} %>
 	</mx:TabNavigator>
 </s:Application>

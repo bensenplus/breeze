@@ -56,16 +56,16 @@ Done and Finish  !!!!!!!!!!!!!!!!!!!!!!!!
 public void RenderMain()
 {    
     CreateTemplate<TemplateModel>(SourceTable, "java."+RootTableSpaceName+".entity", ModelName(SourceTable.Name)+"."+"java");
-    CreateTemplate<TemplateDao>(SourceTable, "java."+RootTableSpaceName+".dao", ModelName(SourceTable.Name)+"."+"java");
-    CreateTemplate<TemplateDaoXml>(SourceTable, "java."+RootTableSpaceName+".dao", ModelName(SourceTable.Name)+"Mapper."+"java");
+    CreateTemplate<TemplateDao>(SourceTable, "java."+RootTableSpaceName+".dao", ModelName(SourceTable.Name)+"Mapper."+"java");
+    CreateTemplate<TemplateDaoXml>(SourceTable, "java."+RootTableSpaceName+".dao", ModelName(SourceTable.Name)+"Mapper."+"xml");
     CreateTemplate<TemplateService>(SourceTable, "java."+RootTableSpaceName+".service", ServiceName(SourceTable.Name)+"."+"java");
     CreateTemplate<TemplateController>(SourceTable, "java."+RootTableSpaceName+".controller", ControllerName(SourceTable.Name)+"."+"java");
     CreateTemplate<TemplateJsp>(SourceTable, "webapp.jsp."+StringUtil.ToCamelCase(SourceTable.Name.ToLower()), "list.jsp");
     CreateTemplate<TemplateJsp_edit>(SourceTable, "webapp.jsp."+StringUtil.ToCamelCase(SourceTable.Name.ToLower()), "edit.jsp");
     
     CreateTemplate<TemplateFlexModel>(SourceTable,  "flex.src."+RootTableSpaceName+".flex.entity", ModelName(SourceTable.Name)+"."+"as");
-    CreateTemplate<TemplateFlexModule>(SourceTable, "flex.src.module.",  ModelName(SourceTable.Name)+"Form."+"mxml");
-    CreateTemplate<TemplateFlexForm>(SourceTable, "flex.src.module.",  ModelName(SourceTable.Name)+"Module."+"mxml");
+    CreateTemplate<TemplateFlexModule>(SourceTable, "flex.src.module.",  ModelName(SourceTable.Name)+"Module."+"mxml");
+    CreateTemplate<TemplateFlexForm>(SourceTable, "flex.src.module.",  ModelName(SourceTable.Name)+"Form."+"mxml");
 }
 
 

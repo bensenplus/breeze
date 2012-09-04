@@ -35,56 +35,50 @@ String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
 <s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
 		  xmlns:s="library://ns.adobe.com/flex/spark"
 		  xmlns:mx="library://ns.adobe.com/flex/mx"
-		  width="100%" height="100%">
+          xmlns:web="org.breeze.core.web.*"
+		  width="100%" height="100%"
+          initialize="module_initializeHandler(event)">
 	
 	<fx:Script>
-		<![CDATA[
-			import org.breeze.core.web.FormEvent;
-			import org.breeze.core.web.Page;
-			import <%=RootTableSpaceName%>.flex.entity.<%=Mode%>;
-			
+		<![CDATA[			
 			import mx.collections.ArrayCollection;
+			import mx.containers.TitleWindow;
 			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.managers.PopUpManager;
 			import mx.rpc.events.FaultEvent;
 			import mx.rpc.events.ResultEvent;
 			
-			[Bindable] private var <%=mode%>s:ArrayCollection;
+			import org.breeze.core.web.FormEvent;
+			import org.breeze.core.web.Page;
+			import org.breeze.core.web.PageEvent;
+            			
+            import <%=RootTableSpaceName%>.flex.entity.<%=Mode%>;
 			
-			private function resultHandler(event:ResultEvent):void
-			{
-				<%=mode%>s = event.result as ArrayCollection
-			}
+			[Bindable] private var collection:ArrayCollection;
 			
-			private function faultHandler(event:FaultEvent):void
+		    private function faultHandler(event:FaultEvent):void
 			{
 				Alert.show(event.fault.faultDetail);
 			}
 			
-			public function openRecord(<%=mode%>:<%=Mode%>):void
+			
+			protected function module_initializeHandler(event:FlexEvent):void
 			{
-				var children:Array = tn.getChildren();
-				for (var i:int = 0; i<children.length; i++)
-				{
-					if (<%=Mode%>Form(children[i]).<%=mode%>.<%=key%> == <%=mode%>.<%=key%>)
-					{
-						tn.selectedChild = children[i];
-						return;
-					}
-				}
+				_page.addEventListener(PageEvent.PAGED, pageHandler);
 				
-				var form:<%=Mode%>Form = new <%=Mode%>Form();
-				form.addEventListener(FormEvent.CREATED, <%=mode%>CreatedHandler);
-				form.addEventListener(FormEvent.UPDATED, <%=mode%>UpdatedHandler);
-				form.addEventListener(FormEvent.DELETED, <%=mode%>DeletedHandler);
-				tn.addChild(form);
-				form.<%=mode%> = <%=mode%>;
-				tn.selectedChild = form;
 			}
-
+			
 			private function search():void
 			{
-				var page:Page = new Page();
-				ro.select(page);
+				ro.count();
+				ro.select(_page.page);
+			}
+			
+			private function pageHandler(event:PageEvent):void
+			{
+				ro.select(event.page);				
 			}
 			
 			private function <%=mode%>CreatedHandler(event:FormEvent):void
@@ -99,10 +93,34 @@ String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
 			
 			private function <%=mode%>DeletedHandler(event:FormEvent):void
 			{
-				tn.removeChild(event.target as <%=Mode%>Form);
 				search();				
 			}
 			
+			private function resultHandler(event:ResultEvent):void
+			{
+				collection = event.result as ArrayCollection;
+			}
+			
+			private function countHandler(event:ResultEvent):void
+			{
+				_page.setTotal(Number(event.result));
+			}
+			
+			public function popupRecord(<%=mode%>:<%=Mode%>):void
+			{
+				var form:<%=Mode%>Form = new  <%=Mode%>Form();   
+				form.showCloseButton = true;
+				form.addEventListener(CloseEvent.CLOSE, form.titleWindow_close); 				
+				form.addEventListener(FormEvent.CREATED, <%=mode%>CreatedHandler);
+				form.addEventListener(FormEvent.UPDATED, <%=mode%>UpdatedHandler);
+				form.addEventListener(FormEvent.DELETED, <%=mode%>DeletedHandler);
+				
+				form.<%=mode%> = <%=mode%>;
+				form.owner=this;
+				PopUpManager.addPopUp(form, this, true);
+				PopUpManager.centerPopUp(form);
+			}			
+
 			
 		]]>
 	</fx:Script>
@@ -110,25 +128,24 @@ String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
 	<fx:Declarations>
 		<s:RemoteObject id="ro" destination="<%=mode%>Service" fault="faultHandler(event)" endpoint="http://localhost:8080/breeze/messagebroker/amf">
 			<s:method name="select" result="resultHandler(event)"/>
+			<s:method name="count" result="countHandler(event)"/>
 		</s:RemoteObject>
 	</fx:Declarations>
 	
-
-	<s:TextInput id="searchStr"/>
-	<s:Button x="143" y="2" label="Search" click="search()"/>
-	<mx:Button x="221" y="2" label="New <%=mode%>" click="openRecord(new <%=Mode%>())"/>
-
-	
-	<mx:VDividedBox top="40" width="100%" height="100%">
-		<mx:DataGrid id="dg" width="100%" height="50%" dataProvider="{<%=mode%>s}"
-					 doubleClick="openRecord(dg.selectedItem as <%=Mode%>)" doubleClickEnabled="true">
+	<mx:VDividedBox width="100%" height="100%">
+		<s:HGroup width="100%" height="30">
+			<s:Button label="Search" click="search()"/>
+			<mx:Button label="New" click="popupRecord(new <%=Mode%>())"/>
+		</s:HGroup>
+		<mx:DataGrid id="dg" width="100%" height="534" dataProvider="{collection}"
+					 doubleClick="popupRecord(dg.selectedItem as <%=Mode%>)" doubleClickEnabled="true">
 			<mx:columns>
 			<% foreach (ColumnSchema column in this.SourceTable.Columns) {%>
     			<mx:DataGridColumn dataField="<%= fieldName(column.Name) %>" headerText="<%=column.Description%>" />  
-  			<% }%>
+  			<% }%> 
 			</mx:columns>
 		</mx:DataGrid>
-		<mx:TabNavigator id="tn" width="100%" height="50%"/>
+		<web:PageControl id="_page"> </web:PageControl>
 	</mx:VDividedBox>
 	
 </s:Module>

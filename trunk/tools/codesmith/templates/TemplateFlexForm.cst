@@ -32,10 +32,10 @@ String Key = JavaAlias[SourceTable.Columns[0].SystemType.FullName];
 String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
 %>
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:fx="http://ns.adobe.com/mxml/2009" 
+<mx:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		   xmlns:s="library://ns.adobe.com/flex/spark" 
-		   xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%"
-		   label="{<%=mode%>.<%=key%>>0?<%=mode%>.<%=key%>:'New Record'}">
+		   xmlns:mx="library://ns.adobe.com/flex/mx" width="800" height="600"
+		   label="{<%=mode%>.<%=key%>==0?<%=mode%>.<%=key%>:'New Record'}">
 
 	<fx:Metadata>
 		[Event(name="Created", type="org.breeze.core.web.FormEvent")]
@@ -45,18 +45,13 @@ String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
 	
 	<fx:Script>
 		<![CDATA[
-			import mx.collections.ArrayCollection;
-			import mx.containers.TitleWindow;
-			import mx.controls.Alert;
-			import mx.events.CloseEvent;
-			import mx.events.FlexEvent;
-			import mx.managers.PopUpManager;
+			import org.breeze.core.web.FormEvent;
+			
 			import mx.rpc.events.FaultEvent;
 			import mx.rpc.events.ResultEvent;
-			
-			import org.breeze.core.web.FormEvent;
-			import org.breeze.core.web.Page;
-			import org.breeze.core.web.PageEvent;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.managers.PopUpManager;
             
 			import org.breeze.flex.entity.<%=Mode%>;
 
@@ -65,13 +60,16 @@ String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
 			
 			private function save():void
 			{
-                <% foreach (ColumnSchema column in this.SourceTable.Columns) {%>  
-					<% if (FlexAlias[column.SystemType.FullName].Equals("Number")) { %> 
-						<%=mode%>.<%= fieldName(column.Name) %> = Number(_<%=fieldName(column.Name)%>.text);
-					<%} else if (FlexAlias[column.SystemType.FullName].Equals("Date")) { %> 
-						<%=mode%>.<%= fieldName(column.Name) %> = Date(_<%=fieldName(column.Name)%>.text);
+                <% foreach (ColumnSchema column in this.SourceTable.Columns) {
+                    string type = FlexAlias[column.SystemType.FullName];
+                %>
+                    
+					<% if (type.Equals("Number") || type.Equals("int")) { %> 
+						<%=mode%>.<%= fieldName(column.Name) %> = Number(txt_<%=fieldName(column.Name)%>.text);
+					<%} else if (type.Equals("Date")) { %> 
+						<%=mode%>.<%= fieldName(column.Name) %> = Date(txt_<%=fieldName(column.Name)%>.text);
 					<%}else{%>
-						<%=mode%>.<%= fieldName(column.Name) %> = _<%=fieldName(column.Name)%>.text;
+						<%=mode%>.<%= fieldName(column.Name) %> = txt_<%=fieldName(column.Name)%>.text;
 					<%}%>	             
                 <% }%>
 				if (<%=mode%>.<%=key%> == 0)
@@ -97,12 +95,19 @@ String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
 			
 			private function update_resultHandler(event:ResultEvent):void
 			{
-				dispatchEvent(new FormEvent(FormEvent.UPDATED, <%=mode%>));			
+				dispatchEvent(new FormEvent(FormEvent.UPDATED, <%=mode%>));
+				PopUpManager.removePopUp(this);
 			}
 			
 			private function remove_resultHandler(event:ResultEvent):void
 			{
-				dispatchEvent(new FormEvent(FormEvent.DELETED, <%=mode%>));			
+				dispatchEvent(new FormEvent(FormEvent.DELETED, <%=mode%>));
+				PopUpManager.removePopUp(this);
+			}
+			
+			public function titleWindow_close(event:CloseEvent):void
+			{
+				PopUpManager.removePopUp(this);
 			}
 			
 			private function faultHandler(event:FaultEvent):void
@@ -115,8 +120,8 @@ String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
 	
 	<fx:Declarations>
 		<mx:RemoteObject id="ro" destination="<%=service%>" fault="faultHandler(event)" endpoint="http://localhost:8080/breeze/messagebroker/amf">
-			<mx:method name="create" result="create_resultHandler(event)"/>
-			<mx:method name="update" result="update_resultHandler(event)"/>
+			<mx:method name="save" result="create_resultHandler(event)"/>
+			<mx:method name="save" result="update_resultHandler(event)"/>
 			<mx:method name="remove" result="remove_resultHandler(event)"/>
 		</mx:RemoteObject>
 	</fx:Declarations>
@@ -124,7 +129,7 @@ String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
 	<mx:Form>
          <% foreach (ColumnSchema column in this.SourceTable.Columns) {%>    
             <mx:FormItem label="<%=column.Description%>">
-			    <mx:TextInput id="_<%=fieldName(column.Name)%>" text="{<%=mode%>.<%= fieldName(column.Name) %>}" enabled="true"/>
+			    <mx:TextInput id="txt_<%=fieldName(column.Name)%>" text="{<%=mode%>.<%= fieldName(column.Name) %>}" enabled="true"/>
 		   </mx:FormItem>
          <% }%>
 	</mx:Form>
@@ -135,5 +140,5 @@ String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
 		<s:Button label="Delete" click="deleteItem()"/>
 	</s:HGroup>
 
-</mx:Canvas>
+</mx:TitleWindow>
 
