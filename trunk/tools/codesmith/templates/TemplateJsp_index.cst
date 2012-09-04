@@ -37,7 +37,7 @@ public TableSchemaCollection GetTableCollection(DatabaseSchema dataBase)
 <body>
 	<div id="left">
 		<ul>
-			<li><a href="./j_spring_security_logout">logout</a></li>
+			<li><a href="./flash/index">flash</a></li>
 		<% 
 			TableSchemaCollection tables = GetTableCollection(SourceData);
 			/// 重复调用单个的子模板

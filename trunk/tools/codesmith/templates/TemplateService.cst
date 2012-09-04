@@ -52,9 +52,11 @@ public class <%=Service%> {
     @Resource(name = "<%=dao%>")
 	private <%=Dao%> <%=dao%>;
 
+	public int count(){
+		return <%=dao%>.count();
+	}
 
 	public List<<%=Mode%>> select(Page page) {
-        page.setCount(<%=dao%>.count());
 		List<<%=Mode%>> list = <%=dao%>.select(page);
 		return list;
 	}

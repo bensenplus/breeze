@@ -55,6 +55,7 @@ public class <%=Controller%> {
 
     @RequestMapping("/list")
 	public String list(ModelMap model, Page page) {
+		page.setCount(<%=service%>.count());
 		List<<%=Mode%>> list = <%=service%>.select(page);
 		model.addAttribute("list", list);
 		model.addAttribute("page", page);
