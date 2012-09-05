@@ -23,27 +23,23 @@
 	xmlns:jaxws="http://cxf.apache.org/jaxws" 
 	xsi:schemaLocation=
 	  "http://www.springframework.org/schema/mvc 
-	    http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+	    http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
 		http://www.springframework.org/schema/beans 
-		http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 		http://www.springframework.org/schema/context 
-		http://www.springframework.org/schema/context/spring-context-3.1.xsd
+		http://www.springframework.org/schema/context/spring-context-3.0.xsd
 		http://www.springframework.org/schema/tx   
-        http://www.springframework.org/schema/tx/spring-tx-3.1.xsd  
+        http://www.springframework.org/schema/tx/spring-tx-3.0.xsd  
         http://cxf.apache.org/jaxws 
         http://cxf.apache.org/schemas/jaxws.xsd"
 		default-autowire="byName" default-lazy-init="true">
 
 	<description>Spring settings</description>
 	
+	<context:component-scan base-package="org.breeze"></context:component-scan>
+	
 	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
-	<context:component-scan base-package="org.breeze">
-<!-- 		<context:include-filter type="regex" expression="org.breeze\..*?\.dao\..*"/>
-		<context:include-filter type="regex" expression="org.breeze\..*?\.security\..*"/>
-		<context:include-filter type="regex" expression="org.breeze\..*?\.service\..*"/>
-		<context:include-filter type="regex" expression="org.breeze\..*?\.controller\..*"/> -->
-	</context:component-scan>
 
     <!-- transaction manager, use JtaTransactionManager for global tx -->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
@@ -63,31 +59,30 @@
 		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />
 	</mvc:interceptors>
 	
+	<mvc:annotation-driven/>
+ 	
+   <mvc:default-servlet-handler/>
+	
 	<mvc:resources mapping="/resources/**" location="/resources/" />
 	
-	<bean id="propertyConfigurer" 	class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
 			<list>
 				<value>classpath:common-web.properties</value>
 			</list>
 		</property>
 	</bean>
-
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-		<!-- <property name="url" value="jdbc:mysql://192.168.134.132:3306/breeze" />
-		<property name="username" value="breeze" />
-		<property name="password" value="breeze" /> -->
-		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
-		<property name="url" value="jdbc:oracle:thin:@172.29.129.86:1521:empidev" />
-		<property name="username" value="hcmstest" />
-		<property name="password" value="hcmstest" />
-		<property name="maxIdle" value="5" />
-		<property name="maxActive" value="40" />
-		<property name="defaultAutoCommit" value="true" />
-		<property name="timeBetweenEvictionRunsMillis" value="3600000" />
-		<property name="minEvictableIdleTimeMillis" value="3600000" />
-	</bean>
-
+	
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+       <property name="driverClass" value="${jdbc.driverClassName}"></property>
+       <property name="jdbcUrl" value="${jdbc.url}"></property>
+       <property name="user" value="${jdbc.username}"></property>
+       <property name="password" value="${jdbc.password}"></property>       
+       <property name="maxPoolSize" value="${pool.max}"></property>
+       <property name="minPoolSize" value="${pool.min}"></property>
+       <property name="initialPoolSize" value="${pool.initial}"></property>
+       <property name="maxIdleTime" value="${pool.idle}"></property> 
+   </bean>
 	
     <!-- enable transaction demarcation with annotations -->
     <bean id="txManager"  class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
@@ -96,7 +91,7 @@
 	<tx:annotation-driven transaction-manager="txManager"/>
 	
     <!-- define the SqlSessionFactory -->
-    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    <bean id="_sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
         <property name="typeAliasesPackage" value="org.breeze.entity" />
         <!-- <property name="configLocation" value="classpath:mybatis.cfg.xml"/>  -->
@@ -105,6 +100,7 @@
     <!-- scan for mappers and let them be autowired -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="org.breeze.dao" />
+        <property name="sqlSessionFactoryBeanName" value="_sqlSessionFactory" />
     </bean>
     
 </beans>
