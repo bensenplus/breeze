@@ -32,7 +32,11 @@ public class Page {
 	}
 
 	public int getStart() {
-		start = page * size;
+		if(page >0){
+			start = (page-1) * size;
+		}else{
+			start = 0;
+		}
 		return start;
 	}	  
 
