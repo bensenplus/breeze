@@ -31,8 +31,12 @@ public TableSchemaCollection GetTableCollection(DatabaseSchema dataBase)
 			   xmlns:flex="org.breeze.flex.*"
 			   width="100%" height="100%">
 	<fx:Script>
-		<![CDATA[			
+		<![CDATA[
+        	import mx.managers.PopUpManager;
+			import mx.managers.DragManager;   
 			
+			private var popUpManager:PopUpManager;   
+			private var dragManager:DragManager;			
 		]]>
 		
 		

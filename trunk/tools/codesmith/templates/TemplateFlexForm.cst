@@ -128,7 +128,7 @@ String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
 
 	<mx:Form>
          <% foreach (ColumnSchema column in this.SourceTable.Columns) {%>    
-            <mx:FormItem label="<%=column.Description%>">
+            <mx:FormItem label="<%=column.Description.Length==0?StringUtil.ToPascalCase(column.Name):column.Description%>">
 			    <mx:TextInput id="txt_<%=fieldName(column.Name)%>" text="{<%=mode%>.<%= fieldName(column.Name) %>}" enabled="true"/>
 		   </mx:FormItem>
          <% }%>
