@@ -20,9 +20,46 @@
 	<s:controlBarContent>
 	</s:controlBarContent>
 	<mx:TabNavigator x="0" y="0" width="100%" height="100%">
-		<s:ModuleLoader width="100%" height="100%" label="Clinic" url="./module/ClinicMoudle.swf">
-		</s:ModuleLoader>
-		<s:ModuleLoader width="100%" height="100%" label="Consultation" url="./module/ConsultationMoudle.swf">
-		</s:ModuleLoader>
+		<s:ModuleLoader width="100%" height="100%" label="Accezz" url="./module/AccezzModule.swf"></s:ModuleLoader>
+		<s:ModuleLoader width="100%" height="100%" label="ActionControl" url="./module/ActionControlModule.swf"></s:ModuleLoader>
+		<s:ModuleLoader width="100%" height="100%" label="Activity" url="./module/ActivityModule.swf"></s:ModuleLoader>
+		<s:ModuleLoader width="100%" height="100%" label="ActCfg" url="./module/ActCfgModule.swf"></s:ModuleLoader>
+		<s:ModuleLoader width="100%" height="100%" label="Attachment" url="./module/AttachmentModule.swf"></s:ModuleLoader>
+		<s:ModuleLoader width="100%" height="100%" label="Clinic" url="./module/ClinicModule.swf"></s:ModuleLoader>
+		<s:ModuleLoader width="100%" height="100%" label="Conprocess" url="./module/ConprocessModule.swf"></s:ModuleLoader>
+		<s:ModuleLoader width="100%" height="100%" label="Consultation" url="./module/ConsultationModule.swf"></s:ModuleLoader>
+		<s:ModuleLoader width="100%" height="100%" label="ConsultationClinic" url="./module/ConsultationClinicModule.swf"></s:ModuleLoader>
+		<s:ModuleLoader width="100%" height="100%" label="ConsultationDoctor" url="./module/ConsultationDoctorModule.swf"></s:ModuleLoader>
+		<s:ModuleLoader width="100%" height="100%" label="CvDicmeta" url="./module/CvDicmetaModule.swf"></s:ModuleLoader>
+		<s:ModuleLoader width="100%" height="100%" label="CvDictionary" url="./module/CvDictionaryModule.swf"></s:ModuleLoader>
+		<s:ModuleLoader width="100%" height="100%" label="Doctor" url="./module/DoctorModule.swf"></s:ModuleLoader>
+		<s:ModuleLoader width="100%" height="100%" label="DoctorSuggestion" url="./module/DoctorSuggestionModule.swf"></s:ModuleLoader>
+		<s:ModuleLoader width="100%" height="100%" label="Evaluation" url="./module/EvaluationModule.swf"></s:ModuleLoader>
+		<s:ModuleLoader width="100%" height="100%" label="EvaluationItem" url="./module/EvaluationItemModule.swf"></s:ModuleLoader>
+		<s:ModuleLoader width="100%" height="100%" label="EvaluationOption" url="./module/EvaluationOptionModule.swf"></s:ModuleLoader>
+		<s:ModuleLoader width="100%" height="100%" label="FieldControl" url="./module/FieldControlModule.swf"></s:ModuleLoader>
+		<s:ModuleLoader width="100%" height="100%" label="Hospital" url="./module/HospitalModule.swf"></s:ModuleLoader>
+		<s:ModuleLoader width="100%" height="100%" label="Log" url="./module/LogModule.swf"></s:ModuleLoader>
+		<s:ModuleLoader width="100%" height="100%" label="Menu" url="./module/MenuModule.swf"></s:ModuleLoader>
+		<s:ModuleLoader width="100%" height="100%" label="MessageNodeConfig" url="./module/MessageNodeConfigModule.swf"></s:ModuleLoader>
+		<s:ModuleLoader width="100%" height="100%" label="Notice" url="./module/NoticeModule.swf"></s:ModuleLoader>
+		<s:ModuleLoader width="100%" height="100%" label="Patient" url="./module/PatientModule.swf"></s:ModuleLoader>
+		<s:ModuleLoader width="100%" height="100%" label="Poll" url="./module/PollModule.swf"></s:ModuleLoader>
+		<s:ModuleLoader width="100%" height="100%" label="PollItem" url="./module/PollItemModule.swf"></s:ModuleLoader>
+		<s:ModuleLoader width="100%" height="100%" label="ReceivedMessage" url="./module/ReceivedMessageModule.swf"></s:ModuleLoader>
+		<s:ModuleLoader width="100%" height="100%" label="Role" url="./module/RoleModule.swf"></s:ModuleLoader>
+		<s:ModuleLoader width="100%" height="100%" label="RoleAccess" url="./module/RoleAccessModule.swf"></s:ModuleLoader>
+		<s:ModuleLoader width="100%" height="100%" label="Setting" url="./module/SettingModule.swf"></s:ModuleLoader>
+		<s:ModuleLoader width="100%" height="100%" label="SiteConfig" url="./module/SiteConfigModule.swf"></s:ModuleLoader>
+		<s:ModuleLoader width="100%" height="100%" label="Suggestion" url="./module/SuggestionModule.swf"></s:ModuleLoader>
+		<s:ModuleLoader width="100%" height="100%" label="SuggestionVer" url="./module/SuggestionVerModule.swf"></s:ModuleLoader>
+		<s:ModuleLoader width="100%" height="100%" label="SysControl" url="./module/SysControlModule.swf"></s:ModuleLoader>
+		<s:ModuleLoader width="100%" height="100%" label="Task" url="./module/TaskModule.swf"></s:ModuleLoader>
+		<s:ModuleLoader width="100%" height="100%" label="Template" url="./module/TemplateModule.swf"></s:ModuleLoader>
+		<s:ModuleLoader width="100%" height="100%" label="Tempmeta" url="./module/TempmetaModule.swf"></s:ModuleLoader>
+		<s:ModuleLoader width="100%" height="100%" label="Uaccess" url="./module/UaccessModule.swf"></s:ModuleLoader>
+		<s:ModuleLoader width="100%" height="100%" label="Users" url="./module/UsersModule.swf"></s:ModuleLoader>
+		<s:ModuleLoader width="100%" height="100%" label="UserRole" url="./module/UserRoleModule.swf"></s:ModuleLoader>
+		<s:ModuleLoader width="100%" height="100%" label="Workday" url="./module/WorkdayModule.swf"></s:ModuleLoader>
 	</mx:TabNavigator>
 </s:Application>

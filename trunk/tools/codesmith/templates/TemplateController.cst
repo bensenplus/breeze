@@ -75,8 +75,8 @@ public class <%=Controller%> {
 		return "redirect:list";
 	}
     
-    @RequestMapping("/delete")
-	public String delete(<%=GetKeys(SourceTable,true)%>) {
+    @RequestMapping("/remove")
+	public String remove(<%=GetKeys(SourceTable,true)%>) {
 		<%=service%>.delete(<%=GetKeys(SourceTable,false)%>);
 		return "redirect:list";
 	}

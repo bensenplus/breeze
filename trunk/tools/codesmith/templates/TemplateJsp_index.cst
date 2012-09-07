@@ -52,7 +52,7 @@ public TableSchemaCollection GetTableCollection(DatabaseSchema dataBase)
            <% TableSchemaCollection tables = GetTableCollection(SourceData);
 			foreach(TableSchema dt in tables)
 			{ %>
-			<dd><a href="./<%=StringUtil.ToCamelCase(dt.Name.ToLower())%>/list" target="mainframe"><%=StringUtil.ToCamelCase(dt.Name.ToLower())%></a></dd>
+			<dd><a href="./<%=StringUtil.ToCamelCase(dt.Name.ToLower())%>/list" target="mainframe"><%=StringUtil.ToPascalCase(dt.Name.ToLower())%></a></dd>
 		    <%} %>
 	</dl>
 </div>
