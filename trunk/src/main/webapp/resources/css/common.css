@@ -1,72 +1,76 @@
-body { 
-font: normal 11px auto "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif; 
-color: #4f6b72; 
-//background: #E6EAE9; 
-} 
+/* Site
+   -------------------------------- */
 
-a { 
-color: #c75f3e; 
-} 
-
-#mytable { 
-width: 700px; 
-padding: 0; 
-margin: 0; 
-} 
-
-caption { 
-padding: 0 0 5px 0; 
-width: 700px; 
-font: italic 11px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif; 
-text-align: right; 
-} 
-
-th { 
-font: bold 11px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif; 
-color: #4f6b72; 
-border-right: 1px solid #C1DAD7; 
-border-bottom: 1px solid #C1DAD7; 
-border-top: 1px solid #C1DAD7; 
-letter-spacing: 2px; 
-text-transform: uppercase; 
-text-align: left; 
-padding: 6px 6px 6px 12px; 
-background: #CAE8EA no-repeat; 
-} 
-/*power by www.winshell.cn*/ 
-th.nobg { 
-border-top: 0; 
-border-left: 0; 
-border-right: 1px solid #C1DAD7; 
-background: none; 
-} 
-
-td { 
-/*border-right: 1px solid #C1DAD7;*/
-border-bottom: 1px solid #C1DAD7; 
-background: #fff; 
-font-size:14px; 
-padding: 6px 6px 6px 12px; 
-color: #4f6b72; 
-} 
-/*power by www.winshell.cn*/ 
-
-td.alt { 
-background: #F5FAFA; 
-color: #797268; 
-} 
-
-th.spec { 
-border-left: 1px solid #C1DAD7; 
-border-top: 0; 
-background: #fff no-repeat; 
-font: bold 10px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif; 
-} 
-
-th.specalt { 
-border-left: 1px solid #C1DAD7; 
-border-top: 0; 
-background: #f5fafa no-repeat; 
-font: bold 10px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif; 
-color: #797268; 
+body {
+	font-size: 62.5%;
+	font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
 }
+
+/* Layout
+   -------------------------------- */
+
+.left-nav {
+	position:absolute;
+	width: 170px;
+	 height:100%;
+	 border-right: 1px solid #eee;
+}
+
+.main-frame {
+	position:absolute;
+	 margin-left:171px;
+	 width: 100%;
+	 height:100%;
+}
+
+/* navi */
+
+.demos-nav, .demos-nav dl, .demos-nav dt, .demos-nav dd{
+	margin: 0;
+	padding: 0
+}
+
+.demos-nav {
+	float: left;
+	width: 170px;
+	font-size: 1.3em;
+}
+
+.demos-nav dd a {
+	border-bottom: 1px solid #F4F4F4;
+	display:block;
+	padding: 4px 3px 4px 8px;
+	font-size: 90%;
+	text-decoration: none;
+	color: #555 ;
+	margin:2px 0;
+	height:13px;
+}
+
+.demos-nav dd a:hover,
+.demos-nav dd a:focus,
+.demos-nav dd a:hover,
+.demos-nav dd a:focus {
+	background: #f3f3f3;
+	color:#000;
+	-moz-border-radius: 5px; -webkit-border-radius: 5px;
+}
+ .demos-nav dd a.selected {
+	background: #555;
+	color:#ffffff;
+	-moz-border-radius: 5px; -webkit-border-radius: 5px;
+}
+
+/* Table
+   -------------------------------- */
+table {width:100%;border-collapse:collapse;word-wrap:break-word;word-break:break-all; background:#fff; table-layout:inherit;margin:0 auto; padding:0; font-size:12px;}
+ .table-list{line-height:24px;border:1px solid #eee;border:0\9;}
+.table-list td,.table-list th{vertical-align:middle; border:1px solid #eee;word-wrap:break-word;overflow:hidden; }
+.table-list th{font-weight:normal;text-align:center;padding-left:4px;white-space:nowrap;}
+.table-list td{ padding-left:4px;word-wrap:break-word;overflow:hidden;}
+
+ .table-form{line-height:24px;border:1px solid #eee;border:0\9;}
+.table-form td,.table-form th{vertical-align:middle; border:1px solid #eee;word-wrap:break-word;overflow:hidden; }
+.table-form th{font-weight:normal;text-align:center;padding-left:4px;white-space:nowrap;}
+.table-form td{ padding-left:4px;word-wrap:break-word;overflow:hidden;}
+   
