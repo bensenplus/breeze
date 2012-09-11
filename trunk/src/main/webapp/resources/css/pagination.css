@@ -4,7 +4,7 @@
         
 .pagination a {
     text-decoration: none;
-	border: solid 1px #AAE;
+	border: solid 1px #eee;
 	color: #15B;
 }
 
@@ -19,13 +19,20 @@
 }
 
 .pagination .current {
-    background: #26B;
+    background: #888;
     color: #fff;
-	border: solid 1px #AAE;
+	border: solid 1px #eee;
 }
 
 .pagination .current.prev, .pagination .current.next{
 	color:#999;
 	border-color:#999;
 	background:#fff;
+}
+
+#pagehead{
+	clear:both;
+}
+#pagefoot{
+	clear:both;
 }

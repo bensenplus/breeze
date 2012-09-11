@@ -1,18 +1,16 @@
-﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+﻿
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <html>
 <head>
 <title>index</title>
-<link rel="stylesheet" href="./resources/css/common.css">
 <link rel="stylesheet" href="./resources/themes/base/jquery.ui.all.css">
+<link rel="stylesheet" href="./resources/css/common.css">
 <script  type="text/javascript" src="./resources/js/jquery-1.8.0.min.js"></script>
 <script  type="text/javascript" src="./resources/js/jquery-ui-1.8.23.custom.min.js"></script>
-<script type="text/javascript" src="../resources/js/jquery.pagination.js"></script>
 <script type="text/javascript">
 	$(function() {		
 		$('.left-nav a').click(function(ev) {
-			window.location.hash = this.href;
-			//loadPage(this.href);
+			//window.location.hash = "index.html";
 			$("#mainframe").attr("src", this.href);
 			$('.left-nav a.selected').removeClass('selected');
 			$(this).addClass('selected');
@@ -24,54 +22,34 @@
 <body>
 <div  class="left-nav">
 	<dl class="demos-nav">
-			<dd><a href="./flash/index.swf">flash</a></dd>
-			<dd><a href="./accezz/list" >accezz</a></dd>
-			<dd><a href="./actionControl/list" >actionControl</a></dd>
-			<dd><a href="./activity/list" >activity</a></dd>
-			<dd><a href="./actCfg/list" >actCfg</a></dd>
-			<dd><a href="./attachment/list" >attachment</a></dd>
-			<dd><a href="./clinic/list" >clinic</a></dd>
-			<dd><a href="./conprocess/list" >conprocess</a></dd>
-			<dd><a href="./consultation/list" >consultation</a></dd>
-			<dd><a href="./consultationClinic/list" >consultationClinic</a></dd>
-			<dd><a href="./consultationDoctor/list" >consultationDoctor</a></dd>
-			<dd><a href="./cvDicmeta/list" >cvDicmeta</a></dd>
-			<dd><a href="./cvDictionary/list" >cvDictionary</a></dd>
-			<dd><a href="./doctor/list" >doctor</a></dd>
-			<dd><a href="./doctorSuggestion/list" >doctorSuggestion</a></dd>
-			<dd><a href="./evaluation/list" >evaluation</a></dd>
-			<dd><a href="./evaluationItem/list" >evaluationItem</a></dd>
-			<dd><a href="./evaluationOption/list" >evaluationOption</a></dd>
-			<dd><a href="./fieldControl/list" >fieldControl</a></dd>
-			<dd><a href="./hospital/list" >hospital</a></dd>
-			<dd><a href="./log/list" >log</a></dd>
-			<dd><a href="./menu/list" >menu</a></dd>
-			<dd><a href="./messageNodeConfig/list" >messageNodeConfig</a></dd>
-			<dd><a href="./notice/list" >notice</a></dd>
-			<dd><a href="./patient/list" >patient</a></dd>
-			<dd><a href="./poll/list" >poll</a></dd>
-			<dd><a href="./pollItem/list" >pollItem</a></dd>
-			<dd><a href="./receivedMessage/list" >receivedMessage</a></dd>
-			<dd><a href="./role/list" >role</a></dd>
-			<dd><a href="./roleAccess/list" >roleAccess</a></dd>
-			<dd><a href="./setting/list" >setting</a></dd>
-			<dd><a href="./siteConfig/list" >siteConfig</a></dd>
-			<dd><a href="./suggestion/list" >suggestion</a></dd>
-			<dd><a href="./suggestionVer/list" >suggestionVer</a></dd>
-			<dd><a href="./sysControl/list" >sysControl</a></dd>
-			<dd><a href="./task/list" >task</a></dd>
-			<dd><a href="./template/list" >template</a></dd>
-			<dd><a href="./tempmeta/list" >tempmeta</a></dd>
-			<dd><a href="./uaccess/list" >uaccess</a></dd>
-			<dd><a href="./users/list" >users</a></dd>
-			<dd><a href="./userRole/list" >userRole</a></dd>
-			<dd><a href="./workday/list" >workday</a></dd>
-		</dl>
-	</div>
-	<div class="main-frame">
-			<iframe frameborder="0"  name="mainframe"  id="mainframe" width="100%" height="100%"></iframe>
-	</div>
+		<dt>Menu</dt>
+			<dd><a href="./log/list" target="mainframe">Log</a></dd>
+			<dd><a href="./menu/list" target="mainframe">Menu</a></dd>
+			<dd><a href="./messageCache/list" target="mainframe">MessageCache</a></dd>
+			<dd><a href="./messageNodeConfig/list" target="mainframe">MessageNodeConfig</a></dd>
+			<dd><a href="./notice/list" target="mainframe">Notice</a></dd>
+			<dd><a href="./patient/list" target="mainframe">Patient</a></dd>
+			<dd><a href="./poll/list" target="mainframe">Poll</a></dd>
+			<dd><a href="./pollItem/list" target="mainframe">PollItem</a></dd>
+			<dd><a href="./receivedMessage/list" target="mainframe">ReceivedMessage</a></dd>
+			<dd><a href="./role/list" target="mainframe">Role</a></dd>
+			<dd><a href="./roleAccess/list" target="mainframe">RoleAccess</a></dd>
+			<dd><a href="./setting/list" target="mainframe">Setting</a></dd>
+			<dd><a href="./siteConfig/list" target="mainframe">SiteConfig</a></dd>
+			<dd><a href="./suggestion/list" target="mainframe">Suggestion</a></dd>
+			<dd><a href="./suggestionVer/list" target="mainframe">SuggestionVer</a></dd>
+			<dd><a href="./sysControl/list" target="mainframe">SysControl</a></dd>
+			<dd><a href="./task/list" target="mainframe">Task</a></dd>
+			<dd><a href="./template/list" target="mainframe">Template</a></dd>
+			<dd><a href="./tempmeta/list" target="mainframe">Tempmeta</a></dd>
+			<dd><a href="./uaccess/list" target="mainframe">Uaccess</a></dd>
+			<dd><a href="./users/list" target="mainframe">Users</a></dd>
+			<dd><a href="./userRole/list" target="mainframe">UserRole</a></dd>
+			<dd><a href="./workday/list" target="mainframe">Workday</a></dd>
+	</dl>
+</div>
+<div class="main-frame">
+	  <iframe frameborder="0"  name="mainframe"  id="mainframe" width="100%" height="100%"></iframe>
+</div>
 </body>
 </html>
-
-

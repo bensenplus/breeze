@@ -99,6 +99,6 @@ table { width:100%;border-collapse:collapse;word-wrap:break-word;word-break:keep
 .table-form td{padding-left:4px;}
 
 .l-odd{background:#fff}
-.l-even{background:#fff}
-.l-selected{ background:#E0ECFF;}
+.l-even{background:#eee}
+.l-selected{color:#fff;background:#888;}
    
