@@ -17,7 +17,7 @@
 
 
 <%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="Context" Description="指定的数据库表结构" %>
-<%@ Property Name="OutputPath" Type="System.String" Default="d:\atuoCode" Optional="False" Category="Context" Description="源码输出主目录" %>
+<%@ Property Name="OutputPath" Type="System.String" Default="E:/breeze/trunk/src/main" Optional="False" Category="Context" Description="源码输出主目录" %>
 <%@ Property Name="RootTableSpaceName" Type="System.String" Default="org.breeze" Optional="False" Category="Context" Description="源码输出的模块名称" %>
 
 

@@ -40,7 +40,7 @@ public class <%= Mode%> implements Serializable {
     private static final long serialVersionUID = 1L;
 	<%-- 成员变量 --%>
     <% foreach (ColumnSchema column in this.SourceTable.Columns) {%>
-    
+    //<%= column.Description%>
 	private <%= JavaAlias[column.SystemType.FullName]%> <%= fieldName(column.Name) %>;    
     <% }%>
 

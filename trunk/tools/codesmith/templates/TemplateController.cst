@@ -69,9 +69,15 @@ public class <%=Controller%> {
 		return "<%=map%>/edit";
 	}    
     
-    @RequestMapping("/save")
-	public String save(<%=Mode%> <%=mode%>) {
-       <%=service%>.save(<%=mode%>);
+    @RequestMapping("/create")
+	public String create(<%=Mode%> <%=mode%>) {
+       <%=service%>.create(<%=mode%>);
+		return "redirect:list";
+	}
+    
+    @RequestMapping("/update")
+	public String update(<%=Mode%> <%=mode%>) {
+       <%=service%>.update(<%=mode%>);
 		return "redirect:list";
 	}
     

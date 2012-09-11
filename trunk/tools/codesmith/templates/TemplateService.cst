@@ -64,15 +64,14 @@ public class <%=Service%> {
 	public <%=Mode%> get(<%=GetKeys(SourceTable,true)%>) {
 	    <%=Mode%> <%=mode%> = <%=dao%>.get(<%=GetKeys(SourceTable,false)%>);
         return <%=mode%>;
-	}    
+	} 
     
-	public int save(<%=Mode%> <%=mode%>) {
+    public int create(<%=Mode%> <%=mode%>) {   
+        return <%=dao%>.insert(<%=mode%>); 
+	}
     
-       if(<%=mode%>.<%= getter(SourceTable.Columns[0].Name)%>() == null) {
-            return <%=dao%>.insert(<%=mode%>);
-       }else{
-            return <%=dao%>.update(<%=mode%>);
-       }
+    public int update(<%=Mode%> <%=mode%>) {   
+        return <%=dao%>.update(<%=mode%>); 
 	}
 
 	public int delete(<%=GetKeys(SourceTable,true)%>) {

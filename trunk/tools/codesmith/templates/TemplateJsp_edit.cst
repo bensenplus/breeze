@@ -38,7 +38,7 @@ String map = StringUtil.ToCamelCase(SourceTable.Name);
 <title><%=SourceTable.Description%></title>
 </head>
 <body>
-	<form action="save">
+	<form action="update">
 		<input type="hidden" name="<%=key%>" value="${<%=mode%>.<%=key%>}" />
 		<table class="table-form">
     	    <tr><%int i=0;foreach (ColumnSchema column in this.SourceTable.Columns) {

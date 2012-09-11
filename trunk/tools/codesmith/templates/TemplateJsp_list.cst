@@ -42,35 +42,15 @@ String map = StringUtil.ToCamelCase(SourceTable.Name);
 <script  type="text/javascript" src="../resources/js/jquery-ui-1.8.23.custom.min.js"></script>
 <script type="text/javascript" src="../resources/js/jquery.pagination.js"></script>
 <script  type="text/javascript" src="../resources/js/page.js"></script>
+<script  type="text/javascript" src="../resources/js/form.js"></script>
 <script type="text/javascript">
-$(function() {
-	
-	 initPage(${page.count}, ${page.page}, ${page.size});
-     
-     $('table.table-list tr:even').not(".pagefoot").addClass("l-even");	
-	 
-	$( "#dialog-form" ).dialog({
-		autoOpen: false,
-		width: 800,
-		//height: 600,
-		modal: false
-	});
-	
+$(function() {	
+    initForm(${page.count}, ${page.page}, ${page.size});
 });
-
-function edit(param){
-    var url = "edit?"+param; 
-	$( "#dialog-form" ).load(url, function() {});
-	$( "#dialog-form" ).dialog( "open" );
-}
-
-function delete(param){
-    var url = "delete?"+param; 
-}
-
 </script>
 </head>
 <body>
+<div id="pagehead"></div>
 <table class="table-list">
 		<tr>
             <th>No.</th>
@@ -81,7 +61,7 @@ function delete(param){
 			<th colspan=2>操作</th>
 		</tr>
 		<c:forEach var="<%=mode%>" items="${list}" varStatus="status">
-            <tr>
+            <tr ondblclick="dbClick('<%=parameterURL(SourceTable)%>')" onclick = 'rowclick(this)' id = '${status.count}'>
                 <td>${status.count+page.start}</td>
 <% foreach (ColumnSchema column in this.SourceTable.Columns) {%>
     <% if (column.IsPrimaryKeyMember)  continue;%> 
@@ -92,12 +72,11 @@ function delete(param){
 	<% }%>
 <% }%>
 				<td><a href="###" onclick="edit('<%=parameterURL(SourceTable)%>')">编辑</a></td>
-				<td><a href="###" onclick="delete('<%=parameterURL(SourceTable)%>')">删除</a></td>
+				<td><a href="###" onclick="remove('<%=parameterURL(SourceTable)%>')">删除</a></td>
         	</tr>
 		</c:forEach>
 </table>
-<br/>
-<div id="Pagination"></div>
+<div id="pagefoot"></div>
 <div id="dialog-form" title=""></div>
 </body>
 </html>
