@@ -52,6 +52,14 @@ public class <%=Controller%> {
     @Resource(name = "<%=service%>")
 	private <%=Service%> <%=service%>;
 
+    @RequestMapping("/search")
+	public String search(ModelMap model, <%=Mode%> <%=mode%>,Page page) {
+		page.setCount(<%=service%>.countBy(<%=mode%>));
+		List<<%=Mode%>> list = <%=service%>.selectBy(<%=mode%>, page);
+		model.addAttribute("list", list);
+		model.addAttribute("page", page);
+		return "<%=map%>/list";
+	}
 
     @RequestMapping("/list")
 	public String list(ModelMap model, Page page) {

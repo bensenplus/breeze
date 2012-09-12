@@ -40,6 +40,35 @@ String map = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
     <result column="<%= column.Name%>" property="<%= fieldName(column.Name)%>"/>
 	<%}%>
   </resultMap>
+  
+  <sql id="where" >
+      <where >
+      <% foreach (ColumnSchema column in this.SourceTable.Columns) {%>
+            <% if(column.IsPrimaryKeyMember) continue; %>
+            <choose ><when test="<%=fieldName(column.Name)%>!= null" > and <%=column.Name%> = #{<%=fieldName(column.Name)%>} </when></choose>
+       <% }%>
+      </where>
+   </sql>
+  
+  <!--countBy -->
+  <select id="countBy" parameterType="java.util.HashMap" resultType="int">
+    SELECT COUNT(*)  FROM <%= SourceTable.Name%>
+    <include refid="where" />
+  </select>
+  
+  <!--selectBy -->
+  <select id="selectBy" parameterType="java.util.HashMap" resultMap="<%=Mode%>">
+    <if test="start != null" >
+	SELECT * FROM ( SELECT ROW_.*, ROWNUM ROWNUM_ FROM (
+	</if>
+	SELECT
+        <%=GetEtParamSrc(this.SourceTable)%>
+    FROM <%= table%>
+       <include refid="where" />
+	<if test="start != null" >
+	) ROW_ ) WHERE ROWNUM_ &gt;#{start} and ROWNUM_ &lt; (#{start} + #{size})
+	</if>
+  </select>
 
   <!--count -->
   <select id="count" resultType="int">

@@ -31,14 +31,15 @@ String map = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
 %>
 package <%=RootTableSpaceName%>.service;
 
+import java.util.HashMap;
 import java.util.List;
 import javax.annotation.Resource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.ModelMap;
 
+import org.breeze.core.web.BeanUtil;
 import <%=RootTableSpaceName%>.core.web.Page;
 import <%=RootTableSpaceName%>.entity.<%=Mode%>;
 import <%=RootTableSpaceName%>.dao.<%=Dao%>;
@@ -51,6 +52,20 @@ public class <%=Service%> {
 
     @Resource(name = "<%=dao%>")
 	private <%=Dao%> <%=dao%>;
+    
+    public int countBy(<%=Mode%> <%=mode%>){
+		return <%=dao%>.countBy(BeanUtil.objToHash(<%=mode%>));
+	}
+
+	public List<<%=Mode%>> selectBy(<%=Mode%> <%=mode%>, Page page) {
+        HashMap<String, Object> map =  BeanUtil.objToHash(<%=mode%>);
+        if(page !=null){
+            map.put("start",page.getStart());
+            map.put("size",page.getSize());
+        }
+		List<<%=Mode%>> list = <%=dao%>.selectBy(map);
+		return list;
+	}
 
 	public int count(){
 		return <%=dao%>.count();

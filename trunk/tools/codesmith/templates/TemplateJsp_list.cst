@@ -27,6 +27,8 @@ String mode = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
 String Service = ServiceName(SourceTable.Name);
 String service = StringUtil.ToCamelCase(ServiceName(SourceTable.Name));
 String map = StringUtil.ToCamelCase(SourceTable.Name);
+String Key = JavaAlias[SourceTable.Columns[0].SystemType.FullName];
+String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
 %>
 <%%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%%>
 <%%@ include file="/common/taglibs.jsp"%%>
@@ -50,6 +52,28 @@ $(function() {
 </script>
 </head>
 <body>
+<div id="searchform">
+    <form action="search">
+    	<input type="hidden" name="<%=key%>" value="${<%=mode%>.<%=key%>}" />
+    	<table class="table-form">
+    	    <tr><%int i=0;foreach (ColumnSchema column in this.SourceTable.Columns) {
+    	 if(column.IsPrimaryKeyMember || JavaAlias[column.SystemType.FullName].Equals("Date")) continue;
+         if(i++%2==1) {%>
+            </tr>
+            <tr><%}%>
+    			<th><%=column.Description.Length==0?StringUtil.ToPascalCase(column.Name):column.Description%>:</th>
+    		    <% if (column.DataType.ToString().Equals("DateTime")) { %> 
+    			<td><input type="text"  name ="<%=fieldName(column.Name)%>" value='<fmt:formatDate value="${<%=mode%>.<%=fieldName(column.Name)%>}" pattern="yyyy/MM/dd HH:mm" />' size="20" /></td>
+    		    <% } else{%>
+    			<td><input type="text" name ="<%=fieldName(column.Name)%>"  size="<%=column.Size>40?40:column.Size%>" value="${<%=mode%>.<%=fieldName(column.Name)%>}"  /></td>
+    		    <% }}%>
+    		</tr>
+    	</table>
+    	<p align="right">
+    		<input type="submit" value="seach" />
+    	</p>
+    </form>
+</div>
 <div id="pagehead"></div>
 <table class="table-list">
 		<tr>
