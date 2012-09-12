@@ -47,11 +47,15 @@ String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
 <script  type="text/javascript" src="../resources/js/form.js"></script>
 <script type="text/javascript">
 $(function() {	
-    initForm(${page.count}, ${page.page}, ${page.size});
+	initForm();
+    initPage(${page.param});
 });
 </script>
 </head>
 <body>
+<div id="searchHead">
+	<span id="toggle"></span>
+</div>
 <div id="searchform">
     <form action="search">
     	<input type="hidden" name="<%=key%>" value="${<%=mode%>.<%=key%>}" />
@@ -101,6 +105,13 @@ $(function() {
 		</c:forEach>
 </table>
 <div id="pagefoot"></div>
-<div id="dialog-form" title=""></div>
+<div id="dialog-form" title="">
+	<form action="update">
+		<div id="form-item"></div>
+		<p align=center>
+			<input type="submit" value="update" />
+		</p>
+	</form>
+</div>
 </body>
 </html>

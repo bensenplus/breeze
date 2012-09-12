@@ -45,7 +45,7 @@ String map = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
       <where >
       <% foreach (ColumnSchema column in this.SourceTable.Columns) {%>
             <% if(column.IsPrimaryKeyMember) continue; %>
-            <choose ><when test="<%=fieldName(column.Name)%>!= null" > and <%=column.Name%> = #{<%=fieldName(column.Name)%>} </when></choose>
+            <choose ><when test="<%=fieldName(column.Name)%>!= null" > and <%=column.Name%> like '%'||#{<%=fieldName(column.Name)%>}||'%' </when></choose>
        <% }%>
       </where>
    </sql>
