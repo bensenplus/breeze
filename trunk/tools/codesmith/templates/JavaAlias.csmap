@@ -55,7 +55,7 @@
     </item>
     <item>
       <key>System.Object</key>
-      <value>Object</value>
+      <value>String</value>
     </item>
     <item>
       <key>System.UInt16</key>
