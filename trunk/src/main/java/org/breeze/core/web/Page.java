@@ -39,5 +39,9 @@ public class Page {
 		}
 		return start;
 	}	  
+	
+	public String getParam() {		
+		return String.valueOf(count)+"," +String.valueOf(page)+"," +String.valueOf(size);
+	}
 
 }

@@ -9,12 +9,16 @@
 
 package org.breeze.core.web;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class BeanUtil {
+import javax.servlet.http.HttpServletResponse;
+
+public class Util {
 	
 	@SuppressWarnings("rawtypes")
 	public static HashMap<String, Object> objToHash(Object obj) {
@@ -48,4 +52,19 @@ public class BeanUtil {
 		
 		return hashMap;
 	}
+	
+	public static void outputJSONResult(String result, HttpServletResponse response) {
+		try {
+			response.setHeader("ContentType", "text/json");
+			response.setCharacterEncoding("utf-8");
+			PrintWriter pw = response.getWriter();
+			pw.write(result);
+			pw.flush();
+			pw.close();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 }
