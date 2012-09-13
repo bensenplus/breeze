@@ -32,6 +32,8 @@ package <%=RootTableSpaceName%>.controller;
 
 import java.util.List;
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -39,6 +41,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import <%=RootTableSpaceName%>.core.web.Page;
+import <%=RootTableSpaceName%>.core.web.Util;
 import <%=RootTableSpaceName%>.entity.<%=Mode%>;
 import <%=RootTableSpaceName%>.service.<%=Service%>;
 
@@ -51,6 +54,12 @@ public class <%=Controller%> {
 
     @Resource(name = "<%=service%>")
 	private <%=Service%> <%=service%>;
+    
+    
+    @RequestMapping("/index")
+    public String index(){
+        return "<%=map%>/index";
+    }
 
     @RequestMapping("/search")
 	public String search(ModelMap model, <%=Mode%> <%=mode%>,Page page) {
@@ -78,23 +87,21 @@ public class <%=Controller%> {
 	}    
     
     @RequestMapping("/create")
-	public String create(<%=Mode%> <%=mode%>) {
-       <%=service%>.create(<%=mode%>);
-		return "redirect:list";
+	public void create(<%=Mode%> <%=mode%>, HttpServletResponse response) {
+       int result = <%=service%>.create(<%=mode%>);
+       Util.outputJSONResult(String.valueOf(result),response);
 	}
     
     @RequestMapping("/update")
-	public String update(<%=Mode%> <%=mode%>) {
-       <%=service%>.update(<%=mode%>);
-		return "redirect:list";
+	public void update(<%=Mode%> <%=mode%>, HttpServletResponse response) {
+       int result = <%=service%>.update(<%=mode%>);
+       Util.outputJSONResult(String.valueOf(result),response);
 	}
     
     @RequestMapping("/remove")
-	public String remove(<%=GetKeys(SourceTable,true)%>) {
-		<%=service%>.delete(<%=GetKeys(SourceTable,false)%>);
-		return "redirect:list";
+	public void remove(<%=GetKeys(SourceTable,true)%>, HttpServletResponse response) {
+		int result = <%=service%>.delete(<%=GetKeys(SourceTable,false)%>);
+        Util.outputJSONResult(String.valueOf(result),response);
 	}
-    
-	
 	
 }

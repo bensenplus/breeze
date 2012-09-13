@@ -89,7 +89,7 @@ function initForm(){
 	
 	$("#searchHead").addClass("ui-dialog-titlebar ui-widget-header ui-corner-top ui-helper-clearfix");
 	$("#toggle").addClass("ui-icon ui-icon-triangle-1-s");
-	$("#result-list").addClass("ui-widget-content ui-corner-all ui-helper-clearfix");	
+	//$("#result-list").addClass("ui-widget-content ui-corner-all ui-helper-clearfix");	
 	
     $("#toggle").click(function(){
     	$("#search-form-warp").toggle();
@@ -99,7 +99,7 @@ function initForm(){
     
 	$("#search-btn").button().click(function(ev){
 		loadHtml("./search?page=1","search-form","result-list");
-		//ev.preventDefault();
+		ev.preventDefault();
 	});
 	
 	$("#update-btn").button().click(function(ev){

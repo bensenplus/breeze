@@ -7,57 +7,82 @@
 <%@ Import Namespace="SchemaExplorer" %>
 <%@ Import Namespace="System.Text.RegularExpressions" %>
 
-<%-- 注册 成员函数 --%>
-<%@ Property Name="SourceData" Type="SchemaExplorer.DatabaseSchema" Optional="False" Category="Context" Description="指定的数据库" %>
+<%-- 注册 定义的成员变量 --%>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="DB" Description="请选择名的数据来源" %>
+<%@ Property Name="RootTableSpaceName" Type="System.String" Default="org.breeze" Optional="False" Category="Context" Description="源码输出的模块名称" %>
+
 
 <%-- 启用 MAP方式 System-CSharpAlias  --%>
 <%@ Map Name="CSharpAlias" Src="System-CSharpAlias" Description="System to C# Type Map" %>
 <%@ Map Name="JavaAlias" Src="JavaAlias.csmap" Description="Oracle to Java Type Map" %>
-
 <script runat="template">
 <!-- #include file=Function.cs -->
 //Debugger.Break();
-public TableSchemaCollection GetTableCollection(DatabaseSchema dataBase)
-{
-    TableSchemaCollection tables = new TableSchemaCollection(dataBase.Tables);
-    return tables;
-}
 </script>
-
+<% 
+//名称定义
+String Controller = ControllerName(SourceTable.Name);
+String Mode = ModelName(SourceTable.Name);
+String mode = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
+String Service = ServiceName(SourceTable.Name);
+String service = StringUtil.ToCamelCase(ServiceName(SourceTable.Name));
+String map = StringUtil.ToCamelCase(SourceTable.Name);
+String Key = JavaAlias[SourceTable.Columns[0].SystemType.FullName];
+String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
+%>
 <%%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%%>
+<%%@ include file="/common/taglibs.jsp"%%>
+<%%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%%>
+<%%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %%>
 <html>
 <head>
-<title>index</title>
-<link rel="stylesheet" href="./resources/themes/base/jquery.ui.all.css">
-<link rel="stylesheet" href="./resources/css/common.css">
-<script  type="text/javascript" src="./resources/js/jquery-1.8.0.min.js"></script>
-<script  type="text/javascript" src="./resources/js/jquery-ui-1.8.23.custom.min.js"></script>
+<title><%=SourceTable.Description%>列表</title>
+<link rel="stylesheet" href="../resources/themes/base/jquery.ui.all.css">
+<link rel="stylesheet" href="../resources/css/pagination.css" />
+<link rel="stylesheet" href="../resources/css/common.css" />
+<script  type="text/javascript" src="../resources/js/jquery-1.8.0.min.js"></script>
+<script  type="text/javascript" src="../resources/js/jquery-ui-1.8.23.custom.min.js"></script>
+<script type="text/javascript" src="../resources/js/jquery.pagination.js"></script>
+<script  type="text/javascript" src="../resources/js/form.js"></script>
 <script type="text/javascript">
-	$(function() {		
-		$('.left-nav a').click(function(ev) {
-			window.location.hash = "index.html";
-			$("#mainframe").attr("src", this.href);
-			$('.left-nav a.selected').removeClass('selected');
-			$(this).addClass('selected');
-			ev.preventDefault();
-		});
-	});
-	</script>
+$(function() {	
+	initForm();
+});
+</script>
 </head>
 <body>
-<div  class="left-nav">
-	<dl class="demos-nav">
-		<dt>Menu</dt>
-			<dd><a href="./flash/index.swf">flash</a></dd>
-           <% TableSchemaCollection tables = GetTableCollection(SourceData);
-			foreach(TableSchema dt in tables)
-			{ %>
-			<dd><a href="./<%=StringUtil.ToCamelCase(dt.Name.ToLower())%>/list" target="mainframe"><%=StringUtil.ToPascalCase(dt.Name.ToLower())%></a></dd>
-		    <%} %>
-	</dl>
+<div id="searchHead">
+	<span id="toggle"></span>
 </div>
-<div class="main-frame">
-	  <iframe frameborder="0"  name="mainframe"  id="mainframe" width="100%" height="100%"></iframe>
+<div id="search-form-warp">
+    <form id="search-form">
+    	<input type="hidden" name="<%=key%>" value="${<%=mode%>.<%=key%>}" />
+    	<table class="table-form">
+    	    <tr><%int i=0;foreach (ColumnSchema column in this.SourceTable.Columns) {
+ 
+    string type = JavaAlias[column.SystemType.FullName];
+    if(column.Size > 100) continue;
+    if(column.IsPrimaryKeyMember) continue;
+    if(!type.Equals("String")) continue; 
+         
+    if(i++%2==1) {%>
+            </tr>
+            <tr><%}%>
+    			<th><%=column.Description.Length==0?StringUtil.ToPascalCase(column.Name):column.Description%>:</th>
+    		    <% if (column.DataType.ToString().Equals("DateTime")) { %> 
+    			<td><input type="text"  name ="<%=fieldName(column.Name)%>" value="" size="20" /></td>
+    		    <% } else{%>
+    			<td><input type="text" name ="<%=fieldName(column.Name)%>"  size="<%=column.Size>40?40:column.Size%>" value=""  /></td>
+    		    <% }}%>
+    		</tr>
+    	</table>
+        <div style="text-align:right"><button  id="search-btn">search</button></div>
+    </form>
+</div>
+<div id="result-list"></div>
+<div id="dialog-form" title="">
+	<form id="update-form"></form>
+    <div style="text-align:center"><button id="update-btn">update</button></div>
 </div>
 </body>
 </html>

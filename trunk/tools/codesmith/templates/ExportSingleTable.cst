@@ -30,6 +30,7 @@
 <%@ Register Name="TemplateDaoXml" Template="TemplateDaoXml.cst" %>
 <%@ Register Name="TemplateService" Template="TemplateService.cst" %>
 <%@ Register Name="TemplateController" Template="TemplateController.cst" %>
+<%@ Register Name="TemplateJsp_index" Template="TemplateJsp_index.cst" %>
 <%@ Register Name="TemplateJsp_list" Template="TemplateJsp_list.cst" %>
 <%@ Register Name="TemplateJsp_edit" Template="TemplateJsp_edit.cst" %>
 
@@ -60,6 +61,8 @@ public void RenderMain()
     CreateTemplate<TemplateDaoXml>(SourceTable, "java."+RootTableSpaceName+".dao", ModelName(SourceTable.Name)+"Mapper."+"xml");
     CreateTemplate<TemplateService>(SourceTable, "java."+RootTableSpaceName+".service", ServiceName(SourceTable.Name)+"."+"java");
     CreateTemplate<TemplateController>(SourceTable, "java."+RootTableSpaceName+".controller", ControllerName(SourceTable.Name)+"."+"java");
+    
+    CreateTemplate<TemplateJsp_index>(SourceTable, "webapp.jsp."+StringUtil.ToCamelCase(SourceTable.Name.ToLower()), "index.jsp");
     CreateTemplate<TemplateJsp_list>(SourceTable, "webapp.jsp."+StringUtil.ToCamelCase(SourceTable.Name.ToLower()), "list.jsp");
     CreateTemplate<TemplateJsp_edit>(SourceTable, "webapp.jsp."+StringUtil.ToCamelCase(SourceTable.Name.ToLower()), "edit.jsp");
     

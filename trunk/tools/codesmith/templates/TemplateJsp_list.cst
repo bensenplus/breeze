@@ -34,56 +34,22 @@ String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
 <%%@ include file="/common/taglibs.jsp"%%>
 <%%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%%>
 <%%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %%>
-<html>
-<head>
-<title><%=SourceTable.Description%>列表</title>
-<link rel="stylesheet" href="../resources/themes/base/jquery.ui.all.css">
-<link rel="stylesheet" href="../resources/css/pagination.css" />
-<link rel="stylesheet" href="../resources/css/common.css" />
-<script  type="text/javascript" src="../resources/js/jquery-1.8.0.min.js"></script>
-<script  type="text/javascript" src="../resources/js/jquery-ui-1.8.23.custom.min.js"></script>
-<script type="text/javascript" src="../resources/js/jquery.pagination.js"></script>
-<script  type="text/javascript" src="../resources/js/page.js"></script>
-<script  type="text/javascript" src="../resources/js/form.js"></script>
 <script type="text/javascript">
-$(function() {	
-	initForm();
+$(function() {
     initPage(${page.param});
 });
 </script>
-</head>
-<body>
-<div id="searchHead">
-	<span id="toggle"></span>
-</div>
-<div id="searchform">
-    <form action="search">
-    	<input type="hidden" name="<%=key%>" value="${<%=mode%>.<%=key%>}" />
-    	<table class="table-form">
-    	    <tr><%int i=0;foreach (ColumnSchema column in this.SourceTable.Columns) {
-    	 if(column.IsPrimaryKeyMember || JavaAlias[column.SystemType.FullName].Equals("Date")) continue;
-         if(i++%2==1) {%>
-            </tr>
-            <tr><%}%>
-    			<th><%=column.Description.Length==0?StringUtil.ToPascalCase(column.Name):column.Description%>:</th>
-    		    <% if (column.DataType.ToString().Equals("DateTime")) { %> 
-    			<td><input type="text"  name ="<%=fieldName(column.Name)%>" value='<fmt:formatDate value="${<%=mode%>.<%=fieldName(column.Name)%>}" pattern="yyyy/MM/dd HH:mm" />' size="20" /></td>
-    		    <% } else{%>
-    			<td><input type="text" name ="<%=fieldName(column.Name)%>"  size="<%=column.Size>40?40:column.Size%>" value="${<%=mode%>.<%=fieldName(column.Name)%>}"  /></td>
-    		    <% }}%>
-    		</tr>
-    	</table>
-    	<p align="right">
-    		<input type="submit" value="seach" />
-    	</p>
-    </form>
-</div>
 <div id="pagehead"></div>
 <table class="table-list">
 		<tr>
             <th>No.</th>
 <% foreach (ColumnSchema column in this.SourceTable.Columns) {%>
-<% if (column.IsPrimaryKeyMember)  continue;%> 
+<%  
+    string type = JavaAlias[column.SystemType.FullName];
+    if(column.Size > 100) continue;
+    if(column.IsPrimaryKeyMember) continue;
+    if(!type.Equals("String") && !type.Equals("Date")) continue;
+%> 
 		    <th><%=column.Description.Length==0?StringUtil.ToPascalCase(column.Name):column.Description%></th>		
 <% }%>
 			<th colspan=2>操作</th>
@@ -92,10 +58,17 @@ $(function() {
             <tr ondblclick="dbClick('<%=parameterURL(SourceTable)%>')" onclick = 'rowclick(this)' id = '${status.count}'>
                 <td>${status.count+page.start}</td>
 <% foreach (ColumnSchema column in this.SourceTable.Columns) {%>
-    <% if (column.IsPrimaryKeyMember)  continue;%> 
+<%  
+    string type = JavaAlias[column.SystemType.FullName];
+    if(column.IsPrimaryKeyMember) continue;
+    if(column.Size > 100) continue;
+    if(!type.Equals("String") && !type.Equals("Date")) continue;
+%> 
 	<% if (column.DataType.ToString().Equals("DateTime")) { %> 
 				<td><fmt:formatDate value="${<%=mode%>.<%=fieldName(column.Name)%>}" pattern="yyyy/MM/dd HH:mm" /></td>
-	<% } else{%>
+	<% }else if (column.DataType.ToString().Equals("Object")) { %> 
+                <td>...</td>
+    <% } else{%>
 				<td>${<%=mode%>.<%=fieldName(column.Name)%>}</td>
 	<% }%>
 <% }%>
@@ -105,13 +78,3 @@ $(function() {
 		</c:forEach>
 </table>
 <div id="pagefoot"></div>
-<div id="dialog-form" title="">
-	<form action="update">
-		<div id="form-item"></div>
-		<p align=center>
-			<input type="submit" value="update" />
-		</p>
-	</form>
-</div>
-</body>
-</html>
