@@ -342,7 +342,7 @@ public string GetKeys(TableSchema dt, bool hasType)
 	foreach (ColumnSchema column in dt.PrimaryKey.MemberColumns) 
 	{ 
 		
-		if ( count == 0 )
+		if (count == 0)
 		{
 			if(hasType){
 				param = JavaAlias[column.SystemType.FullName] + " " + StringUtil.ToCamelCase(column.Name.ToLower());
@@ -358,6 +358,32 @@ public string GetKeys(TableSchema dt, bool hasType)
 				param = "p_"+instance;
 			}
 			break;
+		}
+		count = count + 1;
+	}
+	
+	return param;
+}
+
+public string GetCallKeysParam(TableSchema dt, string instance)
+{
+	string param = string.Empty;	
+	int count = 0;	
+	if(!dt.HasPrimaryKey) {
+		return instance;
+	}
+
+	foreach (ColumnSchema column in dt.PrimaryKey.MemberColumns) 
+	{ 
+		
+		if ( count == 0 )
+		{
+			param = instance + "." + fieldName(column.Name);
+
+		}
+		else
+		{
+		    param = param +", " + instance + "." + getter(column.Name);
 		}
 		count = count + 1;
 	}

@@ -61,7 +61,10 @@ String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
 			private function save():void
 			{
                 <% foreach (ColumnSchema column in this.SourceTable.Columns) {
-                    string type = FlexAlias[column.SystemType.FullName];
+                     string type = FlexAlias[column.SystemType.FullName];
+                     if(column.IsPrimaryKeyMember) continue;
+                     if(fieldName(column.Name).Equals("createTime")) continue;
+                     if(fieldName(column.Name).Equals("updateTime")) continue;
                 %>
                     
 					<% if (type.Equals("Number") || type.Equals("int")) { %> 
@@ -74,17 +77,17 @@ String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
                 <% }%>
 				if (<%=mode%>.<%=key%> == 0)
 				{
-					ro.save(<%=mode%>);	
+					ro.create(<%=mode%>);	
 				}
 				else
 				{
-					ro.save(<%=mode%>);
+					ro.update(<%=mode%>);
 				}
 			}			
 			
 			private function deleteItem():void
 			{
-				ro.remove(<%=mode%>);		
+				ro.remove(<%=GetCallKeysParam(this.SourceTable, mode)%>);		
 			}
 			
 			private function create_resultHandler(event:ResultEvent):void
@@ -96,18 +99,18 @@ String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
 			private function update_resultHandler(event:ResultEvent):void
 			{
 				dispatchEvent(new FormEvent(FormEvent.UPDATED, <%=mode%>));
-				PopUpManager.removePopUp(this);
+				parent.removeChild(this)
 			}
 			
 			private function remove_resultHandler(event:ResultEvent):void
 			{
 				dispatchEvent(new FormEvent(FormEvent.DELETED, <%=mode%>));
-				PopUpManager.removePopUp(this);
+				parent.removeChild(this)
 			}
 			
 			public function titleWindow_close(event:CloseEvent):void
 			{
-				PopUpManager.removePopUp(this);
+				parent.removeChild(this)
 			}
 			
 			private function faultHandler(event:FaultEvent):void
@@ -120,14 +123,18 @@ String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
 	
 	<fx:Declarations>
 		<mx:RemoteObject id="ro" destination="<%=service%>" fault="faultHandler(event)" endpoint="http://localhost:8080/breeze/messagebroker/amf">
-			<mx:method name="save" result="create_resultHandler(event)"/>
-			<mx:method name="save" result="update_resultHandler(event)"/>
-			<mx:method name="remove" result="remove_resultHandler(event)"/>
+			<mx:method name="create" result="create_resultHandler(event)"/>
+			<mx:method name="update" result="update_resultHandler(event)"/>
+			<mx:method name="delete" result="remove_resultHandler(event)"/>
 		</mx:RemoteObject>
 	</fx:Declarations>
 
 	<mx:Form>
-         <% foreach (ColumnSchema column in this.SourceTable.Columns) {%>    
+         <% foreach (ColumnSchema column in this.SourceTable.Columns) {%>
+         <% if(column.IsPrimaryKeyMember) continue;
+         if(fieldName(column.Name).Equals("createTime")) continue;
+         if(fieldName(column.Name).Equals("updateTime")) continue;
+        %>
             <mx:FormItem label="<%=column.Description.Length==0?StringUtil.ToPascalCase(column.Name):column.Description%>">
 			    <mx:TextInput id="txt_<%=fieldName(column.Name)%>" text="{<%=mode%>.<%= fieldName(column.Name) %>}" enabled="true"/>
 		   </mx:FormItem>

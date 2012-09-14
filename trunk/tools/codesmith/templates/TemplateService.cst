@@ -89,7 +89,7 @@ public class <%=Service%> {
         return <%=dao%>.update(<%=mode%>); 
 	}
 
-	public int delete(<%=GetKeys(SourceTable,true)%>) {
+	public int remove(<%=GetKeys(SourceTable,true)%>) {
 		return <%=dao%>.delete(<%=GetKeys(SourceTable,false)%>);
 	}
 

@@ -1,0 +1,63 @@
+﻿<%@ CodeTemplate Language="C#" TargetLanguage="Text" Src="" ResponseEncoding="UTF-8" Inherits="" Debug="False" Description="Template description here." %>
+<%@ Assembly Name="System.Data" %>
+<%@ Assembly Name="SchemaExplorer" %>
+
+<%@ Import Namespace="System.IO" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+
+<%-- 注册 成员函数 --%>
+<%@ Property Name="SourceData" Type="SchemaExplorer.DatabaseSchema" Optional="False" Category="Context" Description="指定的数据库" %>
+
+<%-- 启用 MAP方式 System-CSharpAlias  --%>
+<%@ Map Name="CSharpAlias" Src="System-CSharpAlias" Description="System to C# Type Map" %>
+<%@ Map Name="JavaAlias" Src="JavaAlias.csmap" Description="Oracle to Java Type Map" %>
+
+<script runat="template">
+<!-- #include file=Function.cs -->
+//Debugger.Break();
+public TableSchemaCollection GetTableCollection(DatabaseSchema dataBase)
+{
+    TableSchemaCollection tables = new TableSchemaCollection(dataBase.Tables);
+    return tables;
+}
+</script>
+
+<%%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%%>
+<html>
+<head>
+<title>index</title>
+<link rel="stylesheet" href="./resources/themes/base/jquery.ui.all.css">
+<link rel="stylesheet" href="./resources/css/common.css">
+<script  type="text/javascript" src="./resources/js/jquery-1.8.0.min.js"></script>
+<script  type="text/javascript" src="./resources/js/jquery-ui-1.8.23.custom.min.js"></script>
+<script type="text/javascript">
+	$(function() {		
+		$('.left-nav a').click(function(ev) {
+			//window.location.hash = "index.html";
+			$("#mainframe").attr("src", this.href);
+			$('.left-nav a.selected').removeClass('selected');
+			$(this).addClass('selected');
+			ev.preventDefault();
+		});
+	});
+	</script>
+</head>
+<body>
+<div  class="left-nav">
+	<dl class="demos-nav">
+		<dt>Menu</dt>
+			<dd><a href="./flash/index.swf">flash</a></dd>
+           <% TableSchemaCollection tables = GetTableCollection(SourceData);
+			foreach(TableSchema dt in tables)
+			{ %>
+			<dd><a href="./<%=StringUtil.ToCamelCase(dt.Name.ToLower())%>/index" target="mainframe"><%=StringUtil.ToPascalCase(dt.Name.ToLower())%></a></dd>
+		    <%} %>
+	</dl>
+</div>
+<div class="main-frame">
+	  <iframe frameborder="0"  name="mainframe"  id="mainframe" width="100%" height="100%"></iframe>
+</div>
+</body>
+</html>

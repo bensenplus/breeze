@@ -47,44 +47,5 @@
 	<bean id="defaultMessageTemplate" class="org.springframework.flex.messaging.MessageTemplate" />
 
 	<!-- Expose the service bean for BlazeDS remoting -->
-        <flex:remoting-destination ref="accezzService" />
-        <flex:remoting-destination ref="activityService" />
-        <flex:remoting-destination ref="attachmentService" />
-        <flex:remoting-destination ref="clinicService" />
-        <flex:remoting-destination ref="conprocessService" />
-        <flex:remoting-destination ref="consultationService" />
-        <flex:remoting-destination ref="consultationClinicService" />
-        <flex:remoting-destination ref="consultationDoctorService" />
-        <flex:remoting-destination ref="cvDicmetaService" />
-        <flex:remoting-destination ref="cvDictionaryService" />
-        <flex:remoting-destination ref="doctorService" />
-        <flex:remoting-destination ref="doctorSuggestionService" />
-        <flex:remoting-destination ref="evaluationService" />
-        <flex:remoting-destination ref="evaluationItemService" />
-        <flex:remoting-destination ref="evaluationOptionService" />
-        <flex:remoting-destination ref="fieldControlService" />
-        <flex:remoting-destination ref="hospitalService" />
         <flex:remoting-destination ref="logService" />
-        <flex:remoting-destination ref="menuService" />
-        <flex:remoting-destination ref="messageNodeConfigService" />
-        <flex:remoting-destination ref="noticeService" />
-        <flex:remoting-destination ref="patientService" />
-        <flex:remoting-destination ref="pollService" />
-        <flex:remoting-destination ref="pollItemService" />
-        <flex:remoting-destination ref="receivedMessageService" />
-        <flex:remoting-destination ref="roleService" />
-        <flex:remoting-destination ref="roleAccessService" />
-        <flex:remoting-destination ref="settingService" />
-        <flex:remoting-destination ref="siteConfigService" />
-        <flex:remoting-destination ref="suggestionService" />
-        <flex:remoting-destination ref="suggestionVerService" />
-        <flex:remoting-destination ref="sysControlService" />
-        <flex:remoting-destination ref="taskService" />
-        <flex:remoting-destination ref="templateService" />
-        <flex:remoting-destination ref="tempmetaService" />
-        <flex:remoting-destination ref="uaccessService" />
-        <flex:remoting-destination ref="usersService" />
-        <flex:remoting-destination ref="userRoleService" />
-        <flex:remoting-destination ref="workdayService" />
-
 </beans>

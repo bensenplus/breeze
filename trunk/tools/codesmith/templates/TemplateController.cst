@@ -100,7 +100,7 @@ public class <%=Controller%> {
     
     @RequestMapping("/remove")
 	public void remove(<%=GetKeys(SourceTable,true)%>, HttpServletResponse response) {
-		int result = <%=service%>.delete(<%=GetKeys(SourceTable,false)%>);
+		int result = <%=service%>.remove(<%=GetKeys(SourceTable,false)%>);
         Util.outputJSONResult(String.valueOf(result),response);
 	}
 	

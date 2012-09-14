@@ -141,6 +141,11 @@ String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
 					 doubleClick="popupRecord(dg.selectedItem as <%=Mode%>)" doubleClickEnabled="true">
 			<mx:columns>
 			<% foreach (ColumnSchema column in this.SourceTable.Columns) {%>
+            <% string type = JavaAlias[column.SystemType.FullName];
+                if(column.Size > 100) continue;
+                if(column.IsPrimaryKeyMember) continue;
+                if(!type.Equals("String") && !type.Equals("Date")) continue;
+            %> 
     			<mx:DataGridColumn dataField="<%= fieldName(column.Name) %>" headerText="<%=column.Description.Length==0?StringUtil.ToPascalCase(column.Name):column.Description%>" />  
   			<% }%> 
 			</mx:columns>
