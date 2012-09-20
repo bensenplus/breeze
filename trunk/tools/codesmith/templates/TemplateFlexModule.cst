@@ -53,15 +53,11 @@ String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
 			import org.breeze.core.web.FormEvent;
 			import org.breeze.core.web.Page;
 			import org.breeze.core.web.PageEvent;
+            import org.breeze.core.web.Util;
             			
             import <%=RootTableSpaceName%>.flex.entity.<%=Mode%>;
 			
 			[Bindable] private var collection:ArrayCollection;
-			
-		    private function faultHandler(event:FaultEvent):void
-			{
-				Alert.show(event.fault.faultDetail);
-			}
 			
 			
 			protected function module_initializeHandler(event:FlexEvent):void
@@ -81,22 +77,28 @@ String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
 				ro.select(event.page);				
 			}
 			
-			private function <%=mode%>CreatedHandler(event:FormEvent):void
+			private function createdHandler(event:FormEvent):void
 			{
 				search();				
 			}
 			
-			private function <%=mode%>UpdatedHandler(event:FormEvent):void
+			private function updatedHandler(event:FormEvent):void
 			{
 				search();				
 			}
 			
-			private function <%=mode%>DeletedHandler(event:FormEvent):void
+			private function removedHandler(event:FormEvent):void
 			{
 				search();				
 			}
+            
+            private function faultHandler(event:FaultEvent):void
+			{
+				Alert.show(event.fault.faultDetail);
+			}
 			
-			private function resultHandler(event:ResultEvent):void
+			
+			private function selectHandler(event:ResultEvent):void
 			{
 				collection = event.result as ArrayCollection;
 			}
@@ -111,9 +113,9 @@ String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
 				var form:<%=Mode%>Form = new  <%=Mode%>Form();   
 				form.showCloseButton = true;
 				form.addEventListener(CloseEvent.CLOSE, form.titleWindow_close); 				
-				form.addEventListener(FormEvent.CREATED, <%=mode%>CreatedHandler);
-				form.addEventListener(FormEvent.UPDATED, <%=mode%>UpdatedHandler);
-				form.addEventListener(FormEvent.DELETED, <%=mode%>DeletedHandler);
+				form.addEventListener(FormEvent.CREATED, createdHandler);
+				form.addEventListener(FormEvent.UPDATED, updatedHandler);
+				form.addEventListener(FormEvent.REMOVED, removedHandler);
 				
 				form.<%=mode%> = <%=mode%>;
 				form.owner=this;
@@ -127,7 +129,7 @@ String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
 	
 	<fx:Declarations>
 		<s:RemoteObject id="ro" destination="<%=mode%>Service" fault="faultHandler(event)" endpoint="http://localhost:8080/breeze/messagebroker/amf">
-			<s:method name="select" result="resultHandler(event)"/>
+			<s:method name="select" result="selectHandler(event)"/>
 			<s:method name="count" result="countHandler(event)"/>
 		</s:RemoteObject>
 	</fx:Declarations>
@@ -137,16 +139,16 @@ String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
 			<s:Button label="Search" click="search()"/>
 			<mx:Button label="New" click="popupRecord(new <%=Mode%>())"/>
 		</s:HGroup>
-		<mx:DataGrid id="dg" width="100%" height="534" dataProvider="{collection}"
+		<mx:DataGrid id="dg" width="100%" height="100%" dataProvider="{collection}"
 					 doubleClick="popupRecord(dg.selectedItem as <%=Mode%>)" doubleClickEnabled="true">
 			<mx:columns>
 			<% foreach (ColumnSchema column in this.SourceTable.Columns) {%>
             <% string type = JavaAlias[column.SystemType.FullName];
-                if(column.Size > 100) continue;
+                if(column.Size > 400) continue;
                 if(column.IsPrimaryKeyMember) continue;
                 if(!type.Equals("String") && !type.Equals("Date")) continue;
             %> 
-    			<mx:DataGridColumn dataField="<%= fieldName(column.Name) %>" headerText="<%=column.Description.Length==0?StringUtil.ToPascalCase(column.Name):column.Description%>" />  
+    			<mx:DataGridColumn dataField="<%=fieldName(column.Name) %>" <%if(type.Equals("Date")){%>labelFunction="Util.formatDate"<%}%> headerText="<%=column.Description.Length==0?StringUtil.ToPascalCase(column.Name):column.Description%>" />  
   			<% }%> 
 			</mx:columns>
 		</mx:DataGrid>

@@ -64,10 +64,11 @@ $(function() {
     if(column.Size > 100) continue;
     if(column.IsPrimaryKeyMember) continue;
     if(!type.Equals("String")) continue; 
-         
-    if(i++%2==1) {%>
-            </tr>
-            <tr><%}%>
+    if(i>0 && i%2==0) { 
+        Response.WriteLine("    </tr>");
+        Response.WriteLine("    <tr>");
+    }
+    i++;%>
     			<th><%=column.Description.Length==0?StringUtil.ToPascalCase(column.Name):column.Description%>:</th>
     		    <% if (column.DataType.ToString().Equals("DateTime")) { %> 
     			<td><input type="text"  name ="<%=fieldName(column.Name)%>" value="" size="20" /></td>

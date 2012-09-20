@@ -35,23 +35,23 @@ package <%=RootTableSpaceName%>.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-public class <%= Mode%> implements Serializable {
+public class <%=Mode%> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 	<%-- 成员变量 --%>
     <% foreach (ColumnSchema column in this.SourceTable.Columns) {%>
-    //<%= column.Description%>
-	private <%= JavaAlias[column.SystemType.FullName]%> <%= fieldName(column.Name) %>;    
+    //<%=column.Description%>
+	private <%=JavaAlias[column.SystemType.FullName]%> <%=fieldName(column.Name) %>;    
     <% }%>
 
 	<% foreach (ColumnSchema column in this.SourceTable.Columns) {%>
 
-	public <%= JavaAlias[column.SystemType.FullName]%> <%= getter(column.Name)%>() {
-		return <%= fieldName(column.Name) %>;
+	public <%=JavaAlias[column.SystemType.FullName]%> <%=getter(column.Name)%>() {
+		return <%=fieldName(column.Name) %>;
 	}
 
-	public void <%= setter(column.Name)%>(<%= JavaAlias[column.SystemType.FullName]%> <%= fieldName(column.Name)%>) {
-		this.<%= fieldName(column.Name)%> = <%= fieldName(column.Name)%>;
+	public void <%=setter(column.Name)%>(<%=JavaAlias[column.SystemType.FullName]%> <%=fieldName(column.Name)%>) {
+		this.<%=fieldName(column.Name)%> = <%=fieldName(column.Name)%>;
 	}
     <%}%>
 }

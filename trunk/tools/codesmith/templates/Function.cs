@@ -223,14 +223,12 @@ public string FormatDesc( string description )
 
 ///
 ///
-///将*改成   各个字段 
+///
 public string GetEtParam(TableSchema dt )
 {
 	string param = string.Empty;
 	
 	int count = 0;
-	/// {0} 变量 
-	//string Format = "{0}";
 	foreach (ColumnSchema column in dt.Columns) 
 	{ 
 		if ( count == 0 )
@@ -240,7 +238,7 @@ public string GetEtParam(TableSchema dt )
 		}
 		else
 		{
-			param = param + "," + column.Name;
+			param = param + ",\n\t\t" + column.Name;
 		}
 		count = count + 1;
 	}
@@ -248,7 +246,7 @@ public string GetEtParam(TableSchema dt )
 	return param;
 }
 
-//根据采集数据的字段来
+
 public string GetEtParamSrc(TableSchema dt )
 {
 	string param = string.Empty;	
@@ -263,7 +261,7 @@ public string GetEtParamSrc(TableSchema dt )
 		}
 		else
 		{
-			param = param + "," + column.Name;
+			param = param + ",\n\t\t" + column.Name;
 		}
 		count = count + 1;
 	}
@@ -275,13 +273,11 @@ public string GetEtParamSrc(TableSchema dt )
 
 ///
 ///
-///将*改成   各个字段 
-//根据采集数据的字段来  ?,?,?,?,?,?,?,?,?,?
+///
 public string GetEtParamAsk(TableSchema dt )
 {
 	string param = string.Empty;
 	int count = 0;
-	/// {0} 变量 
 	foreach (ColumnSchema column in dt.Columns) 
 	{ 
 		if ( count == 0 )
@@ -290,7 +286,7 @@ public string GetEtParamAsk(TableSchema dt )
 		}
 		else
 		{
-			param = param + ",#{" + fieldName(column.Name) + "}";
+			param = param + ",\n\t\t#{" + fieldName(column.Name) + "}";
 		}
 		count = count + 1;
 	}
@@ -298,7 +294,6 @@ public string GetEtParamAsk(TableSchema dt )
 }
 
 
-//根据采集数据的字段来
 public string GetUpdateString(TableSchema dt )
 {
 	string param = string.Empty;	
@@ -313,7 +308,7 @@ public string GetUpdateString(TableSchema dt )
 		}
 		else
 		{
-			param = param + "," + column.Name + "=#{" + fieldName(column.Name) + "}";
+			param = param + ",\n\t\t" + column.Name + "=#{" + fieldName(column.Name) + "}";
 		}
 		count = count + 1;
 	}

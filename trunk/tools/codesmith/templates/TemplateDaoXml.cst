@@ -33,11 +33,11 @@ String map = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="<%=RootTableSpaceName%>.dao.<%= Mode%>Mapper">
+<mapper namespace="<%=RootTableSpaceName%>.dao.<%=Mode%>Mapper">
   <!--cache /-->
-  <resultMap id="<%= Mode%>" type="<%=RootTableSpaceName%>.entity.<%= Mode%>" >
+  <resultMap id="<%=Mode%>" type="<%=RootTableSpaceName%>.entity.<%=Mode%>" >
 	<% foreach (ColumnSchema column in this.SourceTable.Columns) {%>
-    <result column="<%= column.Name%>" property="<%= fieldName(column.Name)%>"/>
+    <result column="<%=column.Name%>" property="<%=fieldName(column.Name)%>"/>
 	<%}%>
   </resultMap>
   
@@ -52,7 +52,7 @@ String map = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
   
   <!--countBy -->
   <select id="countBy" parameterType="java.util.HashMap" resultType="int">
-    SELECT COUNT(*)  FROM <%= SourceTable.Name%>
+    SELECT COUNT(*)  FROM <%=SourceTable.Name%>
     <include refid="where" />
   </select>
   
@@ -63,16 +63,16 @@ String map = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
 	</if>
 	SELECT
         <%=GetEtParamSrc(this.SourceTable)%>
-    FROM <%= table%>
+    FROM <%=table%>
        <include refid="where" />
 	<if test="start != null" >
-	) ROW_ ) WHERE ROWNUM_ &gt;#{start} and ROWNUM_ &lt; (#{start} + #{size})
+	) ROW_ ) WHERE ROWNUM_ &gt;#{start} and ROWNUM_ &lt;= (#{start} + #{size})
 	</if>
   </select>
 
   <!--count -->
   <select id="count" resultType="int">
-    SELECT COUNT(*)  FROM <%= SourceTable.Name%>
+    SELECT COUNT(*)  FROM <%=SourceTable.Name%>
   </select>
   
   <!--select -->
@@ -82,9 +82,9 @@ String map = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
 	</if>
 	SELECT
         <%=GetEtParamSrc(this.SourceTable)%>
-    FROM <%= table%>
+    FROM <%=table%>
 	<if test="start != null" >
-	) ROW_ ) WHERE ROWNUM_ &gt;#{start} and ROWNUM_ &lt; (#{start} + #{size})
+	) ROW_ ) WHERE ROWNUM_ &gt;#{start} and ROWNUM_ &lt;= (#{start} + #{size})
 	</if>
   </select>
   
@@ -92,28 +92,28 @@ String map = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
   <select id="get" <%=parameterType(SourceTable)%> resultMap="<%=Mode%>">
     SELECT
         <%=GetEtParamSrc(this.SourceTable)%>
-    FROM <%= table%>
-    WHERE <%= parameterSQL(SourceTable)%>
+    FROM <%=table%>
+    WHERE <%=parameterSQL(SourceTable)%>
   </select>
   
   <!--delete -->
   <delete id="delete" <%=parameterType(SourceTable)%>>
-    DELETE FROM <%= table%> WHERE <%= parameterSQL(SourceTable)%>
+    DELETE FROM <%=table%> WHERE <%=parameterSQL(SourceTable)%>
   </delete>
   
   <!--insert -->
   <insert id="insert" parameterType="<%=Mode%>">
-    INSERT INTO <%= table%>
-      (<%=GetEtParamSrc(this.SourceTable)%>)
+    INSERT INTO <%=table%>
+        (<%=GetEtParamSrc(this.SourceTable)%>)
     VALUES
-      (<%=GetEtParamAsk(this.SourceTable)%>)
+        (<%=GetEtParamAsk(this.SourceTable)%>)
   </insert>
   
    <!--update -->
   <update id="update" parameterType="<%=Mode%>">
-    UPDATE <%= table%> SET
-    <%=GetUpdateString(this.SourceTable)%>
-    WHERE <%= parameterSQL(SourceTable)%>
+    UPDATE <%=table%> SET
+        <%=GetUpdateString(this.SourceTable)%>
+    WHERE <%=parameterSQL(SourceTable)%>
  </update>
   
 </mapper>

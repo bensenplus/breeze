@@ -35,6 +35,7 @@ String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
 <mx:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		   xmlns:s="library://ns.adobe.com/flex/spark" 
 		   xmlns:mx="library://ns.adobe.com/flex/mx" width="800" height="600"
+           layout="absolute"
 		   label="{<%=mode%>.<%=key%>==0?<%=mode%>.<%=key%>:'New Record'}">
 
 	<fx:Metadata>
@@ -85,9 +86,9 @@ String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
 				}
 			}			
 			
-			private function deleteItem():void
+			private function remove():void
 			{
-				ro.remove(<%=GetCallKeysParam(this.SourceTable, mode)%>);		
+				ro.remove(<%=GetCallKeysParam(this.SourceTable, mode)%>);	
 			}
 			
 			private function create_resultHandler(event:ResultEvent):void
@@ -99,18 +100,18 @@ String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
 			private function update_resultHandler(event:ResultEvent):void
 			{
 				dispatchEvent(new FormEvent(FormEvent.UPDATED, <%=mode%>));
-				parent.removeChild(this)
+				parent.removeChild(this);
 			}
 			
 			private function remove_resultHandler(event:ResultEvent):void
 			{
-				dispatchEvent(new FormEvent(FormEvent.DELETED, <%=mode%>));
-				parent.removeChild(this)
+				dispatchEvent(new FormEvent(FormEvent.REMOVED, <%=mode%>));
+				parent.removeChild(this);
 			}
 			
 			public function titleWindow_close(event:CloseEvent):void
 			{
-				parent.removeChild(this)
+				parent.removeChild(this);
 			}
 			
 			private function faultHandler(event:FaultEvent):void
@@ -125,26 +126,30 @@ String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
 		<mx:RemoteObject id="ro" destination="<%=service%>" fault="faultHandler(event)" endpoint="http://localhost:8080/breeze/messagebroker/amf">
 			<mx:method name="create" result="create_resultHandler(event)"/>
 			<mx:method name="update" result="update_resultHandler(event)"/>
-			<mx:method name="delete" result="remove_resultHandler(event)"/>
+			<mx:method name="remove" result="remove_resultHandler(event)"/>
 		</mx:RemoteObject>
 	</fx:Declarations>
 
-	<mx:Form>
+	<mx:Form width="100%" height="100%">
          <% foreach (ColumnSchema column in this.SourceTable.Columns) {%>
          <% if(column.IsPrimaryKeyMember) continue;
          if(fieldName(column.Name).Equals("createTime")) continue;
          if(fieldName(column.Name).Equals("updateTime")) continue;
         %>
-            <mx:FormItem label="<%=column.Description.Length==0?StringUtil.ToPascalCase(column.Name):column.Description%>">
-			    <mx:TextInput id="txt_<%=fieldName(column.Name)%>" text="{<%=mode%>.<%= fieldName(column.Name) %>}" enabled="true"/>
+            <mx:FormItem label="<%=column.Description.Length==0?StringUtil.ToPascalCase(column.Name):column.Description%>" width="100%">
+			   <% if (column.Size > 400) {%>
+                <s:TextArea id="txt_<%=fieldName(column.Name)%>" text="{<%=mode%>.<%= fieldName(column.Name) %>}" enabled="true" width="100%" height="300"/>
+               <%} else{ %>
+                <mx:TextInput id="txt_<%=fieldName(column.Name)%>" text="{<%=mode%>.<%= fieldName(column.Name) %>}" enabled="true"/>
+                <%} %>
 		   </mx:FormItem>
          <% }%>
 	</mx:Form>
 	
-	<s:HGroup right="8" bottom="8">
+	<s:HGroup left="300" bottom="8">
 		<s:Button label="Close" click="parent.removeChild(this)"/>
 		<s:Button label="Save" click="save()"/>
-		<s:Button label="Delete" click="deleteItem()"/>
+		<s:Button label="Delete" click="remove()"/>
 	</s:HGroup>
 
 </mx:TitleWindow>

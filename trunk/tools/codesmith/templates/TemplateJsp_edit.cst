@@ -50,15 +50,29 @@ $(function() {
     <tr><%int i=0;foreach (ColumnSchema column in this.SourceTable.Columns) {
  if(column.IsPrimaryKeyMember) continue;
  if(fieldName(column.Name).Equals("createTime")) continue;
- if(fieldName(column.Name).Equals("updateTime")) continue;
- if(i++%2==1) {%>
-    </tr>
-    <tr><%}%>
-		<th><%=column.Description.Length==0?StringUtil.ToPascalCase(column.Name):column.Description%>:</th>
+ if(fieldName(column.Name).Equals("updateTime")) continue; 
+    if(i>0 && i%2==0) { 
+        Response.WriteLine("    </tr>");
+        Response.WriteLine("    <tr>");
+    }
+   %>
 	    <% if (column.DataType.ToString().Equals("DateTime")) { %> 
+        <th><%=column.Description.Length==0?StringUtil.ToPascalCase(column.Name):column.Description%>:</th>
 		<td><input type="text" id="<%=fieldName(column.Name)%>" name ="<%=fieldName(column.Name)%>" value='<fmt:formatDate value="${<%=mode%>.<%=fieldName(column.Name)%>}" pattern="yyyy/MM/dd HH:mm" />' size="20" /></td>
-	    <% } else{%>
-		<td><input type="text" name ="<%=fieldName(column.Name)%>"  size="<%=column.Size>40?40:column.Size%>" value="${<%=mode%>.<%=fieldName(column.Name)%>}"  /></td>
-	    <% }}%>
+	    <% } else if(column.Size > 100){
+            if(i>0){
+                Response.WriteLine("    </tr>");
+                Response.WriteLine("    <tr>");
+            }
+        %>
+            <th><%=column.Description.Length==0?StringUtil.ToPascalCase(column.Name):column.Description%>:</th>
+            <td colspan="3"><textarea name ="<%=fieldName(column.Name)%>" rows=5 style="width:100%">${<%=mode%>.<%=fieldName(column.Name)%>}</textarea></td>
+        <%
+        }else{%>
+            <th><%=column.Description.Length==0?StringUtil.ToPascalCase(column.Name):column.Description%>:</th>
+		    <td><input type="text" name ="<%=fieldName(column.Name)%>"  size="<%=column.Size>40?40:column.Size%>" value="${<%=mode%>.<%=fieldName(column.Name)%>}"  /></td>
+	    <% }
+   i++;
+  }%>
 	</tr>
 </table>

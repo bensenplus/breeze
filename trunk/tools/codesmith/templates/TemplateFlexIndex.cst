@@ -29,7 +29,8 @@ public TableSchemaCollection GetTableCollection(DatabaseSchema dataBase)
 			   xmlns:user="org.breeze.flex.User"
 			   xmlns:mx="library://ns.adobe.com/flex/mx"
 			   xmlns:flex="org.breeze.flex.*"
-			   width="100%" height="100%">
+			   width="100%" height="100%"
+               preloader="mx.preloaders.DownloadProgressBar">
 	<fx:Script>
 		<![CDATA[
         	import mx.managers.PopUpManager;
@@ -38,16 +39,7 @@ public TableSchemaCollection GetTableCollection(DatabaseSchema dataBase)
 			private var popUpManager:PopUpManager;   
 			private var dragManager:DragManager;			
 		]]>
-		
-		
 	</fx:Script>
-	
-	<fx:Declarations>
-		<s:RemoteObject id="ro" destination="consultationService" endpoint="http://localhost:8080/breeze/messagebroker/amf"/>
-	</fx:Declarations>
-	
-	<s:controlBarContent>
-	</s:controlBarContent>
 	<mx:TabNavigator x="0" y="0" width="100%" height="100%">
         <% TableSchemaCollection tables = GetTableCollection(SourceData);
 			foreach(TableSchema dt in tables)
