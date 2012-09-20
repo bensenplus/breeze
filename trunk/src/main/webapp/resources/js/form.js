@@ -2,15 +2,15 @@
 var lastLineId = "";  	
 function rowclick(obj){
     if (lastLineId != "") {  
-    	 if(lastLineId % 2 == 1)
+/*    	 if(lastLineId % 2 == 1)
     		 $("#" + lastLineId).addClass("l-odd");  
     	  else
-    		  $("#" + lastLineId).addClass("l-even");  
+    		  $("#" + lastLineId).addClass("l-even");  */
    	
         $("#" + lastLineId).removeClass("l-selected");  
     }  
-    $(obj).removeClass("l-odd");  
-    $(obj).removeClass("l-even");  
+/*    $(obj).removeClass("l-odd");  
+    $(obj).removeClass("l-even");  */
     $(obj).addClass("l-selected");  
     lastLineId = $(obj).attr("id");      	
 }
@@ -66,7 +66,7 @@ function initPage(count, page, size) {
         items_per_page: size// 每页显示的记录数
     });
     
-    $('table.table-list tr:even').not(".pagefoot").addClass("l-even");	
+   //$('table.table-list tr:even').not(".pagefoot").addClass("l-even");	
 }
 
 var curren_page = 0;
@@ -83,14 +83,14 @@ function initForm(){
 	
     $( "#dialog:ui-dialog" ).dialog( "destroy" );
 	$( "#dialog-form" ).dialog({
-		autoOpen: false, modal: false,
-		width: 800//height: 600,
+		autoOpen: false, modal: true,
+		width: 900//height: 600,
 	});
 	
-	$("#searchHead").addClass("ui-dialog-titlebar ui-widget-header ui-corner-top ui-helper-clearfix");
+	$("#searchHead").addClass("ui-widget-header");
 	$("#toggle").addClass("ui-icon ui-icon-triangle-1-s");
-	//$("#result-list").addClass("ui-widget-content ui-corner-all ui-helper-clearfix");	
-	
+	//$("#search-form-warp").addClass("ui-widget-content");
+
     $("#toggle").click(function(){
     	$("#search-form-warp").toggle();
     	$("#toggle").toggleClass("ui-icon-triangle-1-e");
@@ -116,8 +116,9 @@ function initForm(){
 
 function edit(param){
     var url = "./edit?"+param+"&date="+new Date().getMilliseconds();; 
-	$( "#update-form" ).load(url, function() {});
-	$("#dialog-form" ).dialog( "open" );
+	$( "#update-form" ).load(url, function() {
+		$("#dialog-form" ).dialog( "open" );
+	});
 }
 
 function remove(param){
