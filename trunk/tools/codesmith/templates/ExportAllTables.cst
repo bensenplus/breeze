@@ -26,7 +26,7 @@
 
 <%-- 注册 子模板 --%>
 	<%@ Register Name="ExportSingleTable" Template="ExportSingleTable.cst" %>
-	<%@ Register Name="TemplateJsp_index" Template="TemplateJsp_menu.cst" %>
+	<%@ Register Name="TemplateJsp_menu" Template="TemplateJsp_menu.cst" %>
     <%@ Register Name="TemplateFlexIndex" Template="TemplateFlexIndex.cst" %>
 <%
     RenderMain();
@@ -61,7 +61,7 @@ public void RenderMain()
      Response.WriteLine("Output Path " + OutputPath);
     
     
-    CreateTemplate<TemplateJsp_index>(SourceData, "webapp", "index.jsp");
+    CreateTemplate<TemplateJsp_menu>(SourceData, "webapp.common", "menu.jsp");
     CreateTemplate<TemplateFlexIndex>(SourceData, "flex.src", "index.mxml");
  
     /// 重复调用单个的子模板

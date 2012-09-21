@@ -59,8 +59,9 @@ $(function() {
 	    <% if (column.DataType.ToString().Equals("DateTime")) { %> 
         <th><%=column.Description.Length==0?StringUtil.ToPascalCase(column.Name):column.Description%>:</th>
 		<td><input type="text" id="<%=fieldName(column.Name)%>" name ="<%=fieldName(column.Name)%>" value='<fmt:formatDate value="${<%=mode%>.<%=fieldName(column.Name)%>}" pattern="yyyy/MM/dd HH:mm" />' size="20" /></td>
-	    <% } else if(column.Size > 100){
+	    <% } else if(column.Size > 400){
             if(i>0){
+                if(i%2==0) i++;
                 Response.WriteLine("    </tr>");
                 Response.WriteLine("    <tr>");
             }

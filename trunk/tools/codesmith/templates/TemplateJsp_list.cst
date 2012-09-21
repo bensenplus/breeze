@@ -46,13 +46,13 @@ $(function() {
 <% foreach (ColumnSchema column in this.SourceTable.Columns) {%>
 <%  
     string type = JavaAlias[column.SystemType.FullName];
-    if(column.Size > 100) continue;
+    if(column.Size > 400) continue;
     if(column.IsPrimaryKeyMember) continue;
     if(!type.Equals("String") && !type.Equals("Date")) continue;
 %> 
 		    <th><%=column.Description.Length==0?StringUtil.ToPascalCase(column.Name):column.Description%></th>		
 <% }%>
-			<th colspan=2>操作</th>
+			<th colspan="2" width="20px">操作</th>
 		</tr>
 		<c:forEach var="<%=mode%>" items="${list}" varStatus="status">
             <tr ondblclick="dbClick('<%=parameterURL(SourceTable)%>')" onclick = 'rowclick(this)' id = '${status.count}'>
@@ -61,7 +61,7 @@ $(function() {
 <%  
     string type = JavaAlias[column.SystemType.FullName];
     if(column.IsPrimaryKeyMember) continue;
-    if(column.Size > 100) continue;
+    if(column.Size > 400) continue;
     if(!type.Equals("String") && !type.Equals("Date")) continue;
 %> 
 	<% if (column.DataType.ToString().Equals("DateTime")) { %> 
@@ -72,8 +72,8 @@ $(function() {
 				<td>${<%=mode%>.<%=fieldName(column.Name)%>}</td>
 	<% }%>
 <% }%>
-				<td><a href="###" onclick="edit('<%=parameterURL(SourceTable)%>')">编辑</a></td>
-				<td><a href="###" onclick="remove('<%=parameterURL(SourceTable)%>')">删除</a></td>
+				<td><a href="#" onclick="edit('<%=parameterURL(SourceTable)%>')">编辑</a></td>
+				<td><a href="#" onclick="remove('<%=parameterURL(SourceTable)%>')">删除</a></td>
         	</tr>
 		</c:forEach>
 </table>

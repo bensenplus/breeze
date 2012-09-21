@@ -2,15 +2,8 @@
 var lastLineId = "";  	
 function rowclick(obj){
     if (lastLineId != "") {  
-/*    	 if(lastLineId % 2 == 1)
-    		 $("#" + lastLineId).addClass("l-odd");  
-    	  else
-    		  $("#" + lastLineId).addClass("l-even");  */
-   	
         $("#" + lastLineId).removeClass("l-selected");  
     }  
-/*    $(obj).removeClass("l-odd");  
-    $(obj).removeClass("l-even");  */
     $(obj).addClass("l-selected");  
     lastLineId = $(obj).attr("id");      	
 }
@@ -52,7 +45,7 @@ function initPage(count, page, size) {
         prev_text:"上一页",
         next_text:"下一页",
         num_display_entries: 4,//连续分页主体部分显示的分页条目数.默认是11
-        num_edge_entries: 2,//两侧显示的首尾分页的条目数.默认是0
+        num_edge_entries: 1,//两侧显示的首尾分页的条目数.默认是0
         current_page: page,
         items_per_page: size// 每页显示的记录数
     });
@@ -61,12 +54,10 @@ function initPage(count, page, size) {
         prev_text:"上一页",
         next_text:"下一页",
         num_display_entries: 4,//连续分页主体部分显示的分页条目数.默认是11
-        num_edge_entries: 2,//两侧显示的首尾分页的条目数.默认是0
+        num_edge_entries: 1,//两侧显示的首尾分页的条目数.默认是0
         current_page: page,
         items_per_page: size// 每页显示的记录数
     });
-    
-   //$('table.table-list tr:even').not(".pagefoot").addClass("l-even");	
 }
 
 var curren_page = 0;
@@ -87,14 +78,10 @@ function initForm(){
 		width: 900//height: 600,
 	});
 	
-	$("#searchHead").addClass("ui-widget-header");
-	$("#toggle").addClass("ui-icon ui-icon-triangle-1-s");
-	//$("#search-form-warp").addClass("ui-widget-content");
-
-    $("#toggle").click(function(){
+	//$("#search-icon").addClass("ui-icon ui-icon-search");
+	$("#search-form-warp").hide();
+    $("#search-icon").click(function(){
     	$("#search-form-warp").toggle();
-    	$("#toggle").toggleClass("ui-icon-triangle-1-e");
-    	$("#toggle").toggleClass("ui-icon-triangle-1-s"); 
     });
     
 	$("#search-btn").button().click(function(ev){

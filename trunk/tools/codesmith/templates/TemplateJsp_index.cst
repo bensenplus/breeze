@@ -31,40 +31,19 @@ String Key = JavaAlias[SourceTable.Columns[0].SystemType.FullName];
 String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
 %>
 <%%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%%>
-<%%@ include file="/common/taglibs.jsp"%%>
-<%%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%%>
-<%%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %%>
-<html>
-<head>
-<title><%=SourceTable.Description%>列表</title>
-<link rel="stylesheet" href="../resources/themes/base/jquery.ui.all.css">
-<link rel="stylesheet" href="../resources/css/pagination.css" />
-<link rel="stylesheet" href="../resources/css/common.css" />
-<script  type="text/javascript" src="../resources/js/jquery-1.8.0.min.js"></script>
-<script  type="text/javascript" src="../resources/js/jquery-ui-1.8.23.custom.min.js"></script>
-<script type="text/javascript" src="../resources/js/jquery.pagination.js"></script>
-<script  type="text/javascript" src="../resources/js/form.js"></script>
-<script type="text/javascript">
-$(function() {	
-	initForm();
-});
-</script>
-</head>
-<body>
-<div id="searchHead">
-	<span id="toggle"></span>
-</div>
+
+<%%@ include file="/common/head.jsp"%%>
 <div id="search-form-warp">
     <form id="search-form">
     	<input type="hidden" name="<%=key%>" value="${<%=mode%>.<%=key%>}" />
     	<table class="table-form">
-    	    <tr><%int i=0;foreach (ColumnSchema column in this.SourceTable.Columns) {
- 
+    	    <tr>
+  <%int i=0;foreach (ColumnSchema column in this.SourceTable.Columns) { 
     string type = JavaAlias[column.SystemType.FullName];
-    if(column.Size > 100) continue;
+    if(column.Size > 400) continue;
     if(column.IsPrimaryKeyMember) continue;
     if(!type.Equals("String")) continue; 
-    if(i>0 && i%2==0) { 
+    if(i>0 && i%4==0) { 
         Response.WriteLine("    </tr>");
         Response.WriteLine("    <tr>");
     }
@@ -73,17 +52,11 @@ $(function() {
     		    <% if (column.DataType.ToString().Equals("DateTime")) { %> 
     			<td><input type="text"  name ="<%=fieldName(column.Name)%>" value="" size="20" /></td>
     		    <% } else{%>
-    			<td><input type="text" name ="<%=fieldName(column.Name)%>"  size="<%=column.Size>40?40:column.Size%>" value=""  /></td>
+    			<td><input type="text" name ="<%=fieldName(column.Name)%>"  size="<%=column.Size>400?30:20%>" value=""  /></td>
     		    <% }}%>
     		</tr>
     	</table>
         <div style="text-align:right"><button  id="search-btn">search</button></div>
     </form>
 </div>
-<div id="result-list"></div>
-<div id="dialog-form" title="">
-	<form id="update-form"></form>
-    <div style="text-align:center"><button id="update-btn">update</button></div>
-</div>
-</body>
-</html>
+<%%@ include file="/common/foot.jsp"%%>
