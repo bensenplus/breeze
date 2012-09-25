@@ -11,6 +11,18 @@ a:link   { color: #2f2f2f; text-decoration: none}
 a:visited{ color: #2f2f2f; text-decoration: none}
 a:hover  { color: #005AC1; text-decoration: none}
 
+
+.cursor-point{cursor: pointer}
+.tool-bar {list-style: none outside none; clear: both;  height:20px; padding:10px;}
+.tool-bar li{float:right;margin:0px 10px}
+.align-center{width:800px;margin-right: auto; margin-left: auto;}
+.float-left { float: left; }
+.float-right { float: right; }
+.clear { clear: both; }
+
+.input-readonly{border:0;border-style:none;}
+.textarea-readonly{border:0;overflow-y:hidden;}
+
 /* Table
    -------------------------------- */
 table { width:100%;border-collapse:collapse;word-wrap:break-word;word-break:keep-all; table-layout:inherit; font-size:12px;}
@@ -23,10 +35,49 @@ table { width:100%;border-collapse:collapse;word-wrap:break-word;word-break:keep
  .table-form {line-height:20px;border:0px solid #eee;}
 .table-form td,
 .table-form th{ border:0px solid #eee;overflow:hidden; }
-.table-form th{padding-left:4px; text-align:right}
+.table-form th{padding-left:4px; text-align:right;vertical-align:top}
 .table-form td{padding-left:4px;}
 
 .l-odd{background:#fff}
 .l-even{background:#eee}
 .l-selected{background:#eee;}
+
+/* Layout
+   -------------------------------- */
+#top-bar {
+	background: #1b5790; /* Digg Blue */
+	min-height: 55px;
+	font-size: 12px;
+	font-weight: bold;
+	width:100%;
+	}
+#footer {
+	clear:both;
+	background: #1b5790;
+	padding: 2px;
+	color: white;
+	font-size: 10px;
+	}
+#footer a {
+	color: white;
+}
+
+#right-side {
+	float: right;
+	padding-top: 15px;
+	}
+#right-side img {
+	border: 1px solid white;
+	vertical-align: middle;
+}
+#right-side a {
+	color: white;
+	border-left: 1px solid white;
+	height: 10px;
+	padding-left: 10px;
+}
+#right-side a.first {
+	border: none;
+	padding: 0;
+}
    
