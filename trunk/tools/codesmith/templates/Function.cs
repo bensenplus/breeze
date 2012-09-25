@@ -282,18 +282,26 @@ public string GetEtParamAsk(TableSchema dt )
 	{ 
 		if ( count == 0 )
 		{
-			param = "#{" + fieldName(column.Name) + "}";
+			param = "#{" + fieldName(column.Name) +",jdbcType="+JDBCType(column.NativeType)+"}";
 		}
 		else
 		{
-			param = param + ",\n\t\t#{" + fieldName(column.Name) + "}";
+			param = param + ",\n\t\t#{" + fieldName(column.Name) +",jdbcType="+JDBCType(column.NativeType)+"}";
 		}
 		count = count + 1;
 	}
 	return param;
 }
 
-
+public string JDBCType(string type){
+    
+    if(type =="NUMBER") return "NUMERIC";
+    
+    if(type == "VARCHAR2") return "VARCHAR";
+    
+    return type;
+   
+}
 public string GetUpdateString(TableSchema dt )
 {
 	string param = string.Empty;	
@@ -304,11 +312,11 @@ public string GetUpdateString(TableSchema dt )
 		if ( count == 0 )
 		{
 
-			param = column.Name + "=#{" + fieldName(column.Name) + "}";
+			param = column.Name + "=#{" + fieldName(column.Name) +",jdbcType="+JDBCType(column.NativeType)+"}";
 		}
 		else
 		{
-			param = param + ",\n\t\t" + column.Name + "=#{" + fieldName(column.Name) + "}";
+			param = param + ",\n\t\t" + column.Name + "=#{" + fieldName(column.Name) +",jdbcType="+JDBCType(column.NativeType)+"}";
 		}
 		count = count + 1;
 	}
