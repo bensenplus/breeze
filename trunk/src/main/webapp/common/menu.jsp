@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="../resources/css/pro_drop/pro_drop.css" />
 <script  type="text/javascript" src="../resources/js/pro_drop.js"></script>
 	<ul id="nav">
-		<li class="top"><a href="#nogo1" class="top_link"><span>Home</span></a></li>
+		<li class="top"><a href="#" class="top_link"><span>Home</span></a></li>
 		<li class="top"><a href="#" id="menu" class="top_link"><span class="down">MenuGroup</span></a>
 			<ul class="sub">
 			    <li><a href="../accezz/index">Accezz</a></li>
@@ -18,7 +18,7 @@
 			    <li><a href="../consultationDoctor/index">ConsultationDoctor</a></li>
             </ul>
 	    </li>   
-        <li class="top"><a href="#" id="menu" class="top_link"><span class="down">MenuGroup</span></a>
+        <li class="top"><a href="#" id="menu" class="top_link"><span class="down">CvDicmeta</span></a>
             <ul class="sub">        
 			    <li><a href="../cvDicmeta/index">CvDicmeta</a></li>
 			    <li><a href="../cvDictionary/index">CvDictionary</a></li>
@@ -32,7 +32,7 @@
 			    <li><a href="../hospital/index">Hospital</a></li>
             </ul>
 	    </li>   
-        <li class="top"><a href="#" id="menu" class="top_link"><span class="down">MenuGroup</span></a>
+        <li class="top"><a href="#" id="menu" class="top_link"><span class="down">Log</span></a>
             <ul class="sub">        
 			    <li><a href="../log/index">Log</a></li>
 			    <li><a href="../menu/index">Menu</a></li>
@@ -46,7 +46,7 @@
 			    <li><a href="../receivedMessage/index">ReceivedMessage</a></li>
             </ul>
 	    </li>   
-        <li class="top"><a href="#" id="menu" class="top_link"><span class="down">MenuGroup</span></a>
+        <li class="top"><a href="#" id="menu" class="top_link"><span class="down">Role</span></a>
             <ul class="sub">        
 			    <li><a href="../role/index">Role</a></li>
 			    <li><a href="../roleAccess/index">RoleAccess</a></li>
@@ -60,7 +60,7 @@
 			    <li><a href="../tempmeta/index">Tempmeta</a></li>
             </ul>
 	    </li>   
-        <li class="top"><a href="#" id="menu" class="top_link"><span class="down">MenuGroup</span></a>
+        <li class="top"><a href="#" id="menu" class="top_link"><span class="down">Uaccess</span></a>
             <ul class="sub">        
 			    <li><a href="../uaccess/index">Uaccess</a></li>
 			    <li><a href="../users/index">Users</a></li>
