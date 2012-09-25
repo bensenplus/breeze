@@ -14,11 +14,6 @@
 		http://www.springframework.org/schema/mvc 
 		http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
  
- 	<!-- Supporting Spring MVC Infrastructure for RESTful @Controllers -->
- 	<context:component-scan base-package="org.springframework.flex.samples" use-default-filters="false">
-		<context:include-filter expression="org.springframework.stereotype.Controller" type="annotation"/>
-	</context:component-scan>
- 
  	<!-- Flex-specific Configuration -->
 	<flex:message-broker mapping-order="1">
 		<flex:mapping pattern="/messagebroker/*"/>
@@ -47,5 +42,6 @@
 	<bean id="defaultMessageTemplate" class="org.springframework.flex.messaging.MessageTemplate" />
 
 	<!-- Expose the service bean for BlazeDS remoting -->
-        <flex:remoting-destination ref="logService" />
+        <flex:remoting-destination ref="messageCacheService" />
+        <flex:remoting-destination ref="consultationService" />
 </beans>
