@@ -25,16 +25,15 @@ a:hover  { color: #005AC1; text-decoration: none}
 
 /* Table
    -------------------------------- */
-table { width:100%;border-collapse:collapse;word-wrap:break-word;word-break:keep-all; table-layout:inherit; font-size:12px;}
- .table-list {line-height:20px;border:0px solid #eee;}
+table { width:100%;border-collapse:collapse;word-break:keep-all; font-size:12px;}
+ .table-list {line-height:20px;}
 .table-list td,
-.table-list th{ border:0px solid #eee;overflow:hidden; }
+.table-list th{overflow:hidden; }
 .table-list th{background:#ddd}
 .table-list td{padding-left:4px;}
 
- .table-form {line-height:20px;border:0px solid #eee;}
-.table-form td,
-.table-form th{ border:0px solid #eee;overflow:hidden; }
+ .table-form {line-height:20px;}
+.table-form td,.table-form th{overflow:hidden;}
 .table-form th{padding-left:4px; text-align:right;vertical-align:top}
 .table-form td{padding-left:4px;}
 
