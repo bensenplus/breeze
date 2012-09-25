@@ -39,7 +39,7 @@ $(function() {
     initPage(${page.param});
 });
 </script>
-<div id="pagehead"></div>
+<div id="page-header"></div>
 <table class="table-list">
 		<tr>
             <th>No.</th>
@@ -72,9 +72,8 @@ $(function() {
 				<td>${<%=mode%>.<%=fieldName(column.Name)%>}</td>
 	<% }%>
 <% }%>
-				<td><a href="#" onclick="edit('<%=parameterURL(SourceTable)%>')">编辑</a></td>
-				<td><a href="#" onclick="remove('<%=parameterURL(SourceTable)%>')">删除</a></td>
+				<td><span class="ui-icon ui-icon-close cursor-point" title="delete" onclick="remove('<%=parameterURL(SourceTable)%>')"></span></td>
         	</tr>
 		</c:forEach>
 </table>
-<div id="pagefoot"></div>
+<div id="page-footer"></div>

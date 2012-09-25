@@ -32,7 +32,7 @@ String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
 %>
 <%%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%%>
 
-<%%@ include file="/common/head.jsp"%%>
+<%%@ include file="/common/header.jsp"%%>
 <div id="search-form-warp">
     <form id="search-form">
     	<input type="hidden" name="<%=key%>" value="${<%=mode%>.<%=key%>}" />
@@ -56,7 +56,9 @@ String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
     		    <% }}%>
     		</tr>
     	</table>
-        <div style="text-align:right"><button  id="search-btn">search</button></div>
+        <ul class="tool-bar" >
+    		<li><button id="search-button" >Search</button></li>
+    	</ul>
     </form>
 </div>
-<%%@ include file="/common/foot.jsp"%%>
+<%%@ include file="/common/footer.jsp"%%>

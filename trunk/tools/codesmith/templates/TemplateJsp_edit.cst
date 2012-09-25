@@ -67,7 +67,7 @@ $(function() {
             }
         %>
             <th><%=column.Description.Length==0?StringUtil.ToPascalCase(column.Name):column.Description%>:</th>
-            <td colspan="3"><textarea name ="<%=fieldName(column.Name)%>" rows=5 style="width:100%">${<%=mode%>.<%=fieldName(column.Name)%>}</textarea></td>
+            <td colspan="3"><textarea name ="<%=fieldName(column.Name)%>" rows=5 style="width:80%">${<%=mode%>.<%=fieldName(column.Name)%>}</textarea></td>
         <%
         }else{%>
             <th><%=column.Description.Length==0?StringUtil.ToPascalCase(column.Name):column.Description%>:</th>
