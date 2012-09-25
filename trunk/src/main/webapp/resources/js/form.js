@@ -22,6 +22,8 @@ function loadHtml(url, formName, divName) {
 	$("#"+divName).load(url+queryString,function(response, status, xhr){
 		if(xhr.status == "200"){
 
+		}else{
+			alert(xhr.status);
 		}
 	});	
 }
@@ -128,7 +130,6 @@ function readonlyform(form, readonly){
 		$(form+" textarea" ).attr("readonly",readonly); 
 		$(form+" textarea" ).addClass("textarea-readonly");
 		$(form+" textarea" ).each(function(){
-			$(this)[0].heght_old = $(this)[0].height;
 			$(this).height($(this)[0].scrollHeight);
 		});
 		$("#update-btn").hide();
@@ -137,7 +138,9 @@ function readonlyform(form, readonly){
 		$(form+" input" ).removeClass("input-readonly");
 		$(form+" textarea" ).removeAttr("readonly");
 		$(form+" textarea" ).removeClass("textarea-readonly");
-		$(form+" textarea" ).height(250);
+		$(form+" textarea" ).each(function(){
+			$(this).height($(this)[0].rows*30);
+		});
 		$("#update-btn").show();
 	}
 }
