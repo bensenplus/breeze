@@ -37,9 +37,17 @@
 	<description>Spring settings</description>
 	
 	<context:component-scan base-package="org.breeze"></context:component-scan>
-	
-	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
+
 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
+	<bean	class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+			<property name="interceptors">
+			<list>
+				<ref bean="commonInterceptor" />
+			</list>
+		</property>
+	</bean>
+	<bean id="commonInterceptor" class="org.breeze.core.web.CommonInterceptor"/>
+
 
     <!-- transaction manager, use JtaTransactionManager for global tx -->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
@@ -102,5 +110,18 @@
         <property name="basePackage" value="org.breeze.dao" />
         <property name="sqlSessionFactoryBeanName" value="_sqlSessionFactory" />
     </bean>
+    
+<!--     <bean name ="logger"  class ="org.breeze.core.web.SpringAOPInterceptor"/>
+	<bean name="loggingAutoProxy"
+		class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="beanNames">
+			<value>*Service</value>
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>logger</value>
+			</list>
+		</property>
+	</bean> -->
     
 </beans>
