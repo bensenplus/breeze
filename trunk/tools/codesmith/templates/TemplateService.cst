@@ -58,11 +58,7 @@ public class <%=Service%> {
 	}
 
 	public List<<%=Mode%>> selectBy(<%=Mode%> <%=mode%>, Page page) {
-        HashMap<String, Object> map = Util.objToHash(<%=mode%>);
-        if(page !=null){
-            map.put("start",page.getStart());
-            map.put("size",page.getSize());
-        }
+        HashMap<String, Object> map = Util.objToHash(<%=mode%>, page);
 		List<<%=Mode%>> list = <%=dao%>.selectBy(map);
 		return list;
 	}

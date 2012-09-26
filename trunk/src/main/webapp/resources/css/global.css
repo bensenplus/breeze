@@ -4,6 +4,7 @@
 
 body {font-size: 12px; font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";}
 table {font-size: 12px; width:100%;border-collapse:collapse;word-break:keep-all; line-height:25px;}
+textarea{font-size: 12px;}
 
 a:link   { color: #2f2f2f; text-decoration: none}
 a:visited{ color: #2f2f2f; text-decoration: none}
@@ -25,7 +26,7 @@ a:hover  { color: #005AC1; text-decoration: none}
    -------------------------------- */
 .table-list td,
 .table-list th{overflow:hidden;text-align:left; }
-.table-list th{background:#888;color:#fff}
+.table-list th{background:#888;color:#fff; border-style:solid;border-color:#fff; border-width:1px}
 .table-list td{padding-left:4px;}
 
 .table-form td,.table-form th{overflow:hidden;}

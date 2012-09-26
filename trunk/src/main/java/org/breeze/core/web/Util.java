@@ -53,6 +53,18 @@ public class Util {
 		return hashMap;
 	}
 	
+	public static HashMap<String, Object> objToHash(Object obj, Page page) {
+		HashMap<String, Object> map  =  objToHash(obj);
+        if(page !=null){
+            map.put("start",page.getStart());
+            map.put("size",page.getSize());
+            if(page.getOrder() != null && page.getOrder().length() >0){
+            	map.put("order",page.getOrder());
+            }
+        }
+		return map;
+	}
+	
 	public static void outputJSONResult(String result, HttpServletResponse response) {
 		try {
 			response.setHeader("ContentType", "text/json");

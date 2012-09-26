@@ -1,5 +1,8 @@
 //上此选中行的id  
-var lastLineId = "";  	
+var lastLineId = "";  
+var curren_page = 0;
+var dbfiled="";
+var desc = false;
 function rowclick(obj){
     if (lastLineId != "") {  
         $("#" + lastLineId).removeClass("l-selected");  
@@ -15,19 +18,59 @@ function dbClick(param) {
 function loadHtml(url, formName, divName) {
 	var queryString="";
 	if (formName) {
-		queryString = "&"+queryString+$("#"+formName).serialize()+"&date="+new Date().getMilliseconds();
+		var order ="";
+		if(dbfiled && desc) order = dbfiled+ "%20desc"; else order = dbfiled;
+		queryString = "&"+queryString+$("#"+formName).serialize()+"&order="+order+"&date="+new Date().getMilliseconds();
 	}else{
 		queryString = "&date="+new Date().getMilliseconds();
 	}
 	$("#"+divName).load(url+queryString,function(response, status, xhr){
 		if(xhr.status == "200"){
-
+		    $(".table-list th").dblclick(function(ev){
+		    	if($(this).attr("filed")){
+		    		if(dbfiled == $(this).attr("filed")){
+		    			desc  = !desc;
+		    		}else{
+		    			dbfiled = $(this).attr("filed");
+		    			desc  =0;
+		    		}
+		    		refreshList(0);
+		    	}
+				ev.preventDefault();
+		    });
+			$(".table-list th").each(function(){
+				if(dbfiled == $(this).attr("filed")){
+					$(this).append(desc?"<span style='color:#f00'>↓</span>":"<span style='color:#f00'>↑</span>");
+				}
+			});
 		}else{
 			alert(xhr.status);
 		}
 	});	
 }
 
+
+function readonlyform(form, readonly){
+	if(readonly){
+		$(form+" input" ).attr("readonly",readonly);
+		$(form+" input" ).addClass("input-readonly");
+		$(form+" textarea" ).attr("readonly",readonly); 
+		$(form+" textarea" ).addClass("textarea-readonly");
+		$(form+" textarea" ).each(function(){
+			$(this).height($(this)[0].scrollHeight);
+		});
+		$("#update-btn").hide();
+	}else{
+		$(form+" input" ).removeAttr("readonly");
+		$(form+" input" ).removeClass("input-readonly");
+		$(form+" textarea" ).removeAttr("readonly");
+		$(form+" textarea" ).removeClass("textarea-readonly");
+		$(form+" textarea" ).each(function(){
+			$(this).height($(this)[0].rows*30);
+		});
+		$("#update-btn").show();
+	}
+}
 
 
 function refreshList(page){
@@ -53,7 +96,6 @@ function initPage(count, page, size) {
     });
 }
 
-var curren_page = 0;
 function select_page(page, jq) {
 	curren_page = page;
 	refreshList(page);
@@ -122,29 +164,6 @@ function edit(param){
 		});
 	});
 }
-
-function readonlyform(form, readonly){
-	if(readonly){
-		$(form+" input" ).attr("readonly",readonly);
-		$(form+" input" ).addClass("input-readonly");
-		$(form+" textarea" ).attr("readonly",readonly); 
-		$(form+" textarea" ).addClass("textarea-readonly");
-		$(form+" textarea" ).each(function(){
-			$(this).height($(this)[0].scrollHeight);
-		});
-		$("#update-btn").hide();
-	}else{
-		$(form+" input" ).removeAttr("readonly");
-		$(form+" input" ).removeClass("input-readonly");
-		$(form+" textarea" ).removeAttr("readonly");
-		$(form+" textarea" ).removeClass("textarea-readonly");
-		$(form+" textarea" ).each(function(){
-			$(this).height($(this)[0].rows*30);
-		});
-		$("#update-btn").show();
-	}
-}
-
 
 function remove(param){
 	if(confirm("Are you sure to delete the record?")){

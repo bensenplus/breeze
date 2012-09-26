@@ -50,7 +50,7 @@ $(function() {
     if(column.IsPrimaryKeyMember) continue;
     if(!type.Equals("String") && !type.Equals("Date")) continue;
 %> 
-		    <th><%=column.Description.Length==0?StringUtil.ToPascalCase(column.Name):column.Description%></th>		
+		    <th filed="<%=column.Name%>"><%=column.Description.Length==0?StringUtil.ToPascalCase(column.Name):column.Description%></th>		
 <% }%>
 			<th colspan="2" width="20px">操作</th>
 		</tr>

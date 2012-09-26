@@ -39,8 +39,8 @@ import <%=RootTableSpaceName%>.entity.<%= Mode%>;
 
 public interface <%= Mode%>Mapper {
 
-	int countBy(HashMap map);
-    List<<%= Mode%>> selectBy(HashMap map);
+	int countBy(HashMap<String, Object> map);
+    List<<%= Mode%>> selectBy(HashMap<String, Object> map);
     
 	int count();    
     List<<%= Mode%>> select(Page page);

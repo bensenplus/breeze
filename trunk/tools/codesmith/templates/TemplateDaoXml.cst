@@ -63,8 +63,9 @@ String map = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
 	</if>
 	SELECT
         <%=GetEtParamSrc(this.SourceTable)%>
-    FROM <%=table%>
-       <include refid="where" />
+    FROM <%=table%>    
+    <include refid="where" />
+    <if test="order != null" >ORDER BY ${order}</if>
 	<if test="start != null" >
 	) ROW_ ) WHERE ROWNUM_ &gt;#{start} and ROWNUM_ &lt;= (#{start} + #{size})
 	</if>
@@ -111,7 +112,8 @@ String map = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
   
    <!--update -->
   <update id="update" parameterType="<%=Mode%>">
-    UPDATE <%=table%> SET
+    UPDATE <%=table%>
+    SET
         <%=GetUpdateString(this.SourceTable)%>
     WHERE <%=parameterSQL(SourceTable)%>
  </update>

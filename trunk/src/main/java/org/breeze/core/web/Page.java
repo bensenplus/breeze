@@ -6,6 +6,7 @@ public class Page {
 	  private int page;
 	  private int size = 20;
 	  private int start;
+	  private String order;
 	  	
 	public int getCount() {
 		return count;
@@ -42,6 +43,20 @@ public class Page {
 	
 	public String getParam() {		
 		return String.valueOf(count)+"," +String.valueOf(page)+"," +String.valueOf(size);
+	}
+
+	/**
+	 * @return the order
+	 */
+	public String getOrder() {
+		return order;
+	}
+
+	/**
+	 * @param order the order to set
+	 */
+	public void setOrder(String order) {
+		this.order = order;
 	}
 
 }

@@ -308,16 +308,20 @@ public string GetUpdateString(TableSchema dt )
 	int count = 0;
 	foreach (ColumnSchema column in dt.Columns) 
 	{ 
+       string temp= string.Empty;
+       if(JDBCType(column.NativeType) =="DATE"){
+            if(fieldName(column.Name).StartsWith("create")){
+                continue;
+            }else if(fieldName(column.Name).StartsWith("update")){
+                temp = column.Name + "= sysdate ";
+            }else{
+                temp = column.Name + "=#{" + fieldName(column.Name) +",jdbcType="+JDBCType(column.NativeType)+"}";
+            }
+        }else{
+            temp = column.Name + "=#{" + fieldName(column.Name) +",jdbcType="+JDBCType(column.NativeType)+"}";
+        }
 		
-		if ( count == 0 )
-		{
-
-			param = column.Name + "=#{" + fieldName(column.Name) +",jdbcType="+JDBCType(column.NativeType)+"}";
-		}
-		else
-		{
-			param = param + ",\n\t\t" + column.Name + "=#{" + fieldName(column.Name) +",jdbcType="+JDBCType(column.NativeType)+"}";
-		}
+		param = (count==0?temp:(param + ",\n\t\t" + temp));
 		count = count + 1;
 	}
 	
