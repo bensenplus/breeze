@@ -42,7 +42,7 @@ $(function() {
 <div id="page-header"></div>
 <table class="table-list">
 		<tr>
-            <th>No.</th>
+            <th width="20px">No.</th>
 <% foreach (ColumnSchema column in this.SourceTable.Columns) {%>
 <%  
     string type = JavaAlias[column.SystemType.FullName];
@@ -50,9 +50,9 @@ $(function() {
     if(column.IsPrimaryKeyMember) continue;
     if(!type.Equals("String") && !type.Equals("Date")) continue;
 %> 
-		    <th filed="<%=column.Name%>"><%=column.Description.Length==0?StringUtil.ToPascalCase(column.Name):column.Description%></th>		
+		    <th <%if(type.Equals("Date")){%>width="120px" <%}%>filed="<%=column.Name%>"><%=column.Description.Length==0?StringUtil.ToPascalCase(column.Name):column.Description%></th>		
 <% }%>
-			<th colspan="2" width="20px">操作</th>
+			<th width="30px">操作</th>
 		</tr>
 		<c:forEach var="<%=mode%>" items="${list}" varStatus="status">
             <tr ondblclick="dbClick('<%=parameterURL(SourceTable)%>')" onclick = 'rowclick(this)' id = '${status.count}'>

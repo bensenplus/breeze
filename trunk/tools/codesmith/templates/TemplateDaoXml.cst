@@ -62,7 +62,7 @@ String map = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
 	SELECT * FROM ( SELECT ROW_.*, ROWNUM ROWNUM_ FROM (
 	</if>
 	SELECT
-        <%=GetEtParamSrc(this.SourceTable)%>
+        <%=GetTableFiled(this.SourceTable)%>
     FROM <%=table%>    
     <include refid="where" />
     <if test="order != null" >ORDER BY ${order}</if>
@@ -82,7 +82,7 @@ String map = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
 	SELECT * FROM ( SELECT ROW_.*, ROWNUM ROWNUM_ FROM (
 	</if>
 	SELECT
-        <%=GetEtParamSrc(this.SourceTable)%>
+        <%=GetTableFiled(this.SourceTable)%>
     FROM <%=table%>
 	<if test="start != null" >
 	) ROW_ ) WHERE ROWNUM_ &gt;#{start} and ROWNUM_ &lt;= (#{start} + #{size})
@@ -92,7 +92,7 @@ String map = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
   <!--get -->
   <select id="get" <%=parameterType(SourceTable)%> resultMap="<%=Mode%>">
     SELECT
-        <%=GetEtParamSrc(this.SourceTable)%>
+        <%=GetTableFiled(this.SourceTable)%>
     FROM <%=table%>
     WHERE <%=parameterSQL(SourceTable)%>
   </select>
@@ -105,9 +105,9 @@ String map = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
   <!--insert -->
   <insert id="insert" parameterType="<%=Mode%>">
     INSERT INTO <%=table%>
-        (<%=GetEtParamSrc(this.SourceTable)%>)
+        (<%=GetTableFiled(this.SourceTable)%>)
     VALUES
-        (<%=GetEtParamAsk(this.SourceTable)%>)
+        (<%=GetInsertParam(this.SourceTable)%>)
   </insert>
   
    <!--update -->

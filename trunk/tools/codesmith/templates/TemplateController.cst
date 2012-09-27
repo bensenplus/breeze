@@ -101,8 +101,10 @@ public class <%=Controller%> extends BaseController {
     
     @RequestMapping("/edit")
 	public String edit(ModelMap model, <%=GetKeys(SourceTable,true)%>) {
-	    <%=Mode%> <%=mode%> = <%=service%>.get(<%=GetKeys(SourceTable,false)%>);
-		model.addAttribute("<%=mode%>", <%=mode%>);
+        if(<%=GetKeys(SourceTable,false)%> != null){
+    	    <%=Mode%> <%=mode%> = <%=service%>.get(<%=GetKeys(SourceTable,false)%>);
+    		model.addAttribute("<%=mode%>", <%=mode%>);
+        }
 		return "<%=map%>/edit";
 	}    
     

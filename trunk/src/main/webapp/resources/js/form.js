@@ -3,6 +3,7 @@ var curren_page = 0;
 var dbfiled="";
 var desc = false;
 var options = {};
+var action ="";
 
 function rowclick(obj){
     if (lastLineId != "") {  
@@ -41,7 +42,7 @@ function doSearch(page){
 		    });
 			$(".table-list th").each(function(){
 				if(dbfiled == $(this).attr("filed")){
-					$(this).css("background-color","red");
+					$(this).css("color","yellow");
 					$(this).append(desc?"▼":"▲");
 				}
 			});
@@ -106,7 +107,7 @@ function initForm(){
 	
 	$("#search-form-warp").hide();
 	$("#update-form-warp").hide();
-	$("#update-button").hide();
+	$("#save-button").hide();
 	$("#update-form-warp").addClass("align-center");
     $("#search-icon").addClass("ui-icon ui-icon-triangle-1-e cursor-point");
 	
@@ -123,29 +124,33 @@ function initForm(){
 		$("#update-form-warp" ).hide();			
 		$("#upper-warp" ).show("slide");
     	$("#edit-button").show();
-    	$("#update-button").hide();
+    	$("#save-button").hide();
     });
     
     $("#edit-button").click(function(){
     	readonlyform("#update-form", false);
     	$("#edit-button").hide();
-    	$("#update-button").show();
+    	$("#save-button").show();
     	startEdit();
     });
     
-	$("#update-button").click(function(ev){
-		var url = "./update?"+$("#update-form").serialize()+"&date="+new Date().getMilliseconds();; 
+	$("#save-button").click(function(ev){
+		var url = "./"+action+"?"+$("#update-form").serialize()+"&date="+new Date().getMilliseconds();; 
 		$.post(url, function(data){
 			$("#update-form-warp" ).hide();			
 			$("#upper-warp" ).show("slide");
-	    	$("#edit-button").show();
-	    	$("#update-button").hide();
+	    	$("#save-button").hide();
 			doSearch(curren_page);
 		});	
 	});
     
 	$("#search-button").click(function(ev){
 		doSearch(0);
+		ev.preventDefault();
+	});
+	
+	$("#create-button").click(function(ev){
+		edit("create");
 		ev.preventDefault();
 	});
 	
@@ -164,13 +169,30 @@ function initForm(){
 }
 
 function edit(param){
-    var url = "./edit?"+param+"&date="+new Date().getMilliseconds();; 
-	$( "#update-form" ).load(url, function() {	
-		$("#upper-warp" ).hide("slide", options, 500, function(){
-			$("#update-form-warp" ).show();
-			readonlyform("#update-form", true);
+	if(param=="create"){
+		action = "create";
+	    var url = "./edit?date="+new Date().getMilliseconds();
+		$( "#update-form" ).load(url, function() {
+			$("#upper-warp" ).hide("slide", options, 500, function(){
+				$("#update-form-warp" ).show();
+		    	readonlyform("#update-form", false);
+		    	$("#edit-button").hide();
+		    	$("#save-button").show();
+		    	startEdit();
+			});
 		});
-	});
+	}else{
+		action = "update";
+	    var url = "./edit?"+param+"&date="+new Date().getMilliseconds();
+		$( "#update-form" ).load(url, function() {
+			$("#upper-warp" ).hide("slide", options, 500, function(){
+				$("#update-form-warp" ).show();
+		    	$("#edit-button").show();
+		    	$("#save-button").hide();
+				readonlyform("#update-form", true);
+			});
+		});
+	}
 }
 
 function remove(param){

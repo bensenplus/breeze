@@ -247,16 +247,24 @@ public string GetEtParam(TableSchema dt )
 }
 
 
-public string GetEtParamSrc(TableSchema dt )
+public string JDBCType(string type){
+    
+    if(type =="NUMBER") return "NUMERIC";
+    
+    if(type == "VARCHAR2") return "VARCHAR";
+    
+    return type;
+   
+}
+
+public string GetTableFiled(TableSchema dt )
 {
 	string param = string.Empty;	
 	int count = 0;
 	foreach (ColumnSchema column in dt.Columns) 
-	{ 
-		
+	{ 		
 		if ( count == 0 )
 		{
-
 			param = column.Name ;
 		}
 		else
@@ -269,39 +277,25 @@ public string GetEtParamSrc(TableSchema dt )
 	return param;
 }
 
-
-
-///
-///
-///
-public string GetEtParamAsk(TableSchema dt )
+public string GetInsertParam(TableSchema dt )
 {
 	string param = string.Empty;
 	int count = 0;
 	foreach (ColumnSchema column in dt.Columns) 
 	{ 
-		if ( count == 0 )
-		{
-			param = "#{" + fieldName(column.Name) +",jdbcType="+JDBCType(column.NativeType)+"}";
-		}
-		else
-		{
-			param = param + ",\n\t\t#{" + fieldName(column.Name) +",jdbcType="+JDBCType(column.NativeType)+"}";
-		}
+        string temp= string.Empty;
+         if(JDBCType(column.NativeType) =="DATE" && fieldName(column.Name).StartsWith("create")){
+             temp = "sysdate";
+         }else{
+		    temp = "#{" + fieldName(column.Name) +",jdbcType="+JDBCType(column.NativeType)+"}";
+         }
+
+        param = (count==0?temp:(param + ",\n\t\t" + temp));
 		count = count + 1;
 	}
 	return param;
 }
 
-public string JDBCType(string type){
-    
-    if(type =="NUMBER") return "NUMERIC";
-    
-    if(type == "VARCHAR2") return "VARCHAR";
-    
-    return type;
-   
-}
 public string GetUpdateString(TableSchema dt )
 {
 	string param = string.Empty;	

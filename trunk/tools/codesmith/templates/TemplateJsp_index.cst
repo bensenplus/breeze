@@ -59,6 +59,7 @@ String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
         <ul class="tool-bar" >
             <li><button id="pdf-button">Pdf</button></li>
             <li><button id="excel-button">Excel</button></li>
+            <li><button id="create-button">Create</button></li>
     		<li><button id="search-button">Search</button></li>
     	</ul>
     </form>
