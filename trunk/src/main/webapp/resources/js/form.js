@@ -1,8 +1,9 @@
-//上此选中行的id  
 var lastLineId = "";  
 var curren_page = 0;
 var dbfiled="";
 var desc = false;
+var options = {};
+
 function rowclick(obj){
     if (lastLineId != "") {  
         $("#" + lastLineId).removeClass("l-selected");  
@@ -15,16 +16,16 @@ function dbClick(param) {
 	edit(param);
 }
 
-function loadHtml(url, formName, divName) {
-	var queryString="";
-	if (formName) {
-		var order ="";
-		if(dbfiled && desc) order = dbfiled+ "%20desc"; else order = dbfiled;
-		queryString = "&"+queryString+$("#"+formName).serialize()+"&order="+order+"&date="+new Date().getMilliseconds();
-	}else{
-		queryString = "&date="+new Date().getMilliseconds();
-	}
-	$("#"+divName).load(url+queryString,function(response, status, xhr){
+
+function  queryString(){
+	var order ="";
+	if(dbfiled && desc) order = dbfiled+ "%20desc"; else order = dbfiled;
+	return $("#search-form").serialize()+"&order="+order+"&date="+new Date().getMilliseconds();
+}
+
+function doSearch(page){
+	var url = "./search?page="+(page+1) +"&"+queryString();
+	$("#result-list-warp").load(url, function(response, status, xhr){
 		if(xhr.status == "200"){
 		    $(".table-list th").dblclick(function(ev){
 		    	if($(this).attr("filed")){
@@ -34,7 +35,7 @@ function loadHtml(url, formName, divName) {
 		    			dbfiled = $(this).attr("filed");
 		    			desc  =0;
 		    		}
-		    		refreshList(0);
+		    		doSearch(0);
 		    	}
 				ev.preventDefault();
 		    });
@@ -73,11 +74,6 @@ function readonlyform(form, readonly){
 	}
 }
 
-
-function refreshList(page){
-	loadHtml("./search?page="+(page+1),"search-form","result-list-warp");
-}
-
 /** 
  * Initialisation function for pagination
  */
@@ -99,7 +95,7 @@ function initPage(count, page, size) {
 
 function select_page(page, jq) {
 	curren_page = page;
-	refreshList(page);
+	doSearch(page);
 	return false;
 }
 
@@ -114,7 +110,7 @@ function initForm(){
 	$("#update-form-warp").addClass("align-center");
     $("#search-icon").addClass("ui-icon ui-icon-triangle-1-e cursor-point");
 	
-	refreshList(0);
+	doSearch(0);
 	
     $("#search-icon").click(function(){
     	$("#search-form-warp").toggle("blind");
@@ -144,27 +140,28 @@ function initForm(){
 			$("#upper-warp" ).show("slide");
 	    	$("#edit-button").show();
 	    	$("#update-button").hide();
-			refreshList(curren_page);
+			doSearch(curren_page);
 		});	
 	});
     
 	$("#search-button").click(function(ev){
-		refreshList(0);
+		doSearch(0);
 		ev.preventDefault();
 	});
 	
 	$("#excel-button").click(function(ev){
 		ev.preventDefault();
-		var order ="";
-		if(dbfiled && desc) order = dbfiled+ "%20desc"; else order = dbfiled;
-		var queryString = $("#search-form").serialize()+"&order="+order+"&date="+new Date().getMilliseconds();
-		var url = "./excel?"+queryString;
+		var url = "./excel?"+queryString();
 		location.href = url;
+	});
+	
+	$("#pdf-button").click(function(ev){
+		ev.preventDefault();
+		var url = "./pdf?"+queryString();
+		window.open(url);
 	});
 
 }
-
-var options = {};
 
 function edit(param){
     var url = "./edit?"+param+"&date="+new Date().getMilliseconds();; 
@@ -180,7 +177,7 @@ function remove(param){
 	if(confirm("Are you sure to delete the record?")){
         var url = "./remove?"+param;
         $.get(url,function(data){
-        	refreshList(curren_page);
+        	doSearch(curren_page);
         });
     }
 }

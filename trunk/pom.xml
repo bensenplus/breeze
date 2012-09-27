@@ -202,11 +202,19 @@
 			</exclusions>
 		</dependency>
 		<!-- webservice end -->
+		
+		<!-- excel and pdf  begin -->
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
 			<version>3.8</version>
 		</dependency>
+		<dependency>
+			<groupId>com.lowagie</groupId>
+			<artifactId>itext</artifactId>
+			<version>4.2.0</version>
+		</dependency>
+		<!--  excel and pdf  begin -->
 	</dependencies>
 
 	<build>
