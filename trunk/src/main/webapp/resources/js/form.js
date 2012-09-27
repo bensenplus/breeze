@@ -40,7 +40,8 @@ function loadHtml(url, formName, divName) {
 		    });
 			$(".table-list th").each(function(){
 				if(dbfiled == $(this).attr("filed")){
-					$(this).append(desc?"<span style='color:#f00'>↓</span>":"<span style='color:#f00'>↑</span>");
+					$(this).css("background-color","red");
+					$(this).append(desc?"▼":"▲");
 				}
 			});
 		}else{
@@ -133,6 +134,7 @@ function initForm(){
     	readonlyform("#update-form", false);
     	$("#edit-button").hide();
     	$("#update-button").show();
+    	startEdit();
     });
     
 	$("#update-button").click(function(ev){
@@ -149,7 +151,16 @@ function initForm(){
 	$("#search-button").click(function(ev){
 		refreshList(0);
 		ev.preventDefault();
-	});	
+	});
+	
+	$("#excel-button").click(function(ev){
+		ev.preventDefault();
+		var order ="";
+		if(dbfiled && desc) order = dbfiled+ "%20desc"; else order = dbfiled;
+		var queryString = $("#search-form").serialize()+"&order="+order+"&date="+new Date().getMilliseconds();
+		var url = "./excel?"+queryString;
+		location.href = url;
+	});
 
 }
 

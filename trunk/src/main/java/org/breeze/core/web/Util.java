@@ -12,7 +12,9 @@ package org.breeze.core.web;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -78,5 +80,19 @@ public class Util {
 			e.printStackTrace();
 		}
 	}
+	
+    public static String formatDate(String aMask, Date aDate) {
+        SimpleDateFormat df = null;
+        String returnValue = "";
+
+        if (aDate == null) {
+        	return null;
+        } else {
+            df = new SimpleDateFormat(aMask);
+            returnValue = df.format(aDate);
+        }
+
+        return (returnValue);
+    }
 	
 }

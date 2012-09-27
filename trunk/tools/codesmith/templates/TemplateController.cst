@@ -39,8 +39,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import <%=RootTableSpaceName%>.core.web.BaseController;
+import <%=RootTableSpaceName%>.core.web.ExcelView;
 import <%=RootTableSpaceName%>.core.web.Page;
 import <%=RootTableSpaceName%>.core.web.Util;
 import <%=RootTableSpaceName%>.entity.<%=Mode%>;
@@ -69,6 +71,14 @@ public class <%=Controller%> extends BaseController {
 		model.addAttribute("list", list);
 		model.addAttribute("page", page);
 		return "<%=map%>/list";
+	}
+    
+    @RequestMapping("/excel")
+	public ModelAndView excel(ModelMap model, <%=Mode%> <%=mode%>) {
+		List<<%=Mode%>> list = <%=service%>.selectBy(<%=mode%>, null);
+		model.addAttribute("list", list);
+    	ExcelView  excelView=new ExcelView(<%=Mode%>.class);
+    	return new ModelAndView(excelView,model);
 	}
 
     @RequestMapping("/list")

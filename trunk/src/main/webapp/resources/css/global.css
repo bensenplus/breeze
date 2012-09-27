@@ -2,8 +2,8 @@
    -------------------------------- */
 * { margin: 0; padding: 0; }
 
-body {font-size: 12px; font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";}
-table {font-size: 12px; width:100%;border-collapse:collapse;word-break:keep-all; line-height:25px;}
+body {font-size: 12px; font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif"; background-color:#eee}
+table {font-size: 12px; width:100%; margin:5px; line-height:25px;background-color:#fff;border-collapse:collapse;word-break:keep-all;}
 textarea{font-size: 12px;}
 
 a:link   { color: #2f2f2f; text-decoration: none}
@@ -26,7 +26,7 @@ a:hover  { color: #005AC1; text-decoration: none}
    -------------------------------- */
 .table-list td,
 .table-list th{overflow:hidden;text-align:left; }
-.table-list th{background:#888;color:#fff; border-style:solid;border-color:#fff; border-width:1px}
+.table-list th{padding-left:4px;background:#666;color:#fff; border-style:solid;border-color:#fff; border-width:1px}
 .table-list td{padding-left:4px;}
 
 .table-form td,.table-form th{overflow:hidden;}
@@ -35,7 +35,7 @@ a:hover  { color: #005AC1; text-decoration: none}
 
 .l-odd{background:#fff}
 .l-even{background:#eee}
-.l-selected{background:#eee;}
+.l-selected{background:#bbb;}
 
 /* Layout
    -------------------------------- */
@@ -52,7 +52,7 @@ a:hover  { color: #005AC1; text-decoration: none}
 	padding: 2px;
 	color: white;
 	font-size: 10px;
-	margin: 20px 0 0 0;
+	margin: 5px 0 0 0;
 	}
 #footer a {
 	color: white;
