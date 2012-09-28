@@ -57,10 +57,10 @@ String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
     		</tr>
     	</table>
         <ul class="tool-bar" >
-            <li><button id="pdf-button">Pdf</button></li>
-            <li><button id="excel-button">Excel</button></li>
-            <li><button id="create-button">Create</button></li>
-    		<li><button id="search-button">Search</button></li>
+            <li><span id="pdf-button">Pdf</span></li>
+            <li><span id="excel-button">Excel</span></li>
+            <li><span id="create-button">Create</span></li>
+    		<li><span id="search-button">Search</span></li>
     	</ul>
     </form>
 </div>

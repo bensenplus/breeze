@@ -105,7 +105,7 @@ function select_page(page, jq) {
  */
 function initForm(){
 	
-	$("#search-form-warp").hide();
+	$("#search-form-warp").show();
 	$("#update-form-warp").hide();
 	$("#save-button").hide();
 	$("#update-form-warp").addClass("align-center");
@@ -120,21 +120,21 @@ function initForm(){
     });
     
 	
-    $("#back-button").click(function(){
+    $("#back-button").button({icons: {primary: "ui-icon-arrowthick-1-w"}}).click(function(){
 		$("#update-form-warp" ).hide();			
 		$("#upper-warp" ).show("slide");
     	$("#edit-button").show();
     	$("#save-button").hide();
     });
     
-    $("#edit-button").click(function(){
+    $("#edit-button").button({icons: {primary: "ui-icon-unlocked"}}).click(function(){
     	readonlyform("#update-form", false);
     	$("#edit-button").hide();
     	$("#save-button").show();
     	startEdit();
     });
     
-	$("#save-button").click(function(ev){
+	$("#save-button").button({icons: {primary: "ui-icon-disk"}}).click(function(ev){
 		var url = "./"+action+"?"+$("#update-form").serialize()+"&date="+new Date().getMilliseconds();; 
 		$.post(url, function(data){
 			$("#update-form-warp" ).hide();			
@@ -144,24 +144,24 @@ function initForm(){
 		});	
 	});
     
-	$("#search-button").click(function(ev){
+	$("#search-button").button({icons: {primary: "ui-icon-search"}}).click(function(ev){
 		doSearch(0);
 		ev.preventDefault();
 	});
 	
-	$("#create-button").click(function(ev){
+	$("#create-button").button({icons: {primary: "ui-icon-document"}}).click(function(ev){
 		edit("create");
-		ev.preventDefault();
+		//ev.preventDefault();
 	});
 	
-	$("#excel-button").click(function(ev){
-		ev.preventDefault();
+	$("#excel-button").button({icons: {primary: "ui-icon-note"}}).click(function(ev){
+		//ev.preventDefault();
 		var url = "./excel?"+queryString();
 		location.href = url;
 	});
 	
-	$("#pdf-button").click(function(ev){
-		ev.preventDefault();
+	$("#pdf-button").button({icons: {primary: "ui-icon-script"}}).click(function(ev){
+		//ev.preventDefault();
 		var url = "./pdf?"+queryString();
 		window.open(url);
 	});
