@@ -13,11 +13,6 @@ function rowclick(obj){
     lastLineId = $(obj).attr("id");      	
 }
 
-function dbClick(param) {
-	edit(param);
-}
-
-
 function  queryString(){
 	var order ="";
 	if(dbfiled && desc) order = dbfiled+ "%20desc"; else order = dbfiled;
@@ -132,21 +127,16 @@ function initForm(){
     	$("#edit-button").hide();
     	$("#save-button").show();
     	startEdit();
+    	initValidate();
     });
     
 	$("#save-button").button({icons: {primary: "ui-icon-disk"}}).click(function(ev){
-		var url = "./"+action+"?"+$("#update-form").serialize()+"&date="+new Date().getMilliseconds();; 
-		$.post(url, function(data){
-			$("#update-form-warp" ).hide();			
-			$("#upper-warp" ).show("slide");
-	    	$("#save-button").hide();
-			doSearch(curren_page);
-		});	
+		$("#update-form").submit();
 	});
     
 	$("#search-button").button({icons: {primary: "ui-icon-search"}}).click(function(ev){
 		doSearch(0);
-		ev.preventDefault();
+		//ev.preventDefault();
 	});
 	
 	$("#create-button").button({icons: {primary: "ui-icon-document"}}).click(function(ev){
@@ -168,6 +158,40 @@ function initForm(){
 
 }
 
+
+function initValidate() {
+	$.metadata.setType("attr", "validate");
+	$("#update-form").validate(
+	{
+		errorPlacement : function(lable, element) 
+		{
+			var html ="<span class='tip'><span class='content'></span><s></s><i></i></span>";
+			var span = $(html);						
+			lable.appendTo(span.find(".content"));
+			element.parent().append(span);				   						
+		},
+		success : function(lable) 
+		{
+			var element = $("#" + lable.attr("for"));
+			lable.parent().parent().remove();
+		},
+		submitHandler : function() 
+		{
+			save();
+		}
+	});
+}
+
+function save(){
+	var url = "./"+action+"?"+$("#update-form").serialize()+"&date="+new Date().getMilliseconds();; 
+	$.post(url, function(data){
+		$("#update-form-warp" ).hide();			
+		$("#upper-warp" ).show("slide");
+    	$("#save-button").hide();
+		doSearch(curren_page);
+	});
+}
+
 function edit(param){
 	if(param=="create"){
 		action = "create";
@@ -179,6 +203,7 @@ function edit(param){
 		    	$("#edit-button").hide();
 		    	$("#save-button").show();
 		    	startEdit();
+		    	initValidate();
 			});
 		});
 	}else{
@@ -202,4 +227,26 @@ function remove(param){
         	doSearch(curren_page);
         });
     }
+}
+
+function initDatepicker(){
+	$.datepicker.regional['zh-CN'] = {
+		closeText: '关闭',
+		prevText: '&#x3c;上月',
+		nextText: '下月&#x3e;',
+		currentText: '今天',
+		monthNames: ['一月','二月','三月','四月','五月','六月',
+		'七月','八月','九月','十月','十一月','十二月'],
+		monthNamesShort: ['一月','二月','三月','四月','五月','六月',
+		'七月','八月','九月','十月','十一月','十二月'],
+		dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
+		dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],
+		dayNamesMin: ['日','一','二','三','四','五','六'],
+		weekHeader: '周',
+		dateFormat: 'yy/mm/dd 00:00',
+		firstDay: 1,
+		isRTL: false,
+		showMonthAfterYear: true,
+		yearSuffix: '年'};
+	$.datepicker.setDefaults($.datepicker.regional['zh-CN']);
 }

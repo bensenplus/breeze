@@ -55,7 +55,7 @@ $(function() {
 			<th width="30px">操作</th>
 		</tr>
 		<c:forEach var="<%=mode%>" items="${list}" varStatus="status">
-            <tr ondblclick="dbClick('<%=parameterURL(SourceTable)%>')" onclick = 'rowclick(this)' id = '${status.count}'>
+            <tr ondblclick="edit('<%=parameterURL(SourceTable)%>')" onclick = 'rowclick(this)' id = '${status.count}'>
                 <td>${status.count+page.start}</td>
 <% foreach (ColumnSchema column in this.SourceTable.Columns) {%>
 <%  
