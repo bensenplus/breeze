@@ -26,7 +26,7 @@ String table = SourceTable.Name;
 String Mode = ModelName(SourceTable.Name);
 String mode = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
 
-String KeyName = SourceTable.Columns[0].Name;
+String KeyName = fieldName(SourceTable.Columns[0].Name);
 String map = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
 %>
 <?xml version="1.0" encoding="UTF-8"?>
@@ -104,6 +104,9 @@ String map = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
   
   <!--insert -->
   <insert id="insert" parameterType="<%=Mode%>">
+    <selectKey resultType="Long" keyProperty="<%=KeyName%>" order="BEFORE">
+        select SEQ_<%=table%>.nextVal from dual
+    </selectKey>
     INSERT INTO <%=table%>
         (<%=GetTableFiled(this.SourceTable)%>)
     VALUES
