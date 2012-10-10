@@ -7,7 +7,7 @@
  * you entered into with Founder.
  */
 
-package org.breeze.core.web;
+package org.breeze.core.view;
 
 import java.io.IOException;
 import java.io.PrintWriter;

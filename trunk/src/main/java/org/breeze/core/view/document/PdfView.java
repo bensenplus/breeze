@@ -1,4 +1,4 @@
-package org.breeze.core.web;
+package org.breeze.core.view.document;
 
 import java.awt.Color;
 import java.lang.reflect.Field;
@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.breeze.core.view.Util;
 import org.springframework.web.servlet.view.document.AbstractPdfView;
 
 import com.lowagie.text.Cell;

@@ -1,4 +1,4 @@
-package org.breeze.core.web;
+package org.breeze.core.view.document;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -14,6 +14,7 @@ import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.breeze.core.view.Util;
 import org.springframework.web.servlet.view.document.AbstractExcelView;
 
 public class ExcelView extends AbstractExcelView {

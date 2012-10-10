@@ -24,26 +24,24 @@ public TableSchemaCollection GetTableCollection(DatabaseSchema dataBase)
 }
 </script>
 
-<%%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%%>
-<link rel="stylesheet" href="../resources/css/pro_drop/pro_drop.css" />
-<script  type="text/javascript" src="../resources/js/pro_drop.js"></script>
-	<ul id="nav">
-		<li class="top"><a href="#" class="top_link"><span>Home</span></a></li>
-		<li class="top"><a href="#" id="menu" class="top_link"><span class="down">MenuGroup</span></a>
-			<ul class="sub">
-               <% TableSchemaCollection tables = GetTableCollection(SourceData);
-                  int i = 0;
-    			foreach(TableSchema dt in tables){ 
-                if(i>0 && i%10 ==0){
-                %> 
-            </ul>
-	    </li>   
-        <li class="top"><a href="#" id="menu" class="top_link"><span class="down"><%=StringUtil.ToPascalCase(dt.Name.ToLower())%></span></a>
-            <ul class="sub">        
-        <%}%>
-			    <li><a href="../<%=StringUtil.ToCamelCase(dt.Name.ToLower())%>/index"><%=StringUtil.ToPascalCase(dt.Name.ToLower())%></a></li>
-		         <%i++;}  %>
-   			</ul>
-		</li>
-	</ul>
+<%%@ page language="java" pageEncoding="UTF-8"%%>
+<ul id="nav">
+	<li class="top"><a href="#" class="top_link"><span>Home</span></a></li>
+	<li class="top"><a href="#" id="menu" class="top_link"><span class="down">MenuGroup</span></a>
+		<ul class="sub">
+           <% TableSchemaCollection tables = GetTableCollection(SourceData);
+              int i = 0;
+			foreach(TableSchema dt in tables){ 
+            if(i>0 && i%10 ==0){
+            %> 
+        </ul>
+    </li>   
+    <li class="top"><a href="#" id="menu" class="top_link"><span class="down"><%=StringUtil.ToPascalCase(dt.Name.ToLower())%></span></a>
+        <ul class="sub">        
+    <%}%>
+		    <li><a href="../<%=StringUtil.ToCamelCase(dt.Name.ToLower())%>/index"><%=StringUtil.ToPascalCase(dt.Name.ToLower())%></a></li>
+	         <%i++;}  %>
+		</ul>
+	</li>
+</ul>
 	

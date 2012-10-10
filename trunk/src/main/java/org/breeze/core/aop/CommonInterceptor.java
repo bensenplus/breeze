@@ -7,7 +7,7 @@
  * you entered into with Founder.
  */
 
-package org.breeze.core.web;
+package org.breeze.core.aop;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

@@ -34,7 +34,7 @@ package <%=RootTableSpaceName%>.dao;
 import java.util.List;
 import java.util.HashMap;
 
-import <%=RootTableSpaceName%>.core.web.Page;
+import <%=RootTableSpaceName%>.core.view.Page;
 import <%=RootTableSpaceName%>.entity.<%= Mode%>;
 
 public interface <%= Mode%>Mapper {

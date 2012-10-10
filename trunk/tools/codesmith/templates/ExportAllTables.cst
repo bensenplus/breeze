@@ -67,7 +67,6 @@ public void RenderMain()
     /// 重复调用单个的子模板
     foreach(TableSchema dt in tables)
     {
-
 		System.Diagnostics.Debug.WriteLine(ExportTableName);
 		System.Diagnostics.Debug.WriteLine(dt.Name);
 		

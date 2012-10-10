@@ -77,7 +77,7 @@ String map = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
   </select>
   
   <!--select -->
-  <select id="select" parameterType="<%=RootTableSpaceName%>.core.web.Page" resultMap="<%=Mode%>">
+  <select id="select" parameterType="<%=RootTableSpaceName%>.core.view.Page" resultMap="<%=Mode%>">
     <if test="start != null" >
 	SELECT * FROM ( SELECT ROW_.*, ROWNUM ROWNUM_ FROM (
 	</if>

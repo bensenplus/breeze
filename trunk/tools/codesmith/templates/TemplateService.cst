@@ -39,8 +39,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import org.breeze.core.web.Util;
-import <%=RootTableSpaceName%>.core.web.Page;
+import org.breeze.core.view.Util;
+import <%=RootTableSpaceName%>.core.view.Page;
 import <%=RootTableSpaceName%>.entity.<%=Mode%>;
 import <%=RootTableSpaceName%>.dao.<%=Dao%>;
 

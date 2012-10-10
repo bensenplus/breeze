@@ -6,7 +6,7 @@
  * accordance with the terms of the agreements you entered into with Founder.
  */
 
-package org.breeze.core.web;
+package org.breeze.core.aop;
 
 import java.lang.reflect.Method;
 

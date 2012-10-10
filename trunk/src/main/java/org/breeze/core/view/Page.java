@@ -1,4 +1,4 @@
-package org.breeze.core.web;
+package org.breeze.core.view;
 
 public class Page {
 	
