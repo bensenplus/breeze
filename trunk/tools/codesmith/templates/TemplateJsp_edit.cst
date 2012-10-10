@@ -30,8 +30,7 @@ String Key = JavaAlias[SourceTable.Columns[0].SystemType.FullName];
 String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
 String map = StringUtil.ToCamelCase(SourceTable.Name);
 %>
-<%%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%%>
-<%%@ include file="/common/taglibs.jsp"%%>
+<%%@ page language="java" pageEncoding="UTF-8"%%>
 <%%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%%>
 <script type="text/javascript">
 function startEdit() {
