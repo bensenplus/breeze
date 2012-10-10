@@ -40,13 +40,13 @@
 
 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
 	<bean	class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
-			<property name="interceptors">
+<!-- <property name="interceptors">
 			<list>
 				<ref bean="commonInterceptor" />
 			</list>
-		</property>
+		</property> -->
 	</bean>
-	<bean id="commonInterceptor" class="org.breeze.core.web.CommonInterceptor"/>
+	<!-- <bean id="commonInterceptor" class="org.breeze.core.view.CommonInterceptor"/> -->
 
 
     <!-- transaction manager, use JtaTransactionManager for global tx -->
@@ -111,7 +111,7 @@
         <property name="sqlSessionFactoryBeanName" value="_sqlSessionFactory" />
     </bean>
     
-<!--     <bean name ="logger"  class ="org.breeze.core.web.SpringAOPInterceptor"/>
+<!-- <bean name ="logger"  class ="org.breeze.core.web.SpringAOPInterceptor"/>
 	<bean name="loggingAutoProxy"
 		class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
 		<property name="beanNames">

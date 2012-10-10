@@ -24,7 +24,7 @@
 		<level value="DEBUG"/>
 	</logger>
 	
-	<!-- 
+	
 	<logger name="org.mybatis">
 		<level value="DEBUG"/>
 	</logger>
@@ -32,7 +32,7 @@
 	<logger name="org.springframework.jdbc">
 		<level value="DEBUG"/>
 	</logger>
-	-->
+	
 	
 	<logger name="org.breeze">
 		<level value="DEBUG"/>
