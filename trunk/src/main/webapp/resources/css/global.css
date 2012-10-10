@@ -3,7 +3,7 @@
 * { margin: 0; padding: 0; }
 
 body {font-size: 12px; font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif"; background-color:#eee}
-table {font-size: 12px; width:100%;margin:5px; line-height:25px;background-color:#fff;border-collapse:collapse;word-break:keep-all;}
+table {font-size: 12px; width:100%;margin:0px;background-color:#fff; line-height:25px;border-collapse:collapse;word-break:keep-all;}
 textarea{font-size: 12px;}
 
 a:link   { color: #2f2f2f; text-decoration: none}
@@ -24,9 +24,8 @@ a:hover  { color: #005AC1; text-decoration: none}
 
 /* Table
    -------------------------------- */
-.table-list td,
-.table-list th{overflow:hidden;text-align:left; }
-.table-list th{padding-left:4px;background:#666;color:#fff; border-style:solid;border-color:#fff; border-width:1px}
+.table-list td,.table-list th{overflow:hidden;text-align:left; }
+.table-list th{cursor:pointer;padding-left:4px;padding-right:4px;background:#666;color:#fff; border-style:solid;border-color:#fff; border-width:1px}
 .table-list td{padding-left:4px;}
 
 .table-form td,.table-form th{overflow:hidden;}
@@ -36,6 +35,12 @@ a:hover  { color: #005AC1; text-decoration: none}
 .l-odd{background:#fff}
 .l-even{background:#eee}
 .l-selected{background:#bbb;}
+
+/* tip css for jQuery */
+.tip s {position: absolute;margin:5px 0px 0px 0px;height: 0;width: 0;line-height: 0;border-color: transparent #FFC340 transparent transparent;border-style: dashed solid dashed dashed;border-width: 6px;}
+.tip i {position: absolute;margin:5px 0px 0px 1px;height: 0;width: 0;line-height: 0;border-color: transparent #FFFCC7 transparent transparent;border-style: dashed solid dashed dashed;border-width: 6px;}
+.tip .content {position: absolute;border: 1px solid #FFC340;border-radius:5px;-moz-border-radius: 5px;-webkit-border-radius: 5px;margin:0px 0px 0px 12px;background-color: #FFFCC7;padding:4px 6px 4px 0px;box-shadow: 3px 3px 4px #999;-moz-box-shadow: 3px 3px 4px #999;-webkit-box-shadow: 3px 3px 4px #999;/* For IE 5.5 - 7 */filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#999999' );/* For IE 8 */-ms-filter:	"progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#999999')";}
+
 
 /* Layout
    -------------------------------- */
