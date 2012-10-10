@@ -18,14 +18,14 @@ import org.springframework.web.bind.annotation.InitBinder;
 
 public class BaseController {
 	
+	private static  CustomDateEditor  dateEditor =  
+			new CustomDateEditor(new SimpleDateFormat("yyyy/MM/dd hh:mm"), true);
+	
 	@InitBinder
-	public void initBinder(WebDataBinder binder) {
-	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm");
+	public void initBinder(WebDataBinder binder) {	    
 	    //dateFormat.setLenient(false);
-
 	    // true passed to CustomDateEditor constructor means convert empty String to null
-	    binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
+	    binder.registerCustomEditor(Date.class, dateEditor);
 	}
-
 	
 }

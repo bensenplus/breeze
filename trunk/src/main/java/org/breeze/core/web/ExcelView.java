@@ -30,7 +30,9 @@ public class ExcelView extends AbstractExcelView {
 	protected void buildExcelDocument(Map<String, Object> model, HSSFWorkbook workbook,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
-		HSSFSheet sheet = workbook.createSheet(modeClass.getSimpleName());	
+		response.setHeader("Content-disposition", "attachment;filename=" + modeClass.getSimpleName()+".xls");
+		HSSFSheet sheet = workbook.createSheet(modeClass.getSimpleName());
+		
 		sheet.setDisplayGridlines(false);
 		sheet.setDefaultRowHeightInPoints(20);
 		sheet.setDisplayGuts(true);

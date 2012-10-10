@@ -34,7 +34,7 @@ public class PdfView extends AbstractPdfView{
 	@Override
 	protected void buildPdfDocument(Map<String, Object> model, Document document, PdfWriter writer,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-
+		response.setHeader("Content-disposition", "attachment;filename=" + modeClass.getSimpleName()+".pdf");
 		document.setPageSize(PageSize.A3.rotate());
 		document.setMargins(20, 20, 20, 20);
 		document.open();
