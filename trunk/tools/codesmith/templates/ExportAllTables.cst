@@ -61,7 +61,7 @@ public void RenderMain()
      Response.WriteLine("Output Path " + OutputPath);
     
     
-    CreateTemplate<TemplateJsp_menu>(SourceData, "webapp.common", "menu.jsp");
+    CreateTemplate<TemplateJsp_menu>(SourceData, "webapp.layout", "menu.jsp");
     CreateTemplate<TemplateFlexIndex>(SourceData, "flex.src", "index.mxml");
  
     /// 重复调用单个的子模板

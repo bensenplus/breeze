@@ -148,17 +148,21 @@ function initForm(){
 	});
 	
 	$("#excel-button").button({icons: {primary: "ui-icon-note"}}).click(function(ev){
-		//ev.preventDefault();
 		var url = "./excel?"+queryString();
-		location.href = url;
+		download(url);
 	});
 	
 	$("#pdf-button").button({icons: {primary: "ui-icon-script"}}).click(function(ev){
-		//ev.preventDefault();
 		var url = "./pdf?"+queryString();
-		window.open(url);
+		download(url);
 	});
+}
 
+function download(url){
+	var elemIF = document.createElement("iframe"); 
+	elemIF.src = url;
+	elemIF.style.display = "none";
+	document.body.appendChild(elemIF);  
 }
 
 
