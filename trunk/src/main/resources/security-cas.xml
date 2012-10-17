@@ -13,7 +13,7 @@
 	<http auto-config="true" entry-point-ref="casAuthEntryPoint">
 		<custom-filter ref="casAuthenticationFilter" position="CAS_FILTER"/>
 		<intercept-url pattern="/**" access="ROLE_USER" />
-    	<!-- <logout logout-url="/j_spring_security_logout" invalidate-session="true" logout-success-url="https://localhost:8443/cas/logout"/> -->
+    	<logout logout-url="/j_spring_security_logout" invalidate-session="true" logout-success-url="https://localhost:8443/cas/logout"/>
 	</http>
 	
 	<authentication-manager alias="authenticationManager">
@@ -21,7 +21,7 @@
 	</authentication-manager >
 	
 	<beans:bean id="casAuthEntryPoint"  class="org.springframework.security.cas.web.CasAuthenticationEntryPoint">  
-		  <beans:property name="loginUrl" value="http://localhost:8080/cas/login"/>  
+		  <beans:property name="loginUrl" value="https://localhost:8443/cas/login"/>  
 		  <beans:property name="serviceProperties" ref="casService"/>  
 	</beans:bean>
 	
@@ -46,7 +46,7 @@
 	</beans:bean>
 	
 	<beans:bean id="casTicketValidator" class="org.jasig.cas.client.validation.Cas20ServiceTicketValidator">
-  		<beans:constructor-arg  index="0" value="http://localhost:8080/cas"/>
+  		<beans:constructor-arg  index="0" value="https://localhost:8443/cas"/>
 	</beans:bean>	
 
 </beans:beans>

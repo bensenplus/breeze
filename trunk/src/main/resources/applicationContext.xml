@@ -98,17 +98,4 @@
         <property name="sqlSessionFactoryBeanName" value="_sqlSessionFactory" />
     </bean>
     
-<!-- <bean name ="logger"  class ="org.breeze.core.web.SpringAOPInterceptor"/>
-	<bean name="loggingAutoProxy"
-		class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
-		<property name="beanNames">
-			<value>*Service</value>
-		</property>
-		<property name="interceptorNames">
-			<list>
-				<value>logger</value>
-			</list>
-		</property>
-	</bean> -->
-    
 </beans>

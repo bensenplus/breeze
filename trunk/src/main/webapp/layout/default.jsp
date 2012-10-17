@@ -9,13 +9,13 @@
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
 
-<link rel="stylesheet" href="../resources/themes/base/jquery.ui.all.css">
+<link rel="stylesheet" href="../resources/css/blitzer/jquery-ui-1.9.0.custom.css">
 <link rel="stylesheet" href="../resources/css/global.css" />
 <link rel="stylesheet" href="../resources/css/pagination.css" />
 <link rel="stylesheet" href="../resources/css/pro_drop/pro_drop.css" />
 
-<script type="text/javascript" src="../resources/js/jquery-1.8.0.min.js"></script>
-<script type="text/javascript" src="../resources/js/jquery-ui-1.8.23.custom.min.js"></script>
+<script type="text/javascript" src="../resources/js/jquery-1.8.2.js"></script>
+<script type="text/javascript" src="../resources/js/jquery-ui-1.9.0.custom.js"></script>
 <script type="text/javascript" src="../resources/js/jquery.pagination.js"></script>
 <script type="text/javascript" src="../resources/js/jquery-validation/jquery.validate.min.js"></script>
 <script type="text/javascript" src="../resources/js/jquery-validation/jquery.validate.expand.js"></script>

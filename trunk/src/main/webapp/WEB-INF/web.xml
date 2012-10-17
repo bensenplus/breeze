@@ -7,7 +7,7 @@
     
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath:applicationContext.xml;	classpath:security-config.xml</param-value>
+		<param-value>classpath:applicationContext.xml;	classpath:security-cas.xml</param-value>
 	</context-param>
 	
 	<filter>
