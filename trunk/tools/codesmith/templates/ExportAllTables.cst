@@ -65,6 +65,7 @@ public void RenderMain()
     CreateTemplate<TemplateFlexIndex>(SourceData, "flex.src", "index.mxml");
  
     /// 重复调用单个的子模板
+    int count = 0;
     foreach(TableSchema dt in tables)
     {
 		System.Diagnostics.Debug.WriteLine(ExportTableName);
@@ -89,6 +90,7 @@ public void RenderMain()
 				Console.WriteLine(ex.Message);	
 			}
 		}
+        if(++count>20) break;
     }
 	
 }

@@ -21,7 +21,7 @@
     </appender>
 	
 	<logger name="org.apache.ibatis">
-		<level value="DEBUG"/>
+		<level value="WARN"/>
 	</logger>
 	
 	
@@ -30,7 +30,7 @@
 	</logger>
 	
 	<logger name="org.springframework.jdbc">
-		<level value="DEBUG"/>
+		<level value="WARN"/>
 	</logger>
 	
 	
