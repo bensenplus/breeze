@@ -64,7 +64,7 @@ $(function() {
     if(!type.Equals("String") && !type.Equals("Date")) continue;
 %> 
 	<% if (column.DataType.ToString().Equals("DateTime")) { %> 
-				<td><fmt:formatDate value="${<%=mode%>.<%=fieldName(column.Name)%>}" pattern="yyyy/MM/dd HH:mm" /></td>
+				<td><fmt:formatDate value="${<%=mode%>.<%=fieldName(column.Name)%>}" pattern="yyyy/MM/dd" /></td>
 	<% }else if (column.DataType.ToString().Equals("Object")) { %> 
                 <td>...</td>
     <% } else{%>

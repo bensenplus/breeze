@@ -58,17 +58,19 @@ String map = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
   
   <!--selectBy -->
   <select id="selectBy" parameterType="java.util.HashMap" resultMap="<%=Mode%>">
-    <if test="start != null" >
-	SELECT * FROM ( SELECT ROW_.*, ROWNUM ROWNUM_ FROM (
-	</if>
 	SELECT
         <%=GetTableFiled(this.SourceTable)%>
     FROM <%=table%>    
-    <include refid="where" />
-    <if test="order != null" >ORDER BY ${order}</if>
 	<if test="start != null" >
-	) ROW_ ) WHERE ROWNUM_ &gt;#{start} and ROWNUM_ &lt;= (#{start} + #{size})
-	</if>
+	    WHERE ROWID IN (select rowid_
+            from (select rowid_
+                   from (select rowid_, rownum rownum_
+                              from (select rowid rowid_ from <%=table%> 
+                                <include refid="where" /> 
+                                <if test="order != null" >ORDER BY ${order}</if>)
+                              where rownum  &lt;= (#{start} + #{size}))
+                      where rownum_ &gt;#{start}))
+    </if>
   </select>
 
   <!--count -->
