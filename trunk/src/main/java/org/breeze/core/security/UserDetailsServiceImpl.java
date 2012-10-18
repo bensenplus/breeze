@@ -2,10 +2,10 @@
 package org.breeze.core.security;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,11 +16,24 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		GrantedAuthority grantedAuthority  = new SimpleGrantedAuthority("ROLE_USER");
+		
+		Collection<GrantedAuthority> authoritys=  getAuthorityList(username);
+		Collection<String> menus=  getMenus(username);		
+		UserDetails loginUser = new LoginUser(username,authoritys, menus);
+		return loginUser ;
+	}
+	
+	private Collection<GrantedAuthority>  getAuthorityList(String username){
 		ArrayList<GrantedAuthority>  authorityList  = new ArrayList<GrantedAuthority>();
+		GrantedAuthority grantedAuthority  = new SimpleGrantedAuthority("ROLE_USER");
 		authorityList.add(grantedAuthority);
-		UserDetails userDetails = new User(username, "", authorityList);
-		return userDetails ;
+		return authorityList;
+	}
+	
+	private Collection<String>  getMenus(String username){
+		Collection<String> menus = new ArrayList<String>();
+		//TODO
+		return menus;
 	}
 	
 }
