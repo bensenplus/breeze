@@ -48,7 +48,7 @@ public class PdfView extends AbstractPdfView{
 		Field[] fields = modeClass.getDeclaredFields();
 		Table table = new Table(fields.length);
 
-        table.getDefaultCell().setUseAscender(false);
+        table.getDefaultCell().setUseAscender(true);
         table.getDefaultCell().setUseDescender(true);
         table.getDefaultCell().setBackgroundColor(Color.LIGHT_GRAY);
         table.getDefaultCell().setVerticalAlignment(Element.ALIGN_MIDDLE);

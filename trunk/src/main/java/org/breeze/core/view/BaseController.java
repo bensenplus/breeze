@@ -13,19 +13,30 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 
 public class BaseController {
 	
 	private static  CustomDateEditor  dateEditor =  
-			new CustomDateEditor(new SimpleDateFormat("yyyy/MM/dd hh:mm"), true);
+			new CustomDateEditor(new SimpleDateFormat("yyyy/MM/dd"), true);
 	
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {	    
 	    //dateFormat.setLenient(false);
 	    // true passed to CustomDateEditor constructor means convert empty String to null
 	    binder.registerCustomEditor(Date.class, dateEditor);
+	}
+	
+	protected final UserDetails getUserDetails(){
+	    Object principal =  SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	    if(principal instanceof UserDetails){
+	    	 return (UserDetails)principal;
+	    }else{
+	    	return null;
+	    }
 	}
 	
 }

@@ -11,6 +11,7 @@
 
 	<properties>
 		<c3p0.version>0.9.0</c3p0.version>
+		<hibernate.version>4.1.4.Final</hibernate.version>
 		<springframework.version>3.1.2.RELEASE</springframework.version>
 		<org.slf4j.version>1.5.10</org.slf4j.version>
 		<log4j.version>1.2.16</log4j.version>
@@ -59,6 +60,39 @@
 			<version>${junit.version}</version>
 		</dependency>
 
+		<!-- PERSISTENCE begin -->
+		<dependency>
+			<groupId>javax.persistence</groupId>
+			<artifactId>persistence-api</artifactId>
+			<version>1.0.2</version>
+		</dependency>
+
+		<!-- spring-data-jpa  start-->
+		<dependency>
+			<groupId>org.hibernate.javax.persistence</groupId>
+			<artifactId>hibernate-jpa-2.0-api</artifactId>
+			<version>1.0.0.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernate.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+			<version>1.2.0.RELEASE</version>
+		</dependency>
+		<!-- spring-data-jpa  end -->
+		
+		<!-- Mybatis Dependencies -->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+			<version>${mybatis.spring.version}</version>
+		</dependency>
+
 		<!-- Mybatis Dependencies -->
 		<dependency>
 			<groupId>org.mybatis</groupId>
@@ -67,6 +101,11 @@
 		</dependency>
 
 		<!-- Spring Dependencies -->
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib</artifactId>
+			<version>${cglib.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
@@ -157,13 +196,13 @@
 			<version>2.0</version>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
-			<groupId>cglib</groupId>
-			<artifactId>cglib</artifactId>
-			<version>${cglib.version}</version>
-		</dependency>
 
 		<!-- dbcp connection pool -->
+		<dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+			<version>1.2.2</version>
+		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
@@ -208,8 +247,8 @@
 			</exclusions>
 		</dependency>
 		<!-- webservice end -->
-		
-		<!-- excel and pdf  begin -->
+
+		<!-- excel and pdf begin -->
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
@@ -220,7 +259,7 @@
 			<artifactId>itext</artifactId>
 			<version>4.2.0</version>
 		</dependency>
-		<!--  excel and pdf  end -->
+		<!-- excel and pdf end -->
 		<dependency>
 			<groupId>opensymphony</groupId>
 			<artifactId>sitemesh</artifactId>
