@@ -29,26 +29,15 @@ String service = StringUtil.ToCamelCase(ServiceName(SourceTable.Name));
 String map = StringUtil.ToCamelCase(SourceTable.Name);
 
 %>
-package <%=RootTableSpaceName%>.repository.mapper;
+package <%=RootTableSpaceName%>.repository.jpa;
 
-import java.util.List;
-import java.util.HashMap;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import <%=RootTableSpaceName%>.core.view.Page;
 import <%=RootTableSpaceName%>.entity.<%= Mode%>;
 
-public interface <%= Mode%>Mapper {
-
-	int countBy(HashMap<String, Object> map);
-    List<<%= Mode%>> selectBy(HashMap<String, Object> map);
+public interface <%= Mode%>Repository extends JpaRepository<<%= Mode%>, Long> {
     
-    int insert(<%= Mode%> <%= mode%>);
-    
-    <%= Mode%> get(<%=GetKeys(SourceTable,true)%>);
-	
-	int update(<%= Mode%> <%= mode%>);
-	
-	int delete(<%=GetKeys(SourceTable,true)%>);
-    
-
+        Page<<%= Mode%>> findAll(Pageable pageable);
 }

@@ -26,10 +26,15 @@
 <%@ Map Name="JavaAlias" Src="JavaAlias.csmap" Description="Oracle to Java Type Map" %>
 <%-- 注册 子模板 --%>
 <%@ Register Name="TemplateModel" Template="TemplateModel.cst" %>
+
 <%@ Register Name="TemplateDao" Template="TemplateDao.cst" %>
 <%@ Register Name="TemplateDaoXml" Template="TemplateDaoXml.cst" %>
+
+<%@ Register Name="TemplateRepository" Template="TemplateRepository.cst" %>
+
 <%@ Register Name="TemplateService" Template="TemplateService.cst" %>
 <%@ Register Name="TemplateController" Template="TemplateController.cst" %>
+
 <%@ Register Name="TemplateJsp_index" Template="TemplateJsp_index.cst" %>
 <%@ Register Name="TemplateJsp_list" Template="TemplateJsp_list.cst" %>
 <%@ Register Name="TemplateJsp_edit" Template="TemplateJsp_edit.cst" %>
@@ -57,8 +62,12 @@ Done and Finish  !!!!!!!!!!!!!!!!!!!!!!!!
 public void RenderMain()
 {    
     CreateTemplate<TemplateModel>(SourceTable, "java."+RootTableSpaceName+".entity", ModelName(SourceTable.Name)+"."+"java");
-    CreateTemplate<TemplateDao>(SourceTable, "java."+RootTableSpaceName+".dao", ModelName(SourceTable.Name)+"Mapper."+"java");
-    CreateTemplate<TemplateDaoXml>(SourceTable, "java."+RootTableSpaceName+".dao", ModelName(SourceTable.Name)+"Mapper."+"xml");
+    
+    CreateTemplate<TemplateRepository>(SourceTable, "java."+RootTableSpaceName+".repository.jpa", ModelName(SourceTable.Name)+"Repository."+"java");
+    
+    CreateTemplate<TemplateDao>(SourceTable, "java."+RootTableSpaceName+".repository.mapper", ModelName(SourceTable.Name)+"Mapper."+"java");
+    CreateTemplate<TemplateDaoXml>(SourceTable, "java."+RootTableSpaceName+".repository.mapper", ModelName(SourceTable.Name)+"Mapper."+"xml");
+   
     CreateTemplate<TemplateService>(SourceTable, "java."+RootTableSpaceName+".service", ServiceName(SourceTable.Name)+"."+"java");
     CreateTemplate<TemplateController>(SourceTable, "java."+RootTableSpaceName+".controller", ControllerName(SourceTable.Name)+"."+"java");
     

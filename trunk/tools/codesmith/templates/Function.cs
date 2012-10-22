@@ -49,6 +49,11 @@ public string DaoName( string TableName)
 	return ClassName(TableName) + "Mapper";
 }
 
+public string RepositoryName( string TableName)
+{
+	return ClassName(TableName) + "Repository";
+}
+
 public string ControllerName( string TableName)
 {
 	return ClassName(TableName) + "Controller";
@@ -61,6 +66,7 @@ public string ServiceName( string TableName)
 
 public string fieldName(string FieldName)
 {
+     if(FieldName == "NATIVE") return "_native";
 	 return StringUtil.ToCamelCase(FieldName.ToLower());
 }
 
@@ -338,5 +344,3 @@ public string GetCallKeysParam(TableSchema dt, string instance)
 }
 
 #endregion
-
-

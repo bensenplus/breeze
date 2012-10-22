@@ -25,6 +25,8 @@ String Mode = ModelName(SourceTable.Name.ToLower());
 String mode = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
 String Dao = DaoName(SourceTable.Name);
 String dao = StringUtil.ToCamelCase(Dao);
+String Repository = RepositoryName(SourceTable.Name);
+String repository = StringUtil.ToCamelCase(Repository);
 String Service = ServiceName(SourceTable.Name);
 String service = StringUtil.ToCamelCase(ServiceName(SourceTable.Name.ToLower()));
 String map = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
@@ -42,7 +44,8 @@ import org.springframework.stereotype.Service;
 import org.breeze.core.view.Util;
 import <%=RootTableSpaceName%>.core.view.Page;
 import <%=RootTableSpaceName%>.entity.<%=Mode%>;
-import <%=RootTableSpaceName%>.dao.<%=Dao%>;
+import <%=RootTableSpaceName%>.repository.jpa.<%=Repository%>;
+import <%=RootTableSpaceName%>.repository.mapper.<%=Dao%>;
 
 
 @Service("<%=service%>")
@@ -50,6 +53,9 @@ public class <%=Service%> {
 
 	private final Logger logger = LoggerFactory.getLogger(<%=Service%>.class); 
 
+    @Resource(name = "<%=repository%>")
+	private <%=Repository%> <%=repository%>;
+    
     @Resource(name = "<%=dao%>")
 	private <%=Dao%> <%=dao%>;
     
@@ -60,15 +66,6 @@ public class <%=Service%> {
 	public List<<%=Mode%>> selectBy(<%=Mode%> <%=mode%>, Page page) {
         HashMap<String, Object> map = Util.objToHash(<%=mode%>, page);
 		List<<%=Mode%>> list = <%=dao%>.selectBy(map);
-		return list;
-	}
-
-	public int count(){
-		return <%=dao%>.count();
-	}
-
-	public List<<%=Mode%>> select(Page page) {
-		List<<%=Mode%>> list = <%=dao%>.select(page);
 		return list;
 	}
 

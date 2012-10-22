@@ -54,17 +54,4 @@
 	</bean> 
 	<tx:annotation-driven transaction-manager="txManager"/>
 	
-    <!-- define the SqlSessionFactory -->
-    <bean id="_sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="dataSource" />
-        <property name="typeAliasesPackage" value="org.breeze.entity" />
-        <!-- <property name="configLocation" value="classpath:mybatis.cfg.xml"/>  -->
-    </bean>
-
-    <!-- scan for mappers and let them be autowired -->
-    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="org.breeze.dao" />
-        <property name="sqlSessionFactoryBeanName" value="_sqlSessionFactory" />
-    </bean>
-    
 </beans>

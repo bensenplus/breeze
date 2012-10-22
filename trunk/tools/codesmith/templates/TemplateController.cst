@@ -89,15 +89,6 @@ public class <%=Controller%> extends BaseController {
     	PdfView  pdfView=new PdfView(<%=Mode%>.class);
     	return new ModelAndView(pdfView,model);
 	}
-
-    @RequestMapping("/list")
-	public String list(ModelMap model, Page page) {
-		page.setCount(<%=service%>.count());
-		List<<%=Mode%>> list = <%=service%>.select(page);
-		model.addAttribute("list", list);
-		model.addAttribute("page", page);
-		return "<%=map%>/list";
-	}
     
     @RequestMapping("/edit")
 	public String edit(ModelMap model, <%=GetKeys(SourceTable,true)%>) {

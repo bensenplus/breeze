@@ -33,14 +33,30 @@ String map = StringUtil.ToCamelCase(SourceTable.Name);
 package <%=RootTableSpaceName%>.entity;
 
 import java.io.Serializable;
+<% foreach (ColumnSchema column in this.SourceTable.Columns) {%>
+<% if (JavaAlias[column.SystemType.FullName]=="Date"){%>
 import java.util.Date;
+<% break;}}%>
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+<% if (this.SourceTable.HasPrimaryKey){%>
+import javax.persistence.GenerationType;
+import javax.persistence.GeneratedValue;
+<%}%>import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="<%=SourceTable.Name%>")
 public class <%=Mode%> implements Serializable {
 
     private static final long serialVersionUID = 1L;
-	<%-- 成员变量 --%>
-    <% foreach (ColumnSchema column in this.SourceTable.Columns) {%>
-    //<%=column.Description%>
+    
+    <% if (!this.SourceTable.HasPrimaryKey){%>@Id<%}
+    foreach (ColumnSchema column in this.SourceTable.Columns) {
+        if (column.IsPrimaryKeyMember){%>@Id<%} 
+        if (column.IsPrimaryKeyMember){%>//@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="<%=SourceTable.Name%>_SEQ")<%}%>
+    @Column(name="<%=column.Name%>",columnDefinition="<%=column.Description%>", <%if(column.Size>0){%>length=<%=column.Size%>, <%}if(column.Precision>0){%>precision=<%=column.Precision%>, <%}if(column.Scale>0){%>scale=<%=column.Scale%>, <%}%>nullable=<%=column.AllowDBNull.ToString().ToLower()%>)
 	private <%=JavaAlias[column.SystemType.FullName]%> <%=fieldName(column.Name) %>;    
     <% }%>
 

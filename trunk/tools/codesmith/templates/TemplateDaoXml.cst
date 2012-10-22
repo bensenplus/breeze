@@ -33,7 +33,7 @@ String map = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="<%=RootTableSpaceName%>.dao.<%=Mode%>Mapper">
+<mapper namespace="<%=RootTableSpaceName%>.repository.mapper.<%=Mode%>Mapper">
   <!--cache /-->
   <resultMap id="<%=Mode%>" type="<%=RootTableSpaceName%>.entity.<%=Mode%>" >
 	<% foreach (ColumnSchema column in this.SourceTable.Columns) {%>
@@ -71,24 +71,6 @@ String map = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
                               where rownum  &lt;= (#{start} + #{size}))
                       where rownum_ &gt;#{start}))
     </if>
-  </select>
-
-  <!--count -->
-  <select id="count" resultType="int">
-    SELECT COUNT(*)  FROM <%=SourceTable.Name%>
-  </select>
-  
-  <!--select -->
-  <select id="select" parameterType="<%=RootTableSpaceName%>.core.view.Page" resultMap="<%=Mode%>">
-    <if test="start != null" >
-	SELECT * FROM ( SELECT ROW_.*, ROWNUM ROWNUM_ FROM (
-	</if>
-	SELECT
-        <%=GetTableFiled(this.SourceTable)%>
-    FROM <%=table%>
-	<if test="start != null" >
-	) ROW_ ) WHERE ROWNUM_ &gt;#{start} and ROWNUM_ &lt;= (#{start} + #{size})
-	</if>
   </select>
   
   <!--get -->
