@@ -54,8 +54,8 @@ $(function() {
 			<th width="30px">操作</th>
 		</tr>
 		<c:forEach var="<%=mode%>" items="${list}" varStatus="status">
-            <tr ondblclick="edit('<%=parameterURL(SourceTable)%>')" onclick = 'rowclick(this)' id = '${status.count}'>
-                <td>${status.count+page.start}</td>
+            <tr ondblclick="edit('<%=KeyColumn(SourceTable)%>=${<%=mode%>.<%=KeyColumn(SourceTable)%>}')" onclick = 'rowclick(this)' id = '${status.count}'>
+                <td><a href="${<%=mode%>.<%=KeyColumn(SourceTable)%>}.xml">${status.count+page.start}</a></td>
 <% foreach (ColumnSchema column in this.SourceTable.Columns) {%>
 <%  
     string type = JavaAlias[column.SystemType.FullName];

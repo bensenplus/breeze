@@ -27,17 +27,15 @@ String mode = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
 String Service = ServiceName(SourceTable.Name);
 String service = StringUtil.ToCamelCase(ServiceName(SourceTable.Name));
 String map = StringUtil.ToCamelCase(SourceTable.Name);
+String Key = JavaAlias[SourceTable.Columns[0].SystemType.FullName];
 
 %>
 package <%=RootTableSpaceName%>.repository.jpa;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import <%=RootTableSpaceName%>.entity.<%= Mode%>;
 
-public interface <%= Mode%>Repository extends JpaRepository<<%= Mode%>, Long> {
-    
-        Page<<%= Mode%>> findAll(Pageable pageable);
+public interface <%= Mode%>Repository extends JpaRepository<<%= Mode%>, <%=Key%>> {
+   
 }

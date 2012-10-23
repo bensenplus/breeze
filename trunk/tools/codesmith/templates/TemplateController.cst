@@ -38,12 +38,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import <%=RootTableSpaceName%>.core.view.BaseController;
 import <%=RootTableSpaceName%>.core.view.document.ExcelView;
 import <%=RootTableSpaceName%>.core.view.document.PdfView;
+import <%=RootTableSpaceName%>.core.view.document.XmlView;
 import <%=RootTableSpaceName%>.core.view.Page;
 import <%=RootTableSpaceName%>.core.view.Util;
 import <%=RootTableSpaceName%>.entity.<%=Mode%>;
@@ -90,20 +93,29 @@ public class <%=Controller%> extends BaseController {
     	return new ModelAndView(pdfView,model);
 	}
     
+    @RequestMapping(value="/{<%=KeyColumn(SourceTable)%>}.xml",method=RequestMethod.GET)
+	public ModelAndView xml(ModelMap model, @PathVariable <%=KeyParam(SourceTable)%>) {
+        if(<%=KeyColumn(SourceTable)%> != null){
+    	    <%=Mode%> <%=mode%> = <%=service%>.get(<%=KeyColumn(SourceTable)%>);
+    		model.addAttribute("model", <%=mode%>);
+        }
+        XmlView  xmlView=new XmlView(<%=Mode%>.class);
+    	return new ModelAndView(xmlView, model);
+	}
+    
     @RequestMapping("/edit")
-	public String edit(ModelMap model, <%=GetKeys(SourceTable,true)%>) {
-        if(<%=GetKeys(SourceTable,false)%> != null){
-    	    <%=Mode%> <%=mode%> = <%=service%>.get(<%=GetKeys(SourceTable,false)%>);
+	public String edit(ModelMap model, <%=KeyParam(SourceTable)%>) {
+        if(<%=KeyColumn(SourceTable)%> != null){
+    	    <%=Mode%> <%=mode%> = <%=service%>.get(<%=KeyColumn(SourceTable)%>);
     		model.addAttribute("<%=mode%>", <%=mode%>);
         }
 		return "<%=map%>/edit";
 	}    
     
     @RequestMapping("/create")
-	public void create(<%=Mode%> <%=mode%>, HttpServletResponse response) {
-       int result = <%=service%>.create(<%=mode%>);
-       Util.outputJSONResult(String.valueOf(result),response);
-	}
+	public void create(<%=Mode%> <%=mode%>) {
+       <%=service%>.create(<%=mode%>);
+    }
     
     @RequestMapping("/update")
 	public void update(<%=Mode%> <%=mode%>, HttpServletResponse response) {

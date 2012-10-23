@@ -71,6 +71,10 @@ String map = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
                               where rownum  &lt;= (#{start} + #{size}))
                       where rownum_ &gt;#{start}))
     </if>
+    <if test="start == null" >
+        <include refid="where" />
+        <if test="order != null" >ORDER BY ${order}</if>
+    </if>
   </select>
   
   <!--get -->

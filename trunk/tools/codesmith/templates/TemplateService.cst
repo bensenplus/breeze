@@ -69,8 +69,8 @@ public class <%=Service%> {
 		return list;
 	}
 
-	public <%=Mode%> get(<%=GetKeys(SourceTable,true)%>) {
-	    <%=Mode%> <%=mode%> = <%=dao%>.get(<%=GetKeys(SourceTable,false)%>);
+	public <%=Mode%> get(<%=KeyParam(SourceTable)%>) {
+	    <%=Mode%> <%=mode%> = <%=repository%>.findOne(<%=KeyColumn(SourceTable)%>);
         return <%=mode%>;
 	} 
     

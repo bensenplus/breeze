@@ -317,6 +317,28 @@ public string GetKeys(TableSchema dt, bool hasType)
 	return param;
 }
 
+
+public string KeyType(TableSchema table)
+{
+    string KeyType = JavaAlias[table.Columns[0].SystemType.FullName];
+    return KeyType;
+}
+
+public string KeyColumn(TableSchema table)
+{
+    string KeyColumn = fieldName(table.Columns[0].Name);
+    return KeyColumn;
+}
+
+public string KeyParam(TableSchema table)
+{
+    string KeyType = JavaAlias[table.Columns[0].SystemType.FullName];
+    string KeyColumn = fieldName(table.Columns[0].Name);
+    return KeyType + " " + KeyColumn;
+}
+
+
+
 public string GetCallKeysParam(TableSchema dt, string instance)
 {
 	string param = string.Empty;	
