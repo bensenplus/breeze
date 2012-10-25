@@ -3,9 +3,9 @@ var curren_page = 0;
 var dbfiled="";
 var desc = false;
 var options = {};
-var action ="";
 var spinner = "<div style='width:100%;text-align:center;position:absolute;margin-top:-25px;'><img src='../resources/images/spinner_18_18.gif'/></div>";
 
+/**列表选中颜色**/
 function rowclick(obj){
     if (lastLineId != "") {  
         $("#" + lastLineId).removeClass("l-selected");  
@@ -14,6 +14,7 @@ function rowclick(obj){
     lastLineId = $(obj).attr("id");      	
 }
 
+/**列表选中颜色**/
 function  queryString(){
 	var order ="";
 	if(dbfiled && desc) order = dbfiled+ "%20desc"; else order = dbfiled;
@@ -190,7 +191,7 @@ function initValidate() {
 }
 
 function save(){
-	var url = "./"+action; 
+	var url = "./save"; 
 	$.post(url, $("#update-form").serialize()).success(function() { 
 		$("#update-form-warp" ).hide();			
 		$("#upper-warp" ).show("slide");
@@ -203,7 +204,6 @@ function save(){
 
 function edit(param){
 	if(param=="create"){
-		action = "create";
 	    var url = "./edit?date="+new Date().getMilliseconds();
 		$( "#update-form" ).load(url, function(response, status, xhr) {
 			if(xhr.status == "200"){
@@ -220,7 +220,6 @@ function edit(param){
 			}
 		});
 	}else{
-		action = "update";
 	    var url = "./edit?"+param+"&date="+new Date().getMilliseconds();
 		$( "#update-form" ).load(url, function(response, status, xhr) {
 			if(xhr.status == "200"){
@@ -240,8 +239,11 @@ function edit(param){
 function remove(param){
 	if(confirm("Are you sure to delete the record?")){
         var url = "./remove?"+param;
-        $.get(url,function(data){
+        $.get(url, function(data){
+        }).success(function() {
         	doSearch(curren_page);
+        }).error(function() {
+        	alert("error"); 
         });
     }
 }

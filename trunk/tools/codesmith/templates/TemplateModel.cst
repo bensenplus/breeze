@@ -55,9 +55,10 @@ public class <%=Mode%> implements Serializable {
     <% if (!this.SourceTable.HasPrimaryKey){%>@Id<%}
     foreach (ColumnSchema column in this.SourceTable.Columns) {
         if (column.IsPrimaryKeyMember){%>@Id<%} 
-        if (column.IsPrimaryKeyMember){%>//@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="<%=SourceTable.Name%>_SEQ")<%}%>
-    @Column(name="<%=column.Name%>",columnDefinition="<%=column.Description%>", <%if(column.Size>0){%>length=<%=column.Size%>, <%}if(column.Precision>0){%>precision=<%=column.Precision%>, <%}if(column.Scale>0){%>scale=<%=column.Scale%>, <%}%>nullable=<%=column.AllowDBNull.ToString().ToLower()%>)
-	private <%=JavaAlias[column.SystemType.FullName]%> <%=fieldName(column.Name) %>;    
+        if (column.IsPrimaryKeyMember){%>
+    @GeneratedValue(strategy=GenerationType.AUTO)<%}%>
+    @Column(name="<%=column.Name%>",columnDefinition="", <%if(column.Size>0){%>length=<%=column.Size%>, <%}if(column.Precision>0){%>precision=<%=column.Precision%>, <%}if(column.Scale>0){%>scale=<%=column.Scale%>, <%}%>nullable=<%=column.AllowDBNull.ToString().ToLower()%>)
+	private <%=JavaAlias[column.SystemType.FullName]%> <%=fieldName(column.Name) %>; //<%=column.Description%>     
     <% }%>
 
 	<% foreach (ColumnSchema column in this.SourceTable.Columns) {%>

@@ -30,6 +30,7 @@ String map = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
 %>
 package <%=RootTableSpaceName%>.controller;
 
+import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -112,21 +113,16 @@ public class <%=Controller%> extends BaseController {
 		return "<%=map%>/edit";
 	}    
     
-    @RequestMapping("/create")
-	public void create(<%=Mode%> <%=mode%>) {
-       <%=service%>.create(<%=mode%>);
+    @RequestMapping("/save")
+	public void save(<%=Mode%> <%=mode%>, HttpServletResponse response) {
+       <%=service%>.save(<%=mode%>);
+       response.setHeader("ContentType", "text/json");
     }
     
-    @RequestMapping("/update")
-	public void update(<%=Mode%> <%=mode%>, HttpServletResponse response) {
-       int result = <%=service%>.update(<%=mode%>);
-       Util.outputJSONResult(String.valueOf(result),response);
-	}
-    
     @RequestMapping("/remove")
-	public void remove(<%=GetKeys(SourceTable,true)%>, HttpServletResponse response) {
-		int result = <%=service%>.remove(<%=GetKeys(SourceTable,false)%>);
-        Util.outputJSONResult(String.valueOf(result),response);
+	public void remove(<%=KeyParam(SourceTable)%>, HttpServletResponse response) {
+		<%=service%>.remove(<%=KeyColumn(SourceTable)%>);
+        response.setHeader("ContentType", "text/json");
 	}
 	
 }

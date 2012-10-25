@@ -62,6 +62,7 @@ String map = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
         <%=GetTableFiled(this.SourceTable)%>
     FROM <%=table%>    
 	<if test="start != null" >
+       <if test="_databaseId == 'oracle'">
 	    WHERE ROWID IN (select rowid_
             from (select rowid_
                    from (select rowid_, rownum rownum_
@@ -70,43 +71,17 @@ String map = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
                                 <if test="order != null" >ORDER BY ${order}</if>)
                               where rownum  &lt;= (#{start} + #{size}))
                       where rownum_ &gt;#{start}))
+      </if>
+      <if test="_databaseId == 'MySQL'">
+      		<include refid="where" />
+      		<if test="order != null" >ORDER BY ${order}</if>
+      		 limit #{start}, #{size}
+      </if>
     </if>
     <if test="start == null" >
         <include refid="where" />
         <if test="order != null" >ORDER BY ${order}</if>
     </if>
   </select>
-  
-  <!--get -->
-  <select id="get" <%=parameterType(SourceTable)%> resultMap="<%=Mode%>">
-    SELECT
-        <%=GetTableFiled(this.SourceTable)%>
-    FROM <%=table%>
-    WHERE <%=parameterSQL(SourceTable)%>
-  </select>
-  
-  <!--delete -->
-  <delete id="delete" <%=parameterType(SourceTable)%>>
-    DELETE FROM <%=table%> WHERE <%=parameterSQL(SourceTable)%>
-  </delete>
-  
-  <!--insert -->
-  <insert id="insert" parameterType="<%=Mode%>">
-    <selectKey resultType="Long" keyProperty="<%=KeyName%>" order="BEFORE">
-        select SEQ_<%=table%>.nextVal from dual
-    </selectKey>
-    INSERT INTO <%=table%>
-        (<%=GetTableFiled(this.SourceTable)%>)
-    VALUES
-        (<%=GetInsertParam(this.SourceTable)%>)
-  </insert>
-  
-   <!--update -->
-  <update id="update" parameterType="<%=Mode%>">
-    UPDATE <%=table%>
-    SET
-        <%=GetUpdateString(this.SourceTable)%>
-    WHERE <%=parameterSQL(SourceTable)%>
- </update>
   
 </mapper>

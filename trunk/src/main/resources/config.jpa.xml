@@ -9,17 +9,16 @@
 	http://www.springframework.org/schema/data/jpa
 	 http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
-	<bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect"/>	
-	<bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-				<property name="generateDdl" value="false" />
-				<property name="database" value="ORACLE" />
-	</bean>
-	
 	<bean id="entityManagerFactory" 	class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="packagesToScan" value="org.breeze.entity"/>
 		<property name="jpaDialect" ref="jpaDialect"/>	
-		<property name="jpaVendorAdapter" ref="jpaVendorAdapter"/>
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<property name="generateDdl" value="false" />
+				<property name="database" value="ORACLE" />
+			</bean>
+		</property>
 		<property name="jpaProperties">
 	        <props>
 	            <prop key="hibernate.show_sql">true</prop>
@@ -27,10 +26,11 @@
 	    </property>		
 	</bean>
 
-	<jpa:repositories base-package="org.breeze.repository" />
-
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
+
+	<bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect"/>
+	<jpa:repositories base-package="org.breeze.repository" />
 
 </beans>

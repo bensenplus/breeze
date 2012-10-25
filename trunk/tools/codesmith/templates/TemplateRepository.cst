@@ -27,15 +27,20 @@ String mode = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
 String Service = ServiceName(SourceTable.Name);
 String service = StringUtil.ToCamelCase(ServiceName(SourceTable.Name));
 String map = StringUtil.ToCamelCase(SourceTable.Name);
-String Key = JavaAlias[SourceTable.Columns[0].SystemType.FullName];
 
 %>
 package <%=RootTableSpaceName%>.repository.jpa;
 
+import java.util.List;
+import java.util.Date;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import <%=RootTableSpaceName%>.entity.<%= Mode%>;
 
-public interface <%= Mode%>Repository extends JpaRepository<<%= Mode%>, <%=Key%>> {
+public interface <%= Mode%>Repository extends JpaRepository<<%= Mode%>, <%=KeyType(SourceTable)%>> {
    
+   <% foreach (ColumnSchema column in this.SourceTable.Columns) { %> 
+        List<<%=Mode%>> findBy<%=StringUtil.ToPascalCase(column.Name)%>OrderBy<%=StringUtil.ToPascalCase(column.Name)%>Asc(<%=JavaAlias[column.SystemType.FullName]%> <%=fieldName(column.Name)%>);
+   
+   <%}%>
 }

@@ -33,6 +33,7 @@ String map = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
 %>
 package <%=RootTableSpaceName%>.service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import javax.annotation.Resource;
@@ -74,16 +75,12 @@ public class <%=Service%> {
         return <%=mode%>;
 	} 
     
-    public int create(<%=Mode%> <%=mode%>) {   
-        return <%=dao%>.insert(<%=mode%>); 
-	}
-    
-    public int update(<%=Mode%> <%=mode%>) {   
-        return <%=dao%>.update(<%=mode%>); 
+    public <%=Mode%> save(<%=Mode%> <%=mode%>) {   
+        return <%=repository%>.save(<%=mode%>);
 	}
 
-	public int remove(<%=GetKeys(SourceTable,true)%>) {
-		return <%=dao%>.delete(<%=GetKeys(SourceTable,false)%>);
+	public void remove(<%=KeyParam(SourceTable)%>) {
+		<%=repository%>.delete(<%=KeyColumn(SourceTable)%>);
 	}
 
 }

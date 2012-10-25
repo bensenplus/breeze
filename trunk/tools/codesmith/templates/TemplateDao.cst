@@ -40,15 +40,6 @@ import <%=RootTableSpaceName%>.entity.<%= Mode%>;
 public interface <%= Mode%>Mapper {
 
 	int countBy(HashMap<String, Object> map);
-    List<<%= Mode%>> selectBy(HashMap<String, Object> map);
-    
-    int insert(<%= Mode%> <%= mode%>);
-    
-    <%= Mode%> get(<%=GetKeys(SourceTable,true)%>);
-	
-	int update(<%= Mode%> <%= mode%>);
-	
-	int delete(<%=GetKeys(SourceTable,true)%>);
-    
+    List<<%= Mode%>> selectBy(HashMap<String, Object> map);    
 
 }
