@@ -62,7 +62,7 @@ String map = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
         <%=GetTableFiled(this.SourceTable)%>
     FROM <%=table%>    
 	<if test="start != null" >
-       <if test="_databaseId == 'oracle'">
+       <if test="_databaseId == 'Oracle'">
 	    WHERE ROWID IN (select rowid_
             from (select rowid_
                    from (select rowid_, rownum rownum_

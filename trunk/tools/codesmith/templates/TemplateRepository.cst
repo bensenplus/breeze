@@ -40,7 +40,8 @@ import <%=RootTableSpaceName%>.entity.<%= Mode%>;
 public interface <%= Mode%>Repository extends JpaRepository<<%= Mode%>, <%=KeyType(SourceTable)%>> {
    
    <% foreach (ColumnSchema column in this.SourceTable.Columns) { %> 
+        //sample
         List<<%=Mode%>> findBy<%=StringUtil.ToPascalCase(column.Name)%>OrderBy<%=StringUtil.ToPascalCase(column.Name)%>Asc(<%=JavaAlias[column.SystemType.FullName]%> <%=fieldName(column.Name)%>);
-   
-   <%}%>
+        
+   <% break;}%>
 }
