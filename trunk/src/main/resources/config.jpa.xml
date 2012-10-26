@@ -11,8 +11,8 @@
 
 	<bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect"/>	
 	<bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-				<property name="generateDdl" value="true" />
-				<property name="database" value="MYSQL" />
+				<property name="generateDdl" value="false" />
+				<property name="database" value="ORACLE" />
 	</bean>
 	
 	<bean id="entityManagerFactory" 	class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
@@ -27,12 +27,10 @@
 	    </property>		
 	</bean>
 
-	<jpa:repositories base-package="org.breeze.repository" />
-	
-	<jpa:repositories base-package="org.breeze.repository" />
-
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
-
+	
+	<jpa:repositories base-package="org.breeze.repository.jpa.local"  entity-manager-factory-ref="entityManagerFactory"  	transaction-manager-ref="transactionManager"/>
+			
 </beans>
