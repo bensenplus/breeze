@@ -32,7 +32,6 @@ String map = StringUtil.ToCamelCase(SourceTable.Name);
 %>
 package <%=RootTableSpaceName%>.entity;
 
-import java.io.Serializable;
 <% foreach (ColumnSchema column in this.SourceTable.Columns) {%>
 <% if (JavaAlias[column.SystemType.FullName]=="Date"){%>
 import java.util.Date;
@@ -48,9 +47,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="<%=SourceTable.Name%>")
-public class <%=Mode%> implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class <%=Mode%> {
     
     <% if (!this.SourceTable.HasPrimaryKey){%>@Id<%}
     foreach (ColumnSchema column in this.SourceTable.Columns) {
