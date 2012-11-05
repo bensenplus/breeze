@@ -1,0 +1,48 @@
+﻿<%@ CodeTemplate Language="C#" TargetLanguage="Text" Src="" ResponseEncoding="UTF-8" Inherits="" Debug="False" Description="Template description here." %>
+<%@ Assembly Name="System.Data" %>
+<%@ Assembly Name="SchemaExplorer" %>
+
+<%@ Import Namespace="System.IO" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+
+<%-- 注册 成员函数 --%>
+<%@ Property Name="SourceData" Type="SchemaExplorer.DatabaseSchema" Optional="False" Category="Context" Description="指定的数据库" %>
+
+<%-- 启用 MAP方式 System-CSharpAlias  --%>
+<%@ Map Name="CSharpAlias" Src="System-CSharpAlias" Description="System to C# Type Map" %>
+<%@ Map Name="JavaAlias" Src="JavaAlias.csmap" Description="Oracle to Java Type Map" %>
+
+<script runat="template">
+<!-- #include file=Function.cs -->
+//Debugger.Break();
+public TableSchemaCollection GetTableCollection(DatabaseSchema dataBase)
+{
+    TableSchemaCollection tables = new TableSchemaCollection(dataBase.Tables);
+    return tables;
+}
+</script>
+Table display	Table Name	Column Name	Display Name	DB Type	Length	Scale	Precision	IS PK	Not Null	FK	Default
+<% TableSchemaCollection tables = GetTableCollection(SourceData);
+
+    foreach(TableSchema dt in tables){
+        //Debugger.Break();
+        foreach (ColumnSchema column in dt.Columns){
+            System.Console.Out.WriteLine(dt.Name);
+            Response.Write("\t" + dt.Description);
+            Response.Write("\t" + dt.Name.ToLower());
+            Response.Write("\t" + column.Name.ToLower());
+            Response.Write("\t" + column.Description.Trim('\n'));
+            Response.Write("\t" + column.NativeType.ToString());
+            Response.Write("\t" + column.Size.ToString());
+            Response.Write("\t" + column.Scale.ToString());
+            Response.Write("\t" + column.Precision.ToString());                
+            Response.Write(column.IsPrimaryKeyMember?"\tY":"\t");
+            Response.Write(column.AllowDBNull?"\tY":"\t");
+            Response.Write(column.IsForeignKeyMember?"\tY":"\t");
+            Response.WriteLine();
+        }
+        break;
+    }
+%> 

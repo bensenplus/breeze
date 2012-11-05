@@ -65,11 +65,11 @@ public void RenderMain()
     
     CreateTemplate<TemplateRepository>(SourceTable, "java."+RootTableSpaceName+".repository.jpa", ModelName(SourceTable.Name)+"Repository."+"java");
     
-    CreateTemplate<TemplateDao>(SourceTable, "java."+RootTableSpaceName+".repository.mapper", ModelName(SourceTable.Name)+"Mapper."+"java");
-    CreateTemplate<TemplateDaoXml>(SourceTable, "java."+RootTableSpaceName+".repository.mapper", ModelName(SourceTable.Name)+"Mapper."+"xml");
+   CreateTemplate<TemplateDao>(SourceTable, "java."+RootTableSpaceName+".repository.mapper", ModelName(SourceTable.Name)+"Mapper."+"java");
+   CreateTemplate<TemplateDaoXml>(SourceTable, "java."+RootTableSpaceName+".repository.mapper", ModelName(SourceTable.Name)+"Mapper."+"xml");
    
-    CreateTemplate<TemplateService>(SourceTable, "java."+RootTableSpaceName+".service", ServiceName(SourceTable.Name)+"."+"java");
-    CreateTemplate<TemplateController>(SourceTable, "java."+RootTableSpaceName+".controller", ControllerName(SourceTable.Name)+"."+"java");
+   CreateTemplate<TemplateService>(SourceTable, "java."+RootTableSpaceName+".service", ServiceName(SourceTable.Name)+"."+"java");
+   CreateTemplate<TemplateController>(SourceTable, "java."+RootTableSpaceName+".controller", ControllerName(SourceTable.Name)+"."+"java");
     
     CreateTemplate<TemplateJsp_index>(SourceTable, "webapp.view."+StringUtil.ToCamelCase(SourceTable.Name.ToLower()), "index.jsp");
     CreateTemplate<TemplateJsp_list>(SourceTable, "webapp.view."+StringUtil.ToCamelCase(SourceTable.Name.ToLower()), "list.jsp");

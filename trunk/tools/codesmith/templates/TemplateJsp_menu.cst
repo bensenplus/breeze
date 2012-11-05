@@ -30,7 +30,7 @@ public TableSchemaCollection GetTableCollection(DatabaseSchema dataBase)
 	<li class="top"><a href="#" id="menu" class="top_link"><span class="down">MenuGroup</span></a>
 		<ul class="sub">
            <% TableSchemaCollection tables = GetTableCollection(SourceData);
-              int i = 0;
+            int i = 0;
 			foreach(TableSchema dt in tables){ 
             if(i>0 && i%10 ==0){
             %> 
@@ -39,7 +39,7 @@ public TableSchemaCollection GetTableCollection(DatabaseSchema dataBase)
     <li class="top"><a href="#" id="menu" class="top_link"><span class="down"><%=StringUtil.ToPascalCase(dt.Name.ToLower())%></span></a>
         <ul class="sub">        
     <%}%>
-		    <li><a href="../<%=StringUtil.ToCamelCase(dt.Name.ToLower())%>/index.html"><%=StringUtil.ToPascalCase(dt.Name.ToLower())%></a></li>
+		    <li><a href="../<%=StringUtil.ToCamelCase(dt.Name.ToLower())%>/index.html"><%=StringUtil.ToPascalCase(dt.Description)%></a></li>
 	         <%i++;}  %>
 		</ul>
 	</li>
