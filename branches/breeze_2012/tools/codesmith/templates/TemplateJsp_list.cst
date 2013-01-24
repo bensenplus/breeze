@@ -1,0 +1,78 @@
+﻿<%@ CodeTemplate Language="C#" TargetLanguage="Text" Src="" ResponseEncoding="UTF-8" Inherits="" Debug="False" Description="Template description here." %>
+<%@ Assembly Name="System.Data" %>
+<%@ Assembly Name="SchemaExplorer" %>
+
+<%@ Import Namespace="System.IO" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+
+<%-- 注册 定义的成员变量 --%>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="DB" Description="请选择名的数据来源" %>
+<%@ Property Name="RootTableSpaceName" Type="System.String" Default="org.breeze" Optional="False" Category="Context" Description="源码输出的模块名称" %>
+
+
+<%-- 启用 MAP方式 System-CSharpAlias  --%>
+<%@ Map Name="CSharpAlias" Src="System-CSharpAlias" Description="System to C# Type Map" %>
+<%@ Map Name="JavaAlias" Src="JavaAlias.csmap" Description="Oracle to Java Type Map" %>
+<script runat="template">
+<!-- #include file=Function.cs -->
+//Debugger.Break();
+</script>
+<% 
+//名称定义
+String Controller = ControllerName(SourceTable.Name);
+String Mode = ModelName(SourceTable.Name);
+String mode = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
+String Service = ServiceName(SourceTable.Name);
+String service = StringUtil.ToCamelCase(ServiceName(SourceTable.Name));
+String map = StringUtil.ToCamelCase(SourceTable.Name);
+String Key = JavaAlias[SourceTable.Columns[0].SystemType.FullName];
+String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
+%>
+<%%@ page language="java" pageEncoding="UTF-8"%%>
+<%%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%%>
+<%%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %%>
+<script type="text/javascript">
+$(function() {
+    initPage(${page.param});
+});
+</script>
+<div id="page-header"></div>
+<table class="table-list">
+		<tr>
+            <th width="20px">No.</th>
+<% foreach (ColumnSchema column in this.SourceTable.Columns) {%>
+<%  
+    string type = JavaAlias[column.SystemType.FullName];
+    if(column.Size > 400) continue;
+    if(column.IsPrimaryKeyMember) continue;
+    if(!type.Equals("String") && !type.Equals("Date")) continue;
+%> 
+		    <th <%if(type.Equals("Date")){%>width="120px" <%}%>filed="<%=column.Name%>"><%=column.Description.Length==0?StringUtil.ToPascalCase(column.Name):column.Description%></th>		
+<% }%>
+			<th width="30px">操作</th>
+		</tr>
+		<c:forEach var="<%=mode%>" items="${list}" varStatus="status">
+            <tr ondblclick="edit('<%=KeyColumn(SourceTable)%>=${<%=mode%>.<%=KeyColumn(SourceTable)%>}')" onclick = 'rowclick(this)' id = '${status.count}'>
+                <td><a href="${<%=mode%>.<%=KeyColumn(SourceTable)%>}.xml">${status.count+page.start}</a></td>
+<% foreach (ColumnSchema column in this.SourceTable.Columns) {%>
+<%  
+    string type = JavaAlias[column.SystemType.FullName];
+    if(column.IsPrimaryKeyMember) continue;
+    if(column.Size > 400) continue;
+    if(!type.Equals("String") && !type.Equals("Date")) continue;
+%> 
+	<% if (column.DataType.ToString().Equals("DateTime")) { %> 
+				<td><fmt:formatDate value="${<%=mode%>.<%=fieldName(column.Name)%>}" pattern="yyyy/MM/dd" /></td>
+	<% }else if (column.DataType.ToString().Equals("Object")) { %> 
+                <td>...</td>
+    <% } else{%>
+				<td>${<%=mode%>.<%=fieldName(column.Name)%>}</td>
+	<% }%>
+<% }%>
+				<td><span class="ui-icon ui-icon-close cursor-point" title="delete" onclick="remove('<%=parameterURL(SourceTable)%>')"></span></td>
+        	</tr>
+		</c:forEach>
+</table>
+<div id="page-footer"></div>

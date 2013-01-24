@@ -1,0 +1,86 @@
+﻿<%@ CodeTemplate Language="C#" TargetLanguage="Text" Src="" ResponseEncoding="UTF-8" Inherits="" Debug="False" Description="Template description here." %>
+<%@ Assembly Name="System.Data" %>
+<%@ Assembly Name="SchemaExplorer" %>
+
+<%@ Import Namespace="System.IO" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+
+<%-- 注册 定义的成员变量 --%>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="DB" Description="请选择名的数据来源" %>
+<%@ Property Name="RootTableSpaceName" Type="System.String" Default="org.breeze" Optional="False" Category="Context" Description="源码输出的模块名称" %>
+
+<%-- 启用 MAP方式 System-CSharpAlias  --%>
+<%@ Map Name="CSharpAlias" Src="System-CSharpAlias" Description="System to C# Type Map" %>
+<%@ Map Name="JavaAlias" Src="JavaAlias.csmap" Description="Oracle to Java Type Map" %>
+
+<script runat="template">
+<!-- #include file=Function.cs -->
+//Debugger.Break();
+</script>
+<% 
+//名称定义
+String Mode = ModelName(SourceTable.Name.ToLower());
+String mode = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
+String Dao = DaoName(SourceTable.Name);
+String dao = StringUtil.ToCamelCase(Dao);
+String Repository = RepositoryName(SourceTable.Name);
+String repository = StringUtil.ToCamelCase(Repository);
+String Service = ServiceName(SourceTable.Name);
+String service = StringUtil.ToCamelCase(ServiceName(SourceTable.Name.ToLower()));
+String map = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
+%>
+package <%=RootTableSpaceName%>.service;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import javax.annotation.Resource;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+import org.breeze.core.view.Util;
+import <%=RootTableSpaceName%>.core.view.Page;
+import <%=RootTableSpaceName%>.entity.<%=Mode%>;
+import <%=RootTableSpaceName%>.repository.jpa.<%=Repository%>;
+import <%=RootTableSpaceName%>.repository.mapper.<%=Dao%>;
+
+
+@Service("<%=service%>")
+public class <%=Service%> {
+
+	private final Logger logger = LoggerFactory.getLogger(<%=Service%>.class); 
+
+    @Resource(name = "<%=repository%>")
+	private <%=Repository%> <%=repository%>;
+    
+    @Resource(name = "<%=dao%>")
+	private <%=Dao%> <%=dao%>;
+    
+    public int countBy(<%=Mode%> <%=mode%>){
+		return <%=dao%>.countBy(Util.objToHash(<%=mode%>));
+	}
+
+	public List<<%=Mode%>> selectBy(<%=Mode%> <%=mode%>, Page page) {
+        HashMap<String, Object> map = Util.objToHash(<%=mode%>, page);
+		List<<%=Mode%>> list = <%=dao%>.selectBy(map);
+		return list;
+	}
+
+	public <%=Mode%> get(<%=KeyParam(SourceTable)%>) {
+	    <%=Mode%> <%=mode%> = <%=repository%>.findOne(<%=KeyColumn(SourceTable)%>);
+        return <%=mode%>;
+	} 
+    
+    public <%=Mode%> save(<%=Mode%> <%=mode%>) {   
+        return <%=repository%>.save(<%=mode%>);
+	}
+
+	public void remove(<%=KeyParam(SourceTable)%>) {
+		<%=repository%>.delete(<%=KeyColumn(SourceTable)%>);
+	}
+
+}

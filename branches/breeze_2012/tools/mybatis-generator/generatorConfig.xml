@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+<!--
+  <classPathEntry location="C:/Users/chen_maohua/.m2/repository/mysql/mysql-connector-java/5.1.9/mysql-connector-java-5.1.9.jar" />
+  <context id="Tables" targetRuntime="MyBatis3">
+    <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+        connectionURL="jdbc:mysql://192.168.134.132:3306/breeze"
+        userId="breeze"
+        password="breeze">
+    </jdbcConnection>
+-->
+<classPathEntry location="C:/Users/chen_maohua/.m2/repository/com/oracle/ojdbc/6/ojdbc-6.jar" />
+<context id="Tables" targetRuntime="MyBatis3">
+    <jdbcConnection driverClass="oracle.jdbc.driver.OracleDriver"
+        connectionURL="jdbc:oracle:thin:@172.29.129.31:1521:orcl"
+        userId="hcms"
+        password="hcms">
+    </jdbcConnection>
+
+    <javaTypeResolver >
+      <property name="forceBigDecimals" value="false" />
+    </javaTypeResolver>
+
+    <javaModelGenerator targetPackage="org.breeze.entity" targetProject="./">
+      <property name="enableSubPackages" value="true" />
+      <property name="trimStrings" value="false" />
+    </javaModelGenerator>
+
+    <sqlMapGenerator targetPackage="org.breeze.dao"  targetProject="./">
+      <property name="enableSubPackages" value="true" />
+    </sqlMapGenerator>
+
+    <javaClientGenerator type="XMLMAPPER" targetPackage="org.breeze.dao"  targetProject="./">
+      <property name="enableSubPackages" value="true" />
+    </javaClientGenerator>
+
+	<!-- tables -->
+    <table schema="hcmstest" tableName="users">
+		<property name="ignoreQualifiersAtRuntime" value="true" />
+		<property name="runtimeTableName" value="users" />
+    </table>
+
+    <table schema="hcmstest" tableName="CONSULTATION_CLINIC">
+		<property name="ignoreQualifiersAtRuntime" value="true" />
+		<property name="runtimeTableName" value="CONSULTATION_CLINIC" />
+    </table>
+
+  </context>
+</generatorConfiguration>

@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.breeze.repository.mapper.ClinicMapper">
+  <!--cache /-->
+  <resultMap id="Clinic" type="org.breeze.entity.Clinic" >
+    <result column="Id" property="id"/>
+    <result column="AgencyDepartmentCode" property="agencydepartmentcode"/>
+    <result column="SupDepartmentsCode" property="supdepartmentscode"/>
+    <result column="AgencyDepartmentAbbreviation" property="agencydepartmentabbreviation"/>
+    <result column="AgencyDepartmentFullName" property="agencydepartmentfullname"/>
+    <result column="AgenciesDepartmentsCategory" property="agenciesdepartmentscategory"/>
+    <result column="SubordinateOrganizationsCode" property="subordinateorganizationscode"/>
+    <result column="SubordinateOrganizationsName" property="subordinateorganizationsname"/>
+    <result column="DepartmentPhone" property="departmentphone"/>
+    <result column="DepartmentFax" property="departmentfax"/>
+    <result column="MNumber" property="mnumber"/>
+    <result column="FNumber" property="fnumber"/>
+    <result column="StartDate" property="startdate"/>
+    <result column="EndDate" property="enddate"/>
+  </resultMap>
+  
+  <sql id="where" >
+      <where >
+            <choose ><when test="id!= null" > and Id like '%'||#{id}||'%' </when></choose>
+            <choose ><when test="agencydepartmentcode!= null" > and AgencyDepartmentCode like '%'||#{agencydepartmentcode}||'%' </when></choose>
+            <choose ><when test="supdepartmentscode!= null" > and SupDepartmentsCode like '%'||#{supdepartmentscode}||'%' </when></choose>
+            <choose ><when test="agencydepartmentabbreviation!= null" > and AgencyDepartmentAbbreviation like '%'||#{agencydepartmentabbreviation}||'%' </when></choose>
+            <choose ><when test="agencydepartmentfullname!= null" > and AgencyDepartmentFullName like '%'||#{agencydepartmentfullname}||'%' </when></choose>
+            <choose ><when test="agenciesdepartmentscategory!= null" > and AgenciesDepartmentsCategory like '%'||#{agenciesdepartmentscategory}||'%' </when></choose>
+            <choose ><when test="subordinateorganizationscode!= null" > and SubordinateOrganizationsCode like '%'||#{subordinateorganizationscode}||'%' </when></choose>
+            <choose ><when test="subordinateorganizationsname!= null" > and SubordinateOrganizationsName like '%'||#{subordinateorganizationsname}||'%' </when></choose>
+            <choose ><when test="departmentphone!= null" > and DepartmentPhone like '%'||#{departmentphone}||'%' </when></choose>
+            <choose ><when test="departmentfax!= null" > and DepartmentFax like '%'||#{departmentfax}||'%' </when></choose>
+            <choose ><when test="mnumber!= null" > and MNumber like '%'||#{mnumber}||'%' </when></choose>
+            <choose ><when test="fnumber!= null" > and FNumber like '%'||#{fnumber}||'%' </when></choose>
+            <choose ><when test="startdate!= null" > and StartDate like '%'||#{startdate}||'%' </when></choose>
+            <choose ><when test="enddate!= null" > and EndDate like '%'||#{enddate}||'%' </when></choose>
+      </where>
+   </sql>
+  
+  <!--countBy -->
+  <select id="countBy" parameterType="java.util.HashMap" resultType="int">
+    SELECT COUNT(*)  FROM Clinic
+    <include refid="where" />
+  </select>
+  
+  <!--selectBy -->
+  <select id="selectBy" parameterType="java.util.HashMap" resultMap="Clinic">
+	SELECT
+        Id,
+		AgencyDepartmentCode,
+		SupDepartmentsCode,
+		AgencyDepartmentAbbreviation,
+		AgencyDepartmentFullName,
+		AgenciesDepartmentsCategory,
+		SubordinateOrganizationsCode,
+		SubordinateOrganizationsName,
+		DepartmentPhone,
+		DepartmentFax,
+		MNumber,
+		FNumber,
+		StartDate,
+		EndDate
+    FROM Clinic    
+	<if test="start != null" >
+       <if test="_databaseId == 'Oracle'">
+	    WHERE ROWID IN (select rowid_
+            from (select rowid_
+                   from (select rowid_, rownum rownum_
+                              from (select rowid rowid_ from Clinic 
+                                <include refid="where" /> 
+                                <if test="order != null" >ORDER BY ${order}</if>)
+                              where rownum  &lt;= (#{start} + #{size}))
+                      where rownum_ &gt;#{start}))
+      </if>
+      <if test="_databaseId == 'MySQL'">
+      		<include refid="where" />
+      		<if test="order != null" >ORDER BY ${order}</if>
+      		 limit #{start}, #{size}
+      </if>
+    </if>
+    <if test="start == null" >
+        <include refid="where" />
+        <if test="order != null" >ORDER BY ${order}</if>
+    </if>
+  </select>
+  
+</mapper>

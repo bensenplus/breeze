@@ -1,0 +1,160 @@
+﻿<%@ CodeTemplate Language="C#" TargetLanguage="Text" Src="" ResponseEncoding="UTF-8" Inherits="" Debug="False" Description="Template description here." %>
+<%@ Assembly Name="System.Data" %>
+<%@ Assembly Name="SchemaExplorer" %>
+
+<%@ Import Namespace="System.IO" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+
+<%-- 注册 定义的成员变量 --%>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="DB" Description="请选择名的数据来源" %>
+<%@ Property Name="RootTableSpaceName" Type="System.String" Default="org.breeze" Optional="False" Category="Context" Description="源码输出的模块名称" %>
+
+<%-- 启用 MAP方式 System-CSharpAlias  --%>
+<%@ Map Name="CSharpAlias" Src="System-CSharpAlias" Description="System to C# Type Map" %>
+<%@ Map Name="JavaAlias" Src="FlexAlias.csmap" Description="Oracle to Java Type Map" %>
+<%@ Map Name="FlexAlias" Src="FlexAlias.csmap" Description="Oracle to Flex Type Map" %>
+
+<script runat="template">
+<!-- #include file=Function.cs -->
+//Debugger.Break();
+</script>
+<% 
+//名称定义
+String Controller = ControllerName(SourceTable.Name);
+String Mode = ModelName(SourceTable.Name);
+String mode = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
+String Service = ServiceName(SourceTable.Name);
+String service = StringUtil.ToCamelCase(ServiceName(SourceTable.Name));
+String map = StringUtil.ToCamelCase(SourceTable.Name);
+String Key = JavaAlias[SourceTable.Columns[0].SystemType.FullName];
+String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
+%>
+<?xml version="1.0" encoding="utf-8"?>
+<s:Module xmlns:fx="http://ns.adobe.com/mxml/2009"
+		  xmlns:s="library://ns.adobe.com/flex/spark"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+          xmlns:web="org.breeze.core.web.*"
+		  width="100%" height="100%"
+          initialize="module_initializeHandler(event)">
+	
+	<fx:Script>
+		<![CDATA[			
+			import mx.collections.ArrayCollection;
+			import mx.containers.TitleWindow;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.managers.PopUpManager;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			import org.breeze.core.web.FormEvent;
+			import org.breeze.core.web.Page;
+			import org.breeze.core.web.PageEvent;
+            import org.breeze.core.web.Util;
+            			
+            import <%=RootTableSpaceName%>.flex.entity.<%=Mode%>;
+			
+			[Bindable] private var collection:ArrayCollection;
+			
+			
+			protected function module_initializeHandler(event:FlexEvent):void
+			{
+				_page.addEventListener(PageEvent.PAGED, pageHandler);
+				
+			}
+			
+			private function search():void
+			{
+				ro.count();
+				ro.select(_page.page);
+			}
+			
+			private function pageHandler(event:PageEvent):void
+			{
+				ro.select(event.page);				
+			}
+			
+			private function createdHandler(event:FormEvent):void
+			{
+				search();				
+			}
+			
+			private function updatedHandler(event:FormEvent):void
+			{
+				search();				
+			}
+			
+			private function removedHandler(event:FormEvent):void
+			{
+				search();				
+			}
+            
+            private function faultHandler(event:FaultEvent):void
+			{
+				Alert.show(event.fault.faultDetail);
+			}
+			
+			
+			private function selectHandler(event:ResultEvent):void
+			{
+				collection = event.result as ArrayCollection;
+			}
+			
+			private function countHandler(event:ResultEvent):void
+			{
+				_page.setTotal(Number(event.result));
+			}
+			
+			public function popupRecord(<%=mode%>:<%=Mode%>):void
+			{
+				var form:<%=Mode%>Form = new  <%=Mode%>Form();   
+				form.showCloseButton = true;
+				form.addEventListener(CloseEvent.CLOSE, form.titleWindow_close); 				
+				form.addEventListener(FormEvent.CREATED, createdHandler);
+				form.addEventListener(FormEvent.UPDATED, updatedHandler);
+				form.addEventListener(FormEvent.REMOVED, removedHandler);
+				
+				form.<%=mode%> = <%=mode%>;
+				form.owner=this;
+				PopUpManager.addPopUp(form, this, true);
+				PopUpManager.centerPopUp(form);
+			}			
+
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<s:RemoteObject id="ro" destination="<%=mode%>Service" fault="faultHandler(event)" endpoint="http://localhost:8080/breeze/messagebroker/amf">
+			<s:method name="select" result="selectHandler(event)"/>
+			<s:method name="count" result="countHandler(event)"/>
+		</s:RemoteObject>
+	</fx:Declarations>
+	
+	<mx:VDividedBox width="100%" height="100%">
+		<s:HGroup width="100%" height="30">
+			<s:Button label="Search" click="search()"/>
+			<mx:Button label="New" click="popupRecord(new <%=Mode%>())"/>
+		</s:HGroup>
+		<mx:DataGrid id="dg" width="100%" height="100%" dataProvider="{collection}"
+					 doubleClick="popupRecord(dg.selectedItem as <%=Mode%>)" doubleClickEnabled="true">
+			<mx:columns>
+			<% foreach (ColumnSchema column in this.SourceTable.Columns) {%>
+            <% string type = JavaAlias[column.SystemType.FullName];
+                if(column.Size > 400) continue;
+                if(column.IsPrimaryKeyMember) continue;
+                if(!type.Equals("String") && !type.Equals("Date")) continue;
+            %> 
+    			<mx:DataGridColumn dataField="<%=fieldName(column.Name) %>" <%if(type.Equals("Date")){%>labelFunction="Util.formatDate"<%}%> headerText="<%=column.Description.Length==0?StringUtil.ToPascalCase(column.Name):column.Description%>" />  
+  			<% }%> 
+			</mx:columns>
+		</mx:DataGrid>
+		<web:PageControl id="_page"> </web:PageControl>
+	</mx:VDividedBox>
+	
+</s:Module>
+
+

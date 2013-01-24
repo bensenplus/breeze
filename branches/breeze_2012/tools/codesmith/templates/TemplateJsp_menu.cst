@@ -1,0 +1,51 @@
+﻿<%@ CodeTemplate Language="C#" TargetLanguage="Text" Src="" ResponseEncoding="UTF-8" Inherits="" Debug="False" Description="Template description here." %>
+<%@ Assembly Name="System.Data" %>
+<%@ Assembly Name="SchemaExplorer" %>
+
+<%@ Import Namespace="System.IO" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+
+<%-- 注册 成员函数 --%>
+<%@ Property Name="SourceData" Type="SchemaExplorer.DatabaseSchema" Optional="False" Category="Context" Description="指定的数据库" %>
+
+<%-- 启用 MAP方式 System-CSharpAlias  --%>
+<%@ Map Name="CSharpAlias" Src="System-CSharpAlias" Description="System to C# Type Map" %>
+<%@ Map Name="JavaAlias" Src="JavaAlias.csmap" Description="Oracle to Java Type Map" %>
+
+<script runat="template">
+<!-- #include file=Function.cs -->
+//Debugger.Break();
+public TableSchemaCollection GetTableCollection(DatabaseSchema dataBase)
+{
+    TableSchemaCollection tables = new TableSchemaCollection(dataBase.Tables);
+    return tables;
+}
+</script>
+
+<%%@ page language="java" pageEncoding="UTF-8"%%>
+<ul id="nav">
+	<li class="top"><a href="#" class="top_link"><span>Home</span></a></li>
+	<li class="top"><a href="#" id="menu" class="top_link"><span class="down">MenuGroup</span></a>
+		<ul class="sub">
+           <% TableSchemaCollection tables = GetTableCollection(SourceData);
+            int i = 0;
+			foreach(TableSchema dt in tables){ 
+            if(i>0 && i%10 ==0){
+            %> 
+        </ul>
+    </li>   
+    <li class="top"><a href="#" id="menu" class="top_link"><span class="down"><%=StringUtil.ToPascalCase(dt.Name.ToLower())%></span></a>
+        <ul class="sub">        
+    <%}%>
+<<<<<<< HEAD
+		    <li><a href="../<%=StringUtil.ToCamelCase(dt.Name.ToLower())%>/index.html"><%=StringUtil.ToPascalCase(dt.Name)%></a></li>
+=======
+		    <li><a href="../<%=StringUtil.ToCamelCase(dt.Name.ToLower())%>/index.html"><%=StringUtil.ToPascalCase(dt.Description)%></a></li>
+>>>>>>> 6f83f68ed497dea0b62e37486977d3d74629217b
+	         <%i++;}  %>
+		</ul>
+	</li>
+</ul>
+	

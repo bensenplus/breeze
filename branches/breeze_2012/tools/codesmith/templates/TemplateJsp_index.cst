@@ -1,0 +1,64 @@
+﻿<%@ CodeTemplate Language="C#" TargetLanguage="Text" Src="" ResponseEncoding="UTF-8" Inherits="" Debug="False" Description="Template description here." %>
+<%@ Assembly Name="System.Data" %>
+<%@ Assembly Name="SchemaExplorer" %>
+
+<%@ Import Namespace="System.IO" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+
+<%-- 注册 定义的成员变量 --%>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="DB" Description="请选择名的数据来源" %>
+<%@ Property Name="RootTableSpaceName" Type="System.String" Default="org.breeze" Optional="False" Category="Context" Description="源码输出的模块名称" %>
+
+
+<%-- 启用 MAP方式 System-CSharpAlias  --%>
+<%@ Map Name="CSharpAlias" Src="System-CSharpAlias" Description="System to C# Type Map" %>
+<%@ Map Name="JavaAlias" Src="JavaAlias.csmap" Description="Oracle to Java Type Map" %>
+<script runat="template">
+<!-- #include file=Function.cs -->
+//Debugger.Break();
+</script>
+<% 
+//名称定义
+String Controller = ControllerName(SourceTable.Name);
+String Mode = ModelName(SourceTable.Name);
+String mode = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
+String Service = ServiceName(SourceTable.Name);
+String service = StringUtil.ToCamelCase(ServiceName(SourceTable.Name));
+String map = StringUtil.ToCamelCase(SourceTable.Name);
+String Key = JavaAlias[SourceTable.Columns[0].SystemType.FullName];
+String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
+%>
+<%%@ page language="java" pageEncoding="UTF-8"%%>
+<div id="search-form-warp">
+    <form id="search-form">
+    	<input type="hidden" name="<%=key%>" value="${<%=mode%>.<%=key%>}" />
+    	<table class="table-form">
+    	    <tr>
+  <%int i=0;foreach (ColumnSchema column in this.SourceTable.Columns) { 
+    string type = JavaAlias[column.SystemType.FullName];
+    if(column.Size > 400) continue;
+    if(column.IsPrimaryKeyMember) continue;
+    if(!type.Equals("String")) continue; 
+    if(i>0 && i%4==0) { 
+        Response.WriteLine("    </tr>");
+        Response.WriteLine("    <tr>");
+    }
+    i++;%>
+    			<th><%=column.Description.Length==0?StringUtil.ToPascalCase(column.Name):column.Description%>:</th>
+    		    <% if (column.DataType.ToString().Equals("DateTime")) { %> 
+    			<td><input type="text"  name ="<%=fieldName(column.Name)%>" value="" size="20" /></td>
+    		    <% } else{%>
+    			<td><input type="text" name ="<%=fieldName(column.Name)%>"  size="<%=column.Size>400?30:20%>" value=""  /></td>
+    		    <% }}%>
+    		</tr>
+    	</table>
+        <ul class="tool-bar" >
+            <li><span id="pdf-button">Pdf</span></li>
+            <li><span id="excel-button">Excel</span></li>
+            <li><span id="create-button">Create</span></li>
+    		<li><span id="search-button">Search</span></li>
+    	</ul>
+    </form>
+</div>
