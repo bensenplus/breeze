@@ -91,7 +91,11 @@ public void RenderMain()
 			}
 		}
        
+<<<<<<< HEAD
        if(++count>50) break;
+=======
+       if(++count>10) break;
+>>>>>>> 6f83f68ed497dea0b62e37486977d3d74629217b
     }
 	
 }
