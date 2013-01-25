@@ -1,0 +1,129 @@
+﻿<%@ CodeTemplate Language="C#" TargetLanguage="Text" Src="" ResponseEncoding="UTF-8" Inherits="" Debug="False" Description="Template description here." %>
+<%@ Assembly Name="System.Data" %>
+<%@ Assembly Name="SchemaExplorer" %>
+
+<%@ Import Namespace="System.IO" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+
+<%-- 注册 定义的成员变量 --%>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="DB" Description="请选择名的数据来源" %>
+<%@ Property Name="RootTableSpaceName" Type="System.String" Default="org.breeze" Optional="False" Category="Context" Description="源码输出的模块名称" %>
+
+<%-- 启用 MAP方式 System-CSharpAlias  --%>
+<%@ Map Name="CSharpAlias" Src="System-CSharpAlias" Description="System to C# Type Map" %>
+<%@ Map Name="JavaAlias" Src="JavaAlias.csmap" Description="Oracle to Java Type Map" %>
+
+<script runat="template">
+<!-- #include file=Function.cs -->
+//Debugger.Break();
+</script>
+<% 
+//名称定义
+String Controller = ControllerName(SourceTable.Name);
+String Mode = ModelName(SourceTable.Name);
+String mode = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
+String Service = ServiceName(SourceTable.Name);
+String service = StringUtil.ToCamelCase(ServiceName(SourceTable.Name));
+String map = StringUtil.ToCamelCase(SourceTable.Name.ToLower());
+%>
+package <%=RootTableSpaceName%>.controller;
+
+import java.util.Date;
+import java.util.List;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import <%=RootTableSpaceName%>.core.view.BaseController;
+import <%=RootTableSpaceName%>.core.view.document.ExcelView;
+import <%=RootTableSpaceName%>.core.view.document.PdfView;
+import <%=RootTableSpaceName%>.core.view.document.XmlView;
+import <%=RootTableSpaceName%>.core.view.Util;
+import <%=RootTableSpaceName%>.entity.<%=Mode%>;
+import <%=RootTableSpaceName%>.service.<%=Service%>;
+
+
+@Controller
+@RequestMapping("<%=map%>")
+public class <%=Controller%> extends BaseController {
+
+	private final Logger logger = LoggerFactory.getLogger(<%=Controller%>.class); 
+
+    @Resource(name = "<%=service%>")
+	private <%=Service%> <%=service%>;
+    
+    
+    @RequestMapping("/index")
+    public String index(){
+        return "<%=map%>/index";
+    }
+
+    @RequestMapping("/search")
+	public String search(ModelMap model, <%=Mode%> <%=mode%>,int page) {
+        Pageable pageable = new PageRequest(0, 20);
+		Page<<%=Mode%>> result = <%=service%>.findAll(pageable );
+		model.addAttribute("result", result);
+		return "<%=map%>/list";
+	}
+    
+    @RequestMapping("/excel")
+	public ModelAndView excel(ModelMap model, <%=Mode%> <%=mode%>) {
+		List<<%=Mode%>> list = <%=service%>.findAll();
+		model.addAttribute("list", list);
+    	ExcelView  excelView=new ExcelView(<%=Mode%>.class);
+    	return new ModelAndView(excelView,model);
+	}
+    
+    @RequestMapping("/pdf")
+	public ModelAndView pdf(ModelMap model, <%=Mode%> <%=mode%>) {
+		List<<%=Mode%>> list = <%=service%>.findAll();
+		model.addAttribute("list", list);
+    	PdfView  pdfView=new PdfView(<%=Mode%>.class);
+    	return new ModelAndView(pdfView,model);
+	}
+    
+    @RequestMapping(value="/{<%=KeyColumn(SourceTable)%>}.xml",method=RequestMethod.GET)
+	public ModelAndView xml(ModelMap model, @PathVariable <%=KeyParam(SourceTable)%>) {
+        if(<%=KeyColumn(SourceTable)%> != null){
+    	    <%=Mode%> <%=mode%> = <%=service%>.get(<%=KeyColumn(SourceTable)%>);
+    		model.addAttribute("model", <%=mode%>);
+        }
+        XmlView  xmlView=new XmlView(<%=Mode%>.class);
+    	return new ModelAndView(xmlView, model);
+	}
+    
+    @RequestMapping("/edit")
+	public String edit(ModelMap model, <%=KeyParam(SourceTable)%>) {
+        if(<%=KeyColumn(SourceTable)%> != null){
+    	    <%=Mode%> <%=mode%> = <%=service%>.get(<%=KeyColumn(SourceTable)%>);
+    		model.addAttribute("<%=mode%>", <%=mode%>);
+        }
+		return "<%=map%>/edit";
+	}    
+    
+    @RequestMapping("/save")
+	public void save(<%=Mode%> <%=mode%>, HttpServletResponse response) {
+       <%=service%>.save(<%=mode%>);
+       response.setHeader("ContentType", "text/json");
+    }
+    
+    @RequestMapping("/remove")
+	public void remove(<%=KeyParam(SourceTable)%>, HttpServletResponse response) {
+		<%=service%>.remove(<%=KeyColumn(SourceTable)%>);
+        response.setHeader("ContentType", "text/json");
+	}
+	
+}
