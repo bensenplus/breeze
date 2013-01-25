@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.breeze.repository.mapper.AdverseReactionMapper">
+  <!--cache /-->
+  <resultMap id="AdverseReaction" type="org.breeze.entity.AdverseReaction" >
+    <result column="ID" property="id"/>
+    <result column="REG_NO" property="regNo"/>
+    <result column="PATIENT_NAME" property="patientName"/>
+    <result column="TYPE" property="type"/>
+    <result column="EXIST_REACTION" property="existReaction"/>
+    <result column="DESCRIPLE" property="descriple"/>
+    <result column="RECORDER_NO" property="recorderNo"/>
+    <result column="RECORDER_NAME" property="recorderName"/>
+    <result column="CREATOR" property="creator"/>
+    <result column="CREATE_TIME" property="createTime"/>
+    <result column="MODIFIER" property="modifier"/>
+    <result column="MODIFY_TIME" property="modifyTime"/>
+  </resultMap>
+  
+  <sql id="where" >
+      <where >
+            <choose ><when test="regNo!= null" > and REG_NO like '%'||#{regNo}||'%' </when></choose>
+            <choose ><when test="patientName!= null" > and PATIENT_NAME like '%'||#{patientName}||'%' </when></choose>
+            <choose ><when test="type!= null" > and TYPE like '%'||#{type}||'%' </when></choose>
+            <choose ><when test="existReaction!= null" > and EXIST_REACTION like '%'||#{existReaction}||'%' </when></choose>
+            <choose ><when test="descriple!= null" > and DESCRIPLE like '%'||#{descriple}||'%' </when></choose>
+            <choose ><when test="recorderNo!= null" > and RECORDER_NO like '%'||#{recorderNo}||'%' </when></choose>
+            <choose ><when test="recorderName!= null" > and RECORDER_NAME like '%'||#{recorderName}||'%' </when></choose>
+            <choose ><when test="creator!= null" > and CREATOR like '%'||#{creator}||'%' </when></choose>
+            <choose ><when test="createTime!= null" > and CREATE_TIME like '%'||#{createTime}||'%' </when></choose>
+            <choose ><when test="modifier!= null" > and MODIFIER like '%'||#{modifier}||'%' </when></choose>
+            <choose ><when test="modifyTime!= null" > and MODIFY_TIME like '%'||#{modifyTime}||'%' </when></choose>
+      </where>
+   </sql>
+  
+  <!--countBy -->
+  <select id="countBy" parameterType="java.util.HashMap" resultType="int">
+    SELECT COUNT(*)  FROM ADVERSE_REACTION
+    <include refid="where" />
+  </select>
+  
+  <!--selectBy -->
+  <select id="selectBy" parameterType="java.util.HashMap" resultMap="AdverseReaction">
+	SELECT
+        ID,
+		REG_NO,
+		PATIENT_NAME,
+		TYPE,
+		EXIST_REACTION,
+		DESCRIPLE,
+		RECORDER_NO,
+		RECORDER_NAME,
+		CREATOR,
+		CREATE_TIME,
+		MODIFIER,
+		MODIFY_TIME
+    FROM ADVERSE_REACTION    
+	<if test="start != null" >
+       <if test="_databaseId == 'Oracle'">
+	    WHERE ROWID IN (select rowid_
+            from (select rowid_
+                   from (select rowid_, rownum rownum_
+                              from (select rowid rowid_ from ADVERSE_REACTION 
+                                <include refid="where" /> 
+                                <if test="order != null" >ORDER BY ${order}</if>)
+                              where rownum  &lt;= (#{start} + #{size}))
+                      where rownum_ &gt;#{start}))
+      </if>
+      <if test="_databaseId == 'MySQL'">
+      		<include refid="where" />
+      		<if test="order != null" >ORDER BY ${order}</if>
+      		 limit #{start}, #{size}
+      </if>
+    </if>
+    <if test="start == null" >
+        <include refid="where" />
+        <if test="order != null" >ORDER BY ${order}</if>
+    </if>
+  </select>
+  
+</mapper>
