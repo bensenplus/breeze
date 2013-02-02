@@ -31,8 +31,6 @@ String map = StringUtil.ToCamelCase(SourceTable.Name);
 %>
 package <%=RootTableSpaceName%>.repository;
 
-import java.util.List;
-import java.util.Date;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import <%=RootTableSpaceName%>.entity.<%= Mode%>;
