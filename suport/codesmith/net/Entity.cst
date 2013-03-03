@@ -4,6 +4,7 @@
 
 <%@ Import Namespace="System.IO" %>
 <%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="System.Data.OleDb" %>
 <%@ Import Namespace="SchemaExplorer" %>
 <%@ Import Namespace="System.Text.RegularExpressions" %>
 
@@ -28,8 +29,8 @@ String service = StringUtil.ToCamelCase(ServiceName(SourceTable.Name));
 String Key = CSharpAlias[SourceTable.Columns[0].SystemType.FullName];
 String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
 String map = StringUtil.ToCamelCase(SourceTable.Name);
-%>
 
+%>
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,7 +41,7 @@ namespace PHIS.Core.Entity
     public class <%=Mode%>
     {
     <% foreach (ColumnSchema column in this.SourceTable.Columns) {%>
-         //<%=column.Description%>
+         ///<%=column.Description%>
          public <%=CSharpAlias[column.SystemType.FullName]%> <%=fieldName(column.Name)%> { get; set; }
     <%}%>
     }

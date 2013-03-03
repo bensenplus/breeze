@@ -1,0 +1,84 @@
+﻿<%@ CodeTemplate Language="C#" TargetLanguage="Text" Src="" ResponseEncoding="UTF-8" Inherits="" Debug="False" Description="Template description here." %>
+<%@ Assembly Name="System.Data" %>
+<%@ Assembly Name="SchemaExplorer" %>
+
+<%@ Import Namespace="System.IO" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="System.Data.OleDb" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+
+<%-- 注册 定义的成员变量 --%>
+<%@ Property Name="excelPath" Type="System.String" Default="D:/phis设计_V01.xls" Optional="False" Category="Context" Description="Excel文件路径" %>
+<%@ Property Name="OutPath" Type="System.String" Default="D:/Service" Optional="False" Category="Context" Description="源码输出路径" %>
+
+<%-- 启用 MAP方式 System-CSharpAlias  --%>
+<%@ Map Name="CSharpAlias" Src="System-CSharpAlias" Description="System to C# Type Map" %>
+
+<script runat="template">
+<!-- #include file=Function.cs -->
+ 
+</script>
+<% 
+//名称定义
+DataTable table = LoadDataFromExcel(excelPath,"服务");
+//sw.WriteValues(table);
+
+if(Directory.Exists(OutPath) == false)
+{
+    Directory.CreateDirectory(OutPath);
+}
+
+/// 创建文件
+string path =null;
+StreamWriter sw = null;
+FileStream fs = null;
+
+foreach(DataRow row in table.Rows)
+{
+    
+    if(row["Function Name"].ToString().Trim().Equals(""))
+    {
+        if(fs != null && sw != null){
+            sw.WriteLine("\r\n\t}\r\n}");
+            sw.Close();
+            fs.Close();
+            sw = null;
+            fs = null;
+            
+        }
+        path = OutPath + "\\" + row["Service Name"]+".cs";
+        println(path);
+        fs = new FileStream(path,FileMode.Create,FileAccess.Write);
+        sw = new StreamWriter(fs, System.Text.Encoding.UTF8);
+        
+        sw.WriteLine("using System;");
+        sw.WriteLine("using PHIS.Core.Entity;");
+        sw.WriteLine("using PHIS.Utility;");
+        sw.WriteLine("namespace PHIS.Core.Service");
+        sw.WriteLine("{");
+        sw.WriteLine("\tpublic interface " + row["Service Name"]);
+        sw.WriteLine("\t{");
+        continue;
+    }                                                           
+
+    sw.WriteLine("\t\t///"+row["Function Comment"]);
+    sw.Write("\t\t"+row["Return"]+" ");
+    sw.Write(row["Function Name"]+"(");
+    if(!row["Type1"].ToString().Trim().Equals("")) sw.Write(row["Type1"] +" " + row["Name1"]);
+    if(!row["Type2"].ToString().Trim().Equals("")) sw.Write(" ," + row["Type2"] +" " + row["Name2"]);
+    if(!row["Type3"].ToString().Trim().Equals("")) sw.Write(" ," + row["Type3"] +" " + row["Name3"]);
+    if(!row["Type4"].ToString().Trim().Equals("")) sw.Write(" ," + row["Type4"] +" " + row["Name4"]);
+    sw.WriteLine(");");
+}
+
+        if(fs != null && sw != null){
+            sw.WriteLine("\r\n\t}\r\n}");
+            sw.Close();
+            fs.Close();
+            sw = null;
+            fs = null;
+            
+        }
+
+%>

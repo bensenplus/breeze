@@ -366,3 +366,53 @@ public string GetCallKeysParam(TableSchema dt, string instance)
 }
 
 #endregion
+
+public  DataTable LoadDataFromExcel(string filePath, string sheetName)  
+{  
+    try  
+    {  
+        string strConn;  
+        strConn = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + filePath + ";Extended Properties='Excel 8.0;HDR=False;IMEX=1'";  
+        OleDbConnection OleConn = new OleDbConnection(strConn);  
+        OleConn.Open();  
+        String sql = "SELECT * FROM  ["+sheetName+"$]";//可是更改Sheet名称，比如sheet2，等等   
+  
+        OleDbDataAdapter OleDaExcel = new OleDbDataAdapter(sql, OleConn);  
+        DataSet dataset = new DataSet();  
+        OleDaExcel.Fill(dataset, sheetName);  
+        OleConn.Close();  
+        return dataset.Tables[sheetName];  
+    }  
+    catch (Exception err)  
+    { 
+         Response.WriteLine(err.Message);
+        return null;  
+    }  
+} 
+
+private void PrintValues(DataTable table)
+{
+    
+     for (int i = 0; i < table.Columns.Count; i++)
+     {
+         Response.Write(table.Columns[i].ColumnName +"\t");
+     }
+ 
+    foreach(DataRow row in table.Rows)
+    {
+        Response.WriteLine();
+        foreach(DataColumn column in table.Columns)
+        {
+            Response.Write(row[column]+"\t");
+        }
+        
+    }
+}
+
+private void print(object val){
+    Response.Write(val);
+}
+
+private void println(object val){
+    Response.WriteLine(val);
+}
