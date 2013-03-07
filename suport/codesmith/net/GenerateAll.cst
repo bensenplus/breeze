@@ -64,9 +64,9 @@ public void RenderMain()
     int count = 0;
     foreach(TableSchema dt in tables)
     {
-		System.Diagnostics.Debug.WriteLine(ExportTableName);
-		System.Diagnostics.Debug.WriteLine(dt.Name);
-		
+		//System.Diagnostics.Debug.WriteLine(ExportTableName);
+		//System.Diagnostics.Debug.WriteLine(dt.Name);
+		this.Progress.Status = "genearting ... " + dt.Name;
 		///支撑特定表的输出;
 		if ( ExportTableName.ToUpper().IndexOf(dt.Name.ToUpper(),0 )  >= 0 || ExportTableName == string.Empty )
 		{

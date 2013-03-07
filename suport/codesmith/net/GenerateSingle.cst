@@ -17,7 +17,7 @@
 
 
 <%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="Context" Description="指定的数据库表结构" %>
-<%@ Property Name="OutputPath" Type="System.String" Default="E:/breeze/trunk/src/main" Optional="False" Category="Context" Description="源码输出主目录" %>
+<%@ Property Name="OutputPath" Type="System.String" Default="D:/src" Optional="False" Category="Context" Description="源码输出主目录" %>
 <%@ Property Name="RootTableSpaceName" Type="System.String" Default="org.breeze" Optional="False" Category="Context" Description="源码输出的模块名称" %>
 
 
@@ -26,8 +26,8 @@
 
 
 <%-- 注册 子模板 --%>
-<%@ Register Name="Entity" Template="Entity.cst" %>
-
+<%@ Register Name="NetEntity" Template="NetEntity.cst" %>
+<%@ Register Name="JavaEntity" Template="JavaEntity.cst" %>
 
 
 
@@ -49,7 +49,8 @@ Done and Finish  !!!!!!!!!!!!!!!!!!!!!!!!
 /// 创建输出文件
 public void RenderMain()
 {    
-	CreateTemplate<Entity>(SourceTable, "", ModelName(SourceTable.Name)+"."+"cs");
+	CreateTemplate<JavaEntity>(SourceTable, "java", ModelName(SourceTable.Name)+"."+"java");
+    CreateTemplate<NetEntity>(SourceTable, "net", ModelName(SourceTable.Name)+"."+"cs");
 }
 
 

@@ -10,7 +10,7 @@
 
 <%-- 注册 定义的成员变量 --%>
 <%@ Property Name="excelPath" Type="System.String" Default="D:/phis设计_V01.xls" Optional="False" Category="Context" Description="Excel文件路径" %>
-<%@ Property Name="OutPath" Type="System.String" Default="D:/Service" Optional="False" Category="Context" Description="源码输出路径" %>
+<%@ Property Name="OutPath" Type="System.String" Default="D:/java/action" Optional="False" Category="Context" Description="源码输出路径" %>
 
 <%-- 启用 MAP方式 System-CSharpAlias  --%>
 <%@ Map Name="CSharpAlias" Src="System-CSharpAlias" Description="System to C# Type Map" %>
@@ -47,33 +47,52 @@ foreach(DataRow row in table.Rows)
             fs = null;
             
         }
-        path = OutPath + "\\" + row["Service Name"]+".cs";
+        
+        path = OutPath + "\\"+row["Package"].ToString().Replace("com.founder.phis.service.","");
+        
+        if(Directory.Exists(path) == false)
+        {
+            Directory.CreateDirectory(path);
+        }
+        
+        path = path+"\\"+ row["Service Name"]+".java";
+        
+        
         println(path);
         fs = new FileStream(path,FileMode.Create,FileAccess.Write);
         sw = new StreamWriter(fs, System.Text.Encoding.UTF8);
         
-        sw.WriteLine("using System;");
-        sw.WriteLine("using PHIS.Core.Entity;");
-        sw.WriteLine("using PHIS.Utility;");
-        sw.WriteLine("namespace PHIS.Core.Service");
-        sw.WriteLine("{");
-        sw.WriteLine("\tpublic interface " + row["Service Name"]);
-        sw.WriteLine("\t{");
+        sw.WriteLine("package "+row["Package"]);
+        sw.WriteLine();
+        sw.WriteLine("import java.util.List;");
+        sw.WriteLine("import java.util.Date;");
+        sw.WriteLine("import com.founder.fasf.beans.Criteria;");
+        sw.WriteLine("import com.founder.phis.entity.*");
+        sw.WriteLine();
+        sw.WriteLine("public class " + row["Service Name"] +"{");
+        
+        
+        ///write service
+        
+        
         continue;
     }                                                           
 
-    sw.WriteLine("\t\t///"+row["Function Comment"]);
-    sw.Write("\t\t"+row["Return"]+" ");
+    sw.WriteLine("\t///"+row["Function Comment"]);
+    sw.Write("\t"+row["Return"]+" ");
     sw.Write(row["Function Name"]+"(");
     if(!row["Type1"].ToString().Trim().Equals("")) sw.Write(row["Type1"] +" " + row["Name1"]);
     if(!row["Type2"].ToString().Trim().Equals("")) sw.Write(" ," + row["Type2"] +" " + row["Name2"]);
     if(!row["Type3"].ToString().Trim().Equals("")) sw.Write(" ," + row["Type3"] +" " + row["Name3"]);
     if(!row["Type4"].ToString().Trim().Equals("")) sw.Write(" ," + row["Type4"] +" " + row["Name4"]);
-    sw.WriteLine(");");
+    sw.WriteLine("){");
+    
+    sw.WriteLine("\t)");
+    sw.WriteLine();
 }
 
         if(fs != null && sw != null){
-            sw.WriteLine("\r\n\t}\r\n}");
+            sw.WriteLine("}");
             sw.Close();
             fs.Close();
             sw = null;

@@ -1,4 +1,4 @@
-﻿<%@ CodeTemplate Language="C#" TargetLanguage="Text" Src="" ResponseEncoding="UTF-8" Inherits="" Debug="False" Description="Template description here." %>
+﻿<%@ CodeTemplate Language="C#" TargetLanguage="C#" Src="" ResponseEncoding="UTF-8" Inherits="" Debug="False" Description="Template description here." %>
 <%@ Assembly Name="System.Data" %>
 <%@ Assembly Name="SchemaExplorer" %>
 
@@ -31,10 +31,6 @@ String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
 String map = StringUtil.ToCamelCase(SourceTable.Name);
 
 %>
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace PHIS.Core.Entity
 {
