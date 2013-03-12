@@ -1,0 +1,124 @@
+﻿<%@ CodeTemplate Language="C#" TargetLanguage="Text" Src="" ResponseEncoding="UTF-8" Inherits="" Debug="False" Description="Template description here." %>
+<%@ Assembly Name="System.Data" %>
+<%@ Assembly Name="SchemaExplorer" %>
+
+<%@ Import Namespace="System.IO" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="System.Data.OleDb" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+
+<%-- 注册 定义的成员变量 --%>
+<%@ Property Name="excelPath" Type="System.String" Default="D:/phis设计_V01_0312.xls" Optional="False" Category="Context" Description="Excel文件路径" %>
+<%@ Property Name="OutPath" Type="System.String" Default="D:/src/java/Service" Optional="False" Category="Context" Description="源码输出路径" %>
+
+<%-- 启用 MAP方式 System-CSharpAlias  --%>
+<%@ Map Name="CSharpAlias" Src="System-CSharpAlias" Description="System to C# Type Map" %>
+
+<script runat="template">
+<!-- #include file=Function.cs -->
+ 
+</script>
+<% 
+//名称定义
+DataTable table = LoadDataFromExcel(excelPath,"服务");
+//sw.WriteValues(table);
+
+if(Directory.Exists(OutPath) == false)
+{
+    Directory.CreateDirectory(OutPath);
+}
+
+/// 创建文件
+string path =null;
+StreamWriter sw = null;
+FileStream fs = null;
+
+foreach(DataRow row in table.Rows)
+{
+    
+    if(row["Function Name"].ToString().Trim().Equals(""))
+    {
+        if(fs != null && sw != null){
+            sw.WriteLine("}");
+            sw.Close();
+            fs.Close();
+            sw = null;
+            fs = null;
+            
+        }
+        path = OutPath + "\\" + row["Service Name"].ToString().Substring(1)+"Impl.java";
+        println(path);
+        fs = new FileStream(path,FileMode.Create,FileAccess.Write);
+        sw = new StreamWriter(fs, System.Text.Encoding.UTF8);
+        sw.WriteLine("package "+row["Package"]+";");
+        sw.WriteLine();
+        sw.WriteLine("import java.util.List;");
+        sw.WriteLine("import javax.annotation.Resource;");
+        sw.WriteLine("import org.springframework.stereotype.Service;");
+        
+        sw.WriteLine("import com.founder.phis.entity.*;");
+        sw.WriteLine("import com.founder.fasf.beans.Criteria;");
+        sw.WriteLine("import com.founder.fasf.beans.Order;");
+        sw.WriteLine("import com.founder.fasf.beans.Page;");
+        sw.WriteLine("import com.founder.fasf.beans.PageList;");        
+        sw.WriteLine("import com.founder.fasf.service.AbstractService;");
+        
+        sw.WriteLine();
+        sw.WriteLine("@Service(\"" + StringUtil.ToCamelCase(row["Service Name"].ToString()) + "\")");
+        sw.WriteLine("public class " + row["Service Name"].ToString().Substring(1)+"Impl extends AbstractService implements " + row["Service Name"]+"{");
+        continue;
+    }                                                           
+
+    sw.WriteLine("\t//"+row["Function Comment"]);
+    sw.WriteLine("\t@Override");
+    sw.Write("\tpublic "+row["Return"]+" ");
+    sw.Write(row["Function Name"]+"(");
+    if(!row["Type1"].ToString().Trim().Equals("")) sw.Write(row["Type1"] +" " + row["Name1"]);
+    if(!row["Type2"].ToString().Trim().Equals("")) sw.Write(" ," + row["Type2"] +" " + row["Name2"]);
+    if(!row["Type3"].ToString().Trim().Equals("")) sw.Write(" ," + row["Type3"] +" " + row["Name3"]);
+    if(!row["Type4"].ToString().Trim().Equals("")) sw.Write(" ," + row["Type4"] +" " + row["Name4"]);
+    sw.WriteLine("){");
+    
+        
+    if(row["Function Name"].ToString().StartsWith("create")){
+        sw.WriteLine("\t\treturn this.genericDao.insert("+row["Name1"]+");");
+    }
+     else if(row["Function Name"].ToString().StartsWith("update")){
+        sw.WriteLine("\t\treturn this.genericDao.update("+row["Name1"]+");");
+    }
+    else if(row["Function Name"].ToString().StartsWith("delete")){
+        sw.WriteLine("\t\treturn this.genericDao.delete("+row["Type1"]+".class, "+row["Name1"]+");");
+    }
+    else if(row["Function Name"].ToString().StartsWith("find")){
+        if(row["Return"].ToString().StartsWith("PageList")){
+            string enti = row["Return"].ToString().Replace("PageList","").Replace("<","").Replace(">","");
+            sw.WriteLine("\t\treturn this.genericDao.getPageList("+enti+".class, "+row["Name2"]+", "+row["Name1"]+");");
+        }
+        if(row["Return"].ToString().StartsWith("List")){
+             string enti = row["Return"].ToString().Replace("List","").Replace("<","").Replace(">","");
+            sw.WriteLine("\t\treturn this.genericDao.getList("+enti+".class, "+row["Name1"]+");");
+        }
+    }else{
+         sw.WriteLine("\t\t//TODO");
+         if(row["Return"].ToString().Equals("int")){
+              sw.WriteLine("\t\treturn 0;");
+         }else{
+            sw.WriteLine("\t\treturn null;");
+         }
+    }
+    
+    sw.WriteLine("\t}");
+    
+}
+
+        if(fs != null && sw != null){
+            sw.WriteLine("}");
+            sw.Close();
+            fs.Close();
+            sw = null;
+            fs = null;
+            
+        }
+
+%>

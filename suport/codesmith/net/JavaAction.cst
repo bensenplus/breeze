@@ -33,64 +33,13 @@ if(Directory.Exists(OutPath) == false)
 string path =null;
 StreamWriter sw = null;
 FileStream fs = null;
+string serviceName = null;
 
 foreach(DataRow row in table.Rows)
 {
-    
+
     if(row["Function Name"].ToString().Trim().Equals(""))
     {
-        if(fs != null && sw != null){
-            sw.WriteLine("\r\n\t}\r\n}");
-            sw.Close();
-            fs.Close();
-            sw = null;
-            fs = null;
-            
-        }
-        
-        path = OutPath + "\\"+row["Package"].ToString().Replace("com.founder.phis.service.","");
-        
-        if(Directory.Exists(path) == false)
-        {
-            Directory.CreateDirectory(path);
-        }
-        
-        path = path+"\\"+ row["Service Name"]+".java";
-        
-        
-        println(path);
-        fs = new FileStream(path,FileMode.Create,FileAccess.Write);
-        sw = new StreamWriter(fs, System.Text.Encoding.UTF8);
-        
-        sw.WriteLine("package "+row["Package"]);
-        sw.WriteLine();
-        sw.WriteLine("import java.util.List;");
-        sw.WriteLine("import java.util.Date;");
-        sw.WriteLine("import com.founder.fasf.beans.Criteria;");
-        sw.WriteLine("import com.founder.phis.entity.*");
-        sw.WriteLine();
-        sw.WriteLine("public class " + row["Service Name"] +"{");
-        
-        
-        ///write service
-        
-        
-        continue;
-    }                                                           
-
-    sw.WriteLine("\t///"+row["Function Comment"]);
-    sw.Write("\t"+row["Return"]+" ");
-    sw.Write(row["Function Name"]+"(");
-    if(!row["Type1"].ToString().Trim().Equals("")) sw.Write(row["Type1"] +" " + row["Name1"]);
-    if(!row["Type2"].ToString().Trim().Equals("")) sw.Write(" ," + row["Type2"] +" " + row["Name2"]);
-    if(!row["Type3"].ToString().Trim().Equals("")) sw.Write(" ," + row["Type3"] +" " + row["Name3"]);
-    if(!row["Type4"].ToString().Trim().Equals("")) sw.Write(" ," + row["Type4"] +" " + row["Name4"]);
-    sw.WriteLine("){");
-    
-    sw.WriteLine("\t)");
-    sw.WriteLine();
-}
-
         if(fs != null && sw != null){
             sw.WriteLine("}");
             sw.Close();
@@ -99,5 +48,84 @@ foreach(DataRow row in table.Rows)
             fs = null;
             
         }
+        
+        path = OutPath + "\\"+row["Package"].ToString().Replace("com.founder.phis.action.","");
+        
+        if(Directory.Exists(path) == false)
+        {
+            Directory.CreateDirectory(path);
+        }
+        
+        path = path+"\\"+ row["Service Name"]+".java";
+        
+        serviceName = StringUtil.ToCamelCase(row["Service Name"].ToString().Replace("Action","Service"));
+        
+        println(path);
+        fs = new FileStream(path,FileMode.Create,FileAccess.Write);
+        sw = new StreamWriter(fs, System.Text.Encoding.UTF8);
+        
+        sw.WriteLine("package "+row["Package"]+";");
+        sw.WriteLine();
+        sw.WriteLine("import java.util.HashMap;");
+        sw.WriteLine("import javax.annotation.Resource;");
+        sw.WriteLine("import org.springframework.stereotype.Component;");
+
+        sw.WriteLine("import com.founder.fasf.beans.Criteria;");
+        sw.WriteLine("import com.founder.fasf.beans.Order;");
+        sw.WriteLine("import com.founder.fasf.beans.Page;");
+        sw.WriteLine("import com.founder.fasf.beans.PageList;");
+        sw.WriteLine("import "+row["Package"].ToString().Replace("action","service")+".I"+StringUtil.ToPascalCase(serviceName)+";");
+        sw.WriteLine("import com.founder.phis.entity.*;");
+        sw.WriteLine();
+        sw.WriteLine("@Component(\"" + StringUtil.ToCamelCase(row["Service Name"].ToString()) + "\")");
+        sw.WriteLine("public class " + row["Service Name"] +"{");
+        
+        ///write service
+        sw.WriteLine();
+
+        sw.WriteLine("\t@Resource(name=\"" + serviceName + "\")");
+        sw.WriteLine("\tprivate I"+StringUtil.ToPascalCase(serviceName)+" "+serviceName+";");
+        
+        continue;
+    }                                                           
+
+    sw.WriteLine("\t///"+row["Function Comment"]);
+    sw.Write("\tpublic "+row["Return"]+" ");
+    sw.Write(row["Function Name"]+"(");
+    if(!row["Type1"].ToString().Trim().Equals("")) sw.Write(row["Type1"] +" " + row["Name1"]);
+    if(!row["Type2"].ToString().Trim().Equals("")) sw.Write(" ," + row["Type2"] +" " + row["Name2"]);
+    if(!row["Type3"].ToString().Trim().Equals("")) sw.Write(" ," + row["Type3"] +" " + row["Name3"]);
+    if(!row["Type4"].ToString().Trim().Equals("")) sw.Write(" ," + row["Type4"] +" " + row["Name4"]);
+    sw.WriteLine("){");
+    
+    if(row["Name1"].ToString().Equals("condition")){
+        sw.WriteLine("\t\tCriteria criteria = new Criteria();");
+        sw.WriteLine("\t\t//TODO");
+    }
+    
+    sw.Write("\t\treturn "+serviceName+".");
+    sw.Write(row["Function Name"]+"(");
+     if(row["Name1"].ToString().Equals("condition")){
+         if(!row["Name1"].ToString().Trim().Equals("")) sw.Write("criteria");
+     }else{
+        if(!row["Name1"].ToString().Trim().Equals("")) sw.Write(row["Name1"]);
+    }
+    if(!row["Name2"].ToString().Trim().Equals("")) sw.Write(" ," + row["Name2"]);
+    if(!row["Name3"].ToString().Trim().Equals("")) sw.Write(" ," + row["Name3"]);
+    if(!row["Name4"].ToString().Trim().Equals("")) sw.Write(" ," + row["Name4"]);    
+    sw.WriteLine(");");
+    
+    sw.WriteLine("\t}");
+    sw.WriteLine();
+}
+
+if(fs != null && sw != null){
+    sw.WriteLine("}");
+    sw.Close();
+    fs.Close();
+    sw = null;
+    fs = null;
+    
+}
 
 %>

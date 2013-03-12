@@ -36,9 +36,14 @@ namespace PHIS.Core.Entity
 {
     public class <%=Mode%>
     {
+    
+     <% foreach (ColumnSchema column in this.SourceTable.Columns) {%>
+        public static readonly string <%=column.Name%> ="<%=fieldName(column.Name)%>";
+    <%}%>
+    
     <% foreach (ColumnSchema column in this.SourceTable.Columns) {%>
          ///<%=column.Description%>
-         public <%=CSharpAlias[column.SystemType.FullName]%> <%=fieldName(column.Name)%> { get; set; }
+         public <%=CSharpAlias[column.SystemType.FullName]%><%if (!CSharpAlias[column.SystemType.FullName].Equals("string")&column.AllowDBNull){%>?<%}%> <%=fieldName(column.Name)%> { get; set; }
     <%}%>
     }
 }

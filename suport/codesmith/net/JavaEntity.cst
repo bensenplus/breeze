@@ -49,6 +49,10 @@ import javax.persistence.Table;
 public class <%=Mode%> implements Serializable{
     
     private static final long serialVersionUID = 1L;
+    <% foreach (ColumnSchema column in this.SourceTable.Columns) {%>
+    public static final String <%=column.Name%> ="<%=fieldName(column.Name)%>";
+    <%}%>
+    
     <% if (!this.SourceTable.HasPrimaryKey){%>@Id<%}
     foreach (ColumnSchema column in this.SourceTable.Columns) { 
     %>
