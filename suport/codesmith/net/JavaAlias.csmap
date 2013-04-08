@@ -27,7 +27,7 @@
     </item>
     <item>
       <key>System.Single</key>
-      <value>Long</value>
+      <value>Float</value>
     </item>
     <item>
       <key>System.Int32</key>
@@ -39,7 +39,7 @@
     </item>
     <item>
       <key>System.SByte</key>
-      <value>Long</value>
+      <value>Byte</value>
     </item>
     <item>
       <key>System.Int16</key>

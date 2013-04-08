@@ -32,21 +32,14 @@ String map = StringUtil.ToCamelCase(SourceTable.Name);
 
 %>
 
-namespace PHIS.Core.Entity
-{
-    public class <%=Mode%>
-    {
-    
+        <%=Mode%> _<%=mode%> = new <%=Mode%>();
      <% foreach (ColumnSchema column in this.SourceTable.Columns) {%>
-        public static readonly string <%=column.Name%> ="<%=fieldName(column.Name)%>";
+        _<%=mode%>.<%=fieldName(column.Name)%> = this.txt<%=StringUtil.ToPascalCase(column.Name)%>.Text;   ///<%=column.Description%>
     <%}%>
     
-    <% foreach (ColumnSchema column in this.SourceTable.Columns) {%>
-         /// <summary>
-         ///<%=column.Description%>
-         /// </summary>
-         public <%=CSharpAlias[column.SystemType.FullName]%><%if (!CSharpAlias[column.SystemType.FullName].Equals("string")&column.AllowDBNull){%>?<%}%> <%=fieldName(column.Name)%> { get; set; }
+    
+            <%=Mode%> <%=mode%> = new <%=Mode%>();
+     <% foreach (ColumnSchema column in this.SourceTable.Columns) {%>
+        this.txt<%=StringUtil.ToPascalCase(column.Name)%>.Text  = _<%=mode%>.<%=fieldName(column.Name)%>;  ///<%=column.Description%>
     <%}%>
-    }
-}
 

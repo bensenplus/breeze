@@ -33,6 +33,7 @@ if(Directory.Exists(OutPath) == false)
 string path =null;
 StreamWriter sw = null;
 FileStream fs = null;
+string actionName = null;
 string serviceName = null;
 
 foreach(DataRow row in table.Rows)
@@ -56,9 +57,12 @@ foreach(DataRow row in table.Rows)
             Directory.CreateDirectory(path);
         }
         
-        path = path+"\\"+ row["Service Name"]+".java";
+        serviceName = StringUtil.ToCamelCase(row["Service Name"].ToString().Substring(1));        
+        actionName = serviceName.Replace("Service","Action");
         
-        serviceName = StringUtil.ToCamelCase(row["Service Name"].ToString().Replace("Action","Service"));
+        path = path+"\\"+ StringUtil.ToPascalCase(actionName)+".java";
+        
+
         
         println(path);
         fs = new FileStream(path,FileMode.Create,FileAccess.Write);
@@ -77,8 +81,8 @@ foreach(DataRow row in table.Rows)
         sw.WriteLine("import "+row["Package"].ToString().Replace("action","service")+".I"+StringUtil.ToPascalCase(serviceName)+";");
         sw.WriteLine("import com.founder.phis.entity.*;");
         sw.WriteLine();
-        sw.WriteLine("@Component(\"" + StringUtil.ToCamelCase(row["Service Name"].ToString()) + "\")");
-        sw.WriteLine("public class " + row["Service Name"] +"{");
+        sw.WriteLine("@Component(\"" + actionName + "\")");
+        sw.WriteLine("public class " + StringUtil.ToPascalCase(actionName) +"extends BaseAction {");
         
         ///write service
         sw.WriteLine();
