@@ -15,7 +15,7 @@
 <%@ Import Namespace="CodeSmith.CustomProperties" %>
 
 <%-- 注册 定义的成员变量 --%>
-<%@ Property Name="excelPath" Type="System.String" Default="D:/phis设计_0314.xls" Optional="False" Category="Context" Description="Excel文件路径" %>
+<%@ Property Name="excelPath" Type="System.String" Default="D:/phis设计_V01.xls" Optional="False" Category="Context" Description="Excel文件路径" %>
 <%@ Property Name="OutPath" Type="System.String" Default="D:/src" Optional="False" Category="Context" Description="源码输出路径" %>
 
 
@@ -25,8 +25,9 @@
 
 <%-- 注册 子模板 --%>
 <%@ Register Name="JavaService" Template="JavaService.cst" %>
-
-
+<%@ Register Name="JavaServiceInterface" Template="JavaServiceInterface.cst" %>
+<%@ Register Name="JavaAction" Template="JavaAction.cst" %>
+<%@ Register Name="NetAction" Template="NetAction.cst" %>
 
 <%
     //Debugger.Break();    
@@ -48,8 +49,11 @@ public void RenderMain()
 {    
     //名称定义
     DataTable table = LoadDataFromExcel(excelPath,"服务");
-    PrintValues(table);
-	CreateTemplate<JavaService>(table, "java", "service.log");
+    //PrintValues(table);
+	CreateTemplate<JavaService>(table, "java", "_.log");
+    CreateTemplate<JavaServiceInterface>(table, "java", "_.log");
+    CreateTemplate<JavaAction>(table, "java", "_.log");
+    CreateTemplate<NetAction>(table, "cs", "_.log");
 }
 
 

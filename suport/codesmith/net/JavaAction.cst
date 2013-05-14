@@ -9,8 +9,9 @@
 <%@ Import Namespace="System.Text.RegularExpressions" %>
 
 <%-- 注册 定义的成员变量 --%>
-<%@ Property Name="excelPath" Type="System.String" Default="D:/phis设计_V01.xls" Optional="False" Category="Context" Description="Excel文件路径" %>
-<%@ Property Name="OutPath" Type="System.String" Default="D:/java/action" Optional="False" Category="Context" Description="源码输出路径" %>
+<%@ Property Name="OutPath" Type="System.String" Default="D:/src/java/Service" Optional="False" Category="Context" Description="源码输出路径" %>
+<%@ Property Name="Table" Type="System.Data.DataTable" Default=null Optional="False" Category="Context"%>
+<%@ Property Name="excelPath" Type="System.String" Default="D:/phis设计_V01_0312.xls" Optional="False" Category="Context" Description="Excel文件路径" %>
 
 <%-- 启用 MAP方式 System-CSharpAlias  --%>
 <%@ Map Name="CSharpAlias" Src="System-CSharpAlias" Description="System to C# Type Map" %>
@@ -20,13 +21,9 @@
  
 </script>
 <% 
-//名称定义
-DataTable table = LoadDataFromExcel(excelPath,"服务");
-//sw.WriteValues(table);
 
-if(Directory.Exists(OutPath) == false)
-{
-    Directory.CreateDirectory(OutPath);
+if(Table == null){    
+ Table = LoadDataFromExcel(excelPath,"服务");   
 }
 
 /// 创建文件
@@ -36,7 +33,7 @@ FileStream fs = null;
 string actionName = null;
 string serviceName = null;
 
-foreach(DataRow row in table.Rows)
+foreach(DataRow row in Table.Rows)
 {
 
     if(row["Function Name"].ToString().Trim().Equals(""))
