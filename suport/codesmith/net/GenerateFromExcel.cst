@@ -15,7 +15,8 @@
 <%@ Import Namespace="CodeSmith.CustomProperties" %>
 
 <%-- 注册 定义的成员变量 --%>
-<%@ Property Name="excelPath" Type="System.String" Default="D:/phis设计_V01.xls" Optional="False" Category="Context" Description="Excel文件路径" %>
+<%@ Property Name="ExcelPath" Type="System.String" Default="D:/phis设计_V01.xls" Optional="False" Category="Context" Description="Excel文件路径" %>
+<%@ Property Name="SheetName" Type="System.String" Default="服务" Optional="False" Category="Context" Description="工作页" %>
 <%@ Property Name="OutPath" Type="System.String" Default="D:/src" Optional="False" Category="Context" Description="源码输出路径" %>
 
 
@@ -43,7 +44,7 @@ Done and Finish  !!!!!!!!!!!!!!!!!!!!!!!!
 public void RenderMain()
 {    
     //名称定义
-    DataTable table = LoadDataFromExcel(excelPath,"服务");
+    DataTable table = LoadDataFromExcel(ExcelPath, SheetName);
     //PrintValues(table);
 	CreateTemplate<JavaService>(table);
     CreateTemplate<JavaServiceInterface>(table);

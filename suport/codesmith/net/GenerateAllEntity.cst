@@ -24,7 +24,7 @@
 <%@ Property Name="RootTableSpaceName" Type="System.String" Default="org.breeze" Optional="False" Category="Context" Description="源码输出的模块名称 com.scitel.dialtestmgr " %>
 
 <%-- 注册 子模板 --%>
-<%@ Register Name="GenerateSingle" Template="GenerateSingle.cst" %>
+<%@ Register Name="GenerateSingle" Template="GenerateSingleEntity.cst" %>
 
 <%
     RenderMain();
