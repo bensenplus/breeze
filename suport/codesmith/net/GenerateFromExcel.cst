@@ -30,11 +30,6 @@
 <%@ Register Name="NetAction" Template="NetAction.cst" %>
 
 <%
-    //Debugger.Break();    
-    //this.Progress.MaximumValue = 100;
-    //this.Progress.MinimumValue = 1;
-    //this.Progress.Step = 1;
-    /// 主输出
     RenderMain();
 %>
 
@@ -50,37 +45,21 @@ public void RenderMain()
     //名称定义
     DataTable table = LoadDataFromExcel(excelPath,"服务");
     //PrintValues(table);
-	CreateTemplate<JavaService>(table, "java", "_.log");
-    CreateTemplate<JavaServiceInterface>(table, "java", "_.log");
-    CreateTemplate<JavaAction>(table, "java", "_.log");
-    CreateTemplate<NetAction>(table, "cs", "_.log");
+	CreateTemplate<JavaService>(table);
+    CreateTemplate<JavaServiceInterface>(table);
+    CreateTemplate<JavaAction>(table);
+    CreateTemplate<NetAction>(table);
 }
 
 
 ///  输出模块
-public void CreateTemplate<T>(DataTable table, string path, string filename)
-{
-    path = OutPath +"/"+ path.Replace(".",@"/");
-    if(Directory.Exists(path) == false)
-    {
-        Directory.CreateDirectory(path);
-    }
-    path = path +"/"+ filename;
-        
-	/// 创建文件
-    FileStream fs = new FileStream(path,FileMode.Create,FileAccess.Write);
-    StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.UTF8);
-        
+public void CreateTemplate<T>(DataTable table)
+{        
     // 调用子模板进行创建 
-    T template = System.Activator.CreateInstance<T>();
-    
+    T template = System.Activator.CreateInstance<T>();    
     Type type = typeof(T);
     type.GetProperty("Table").SetValue(template, table,null);
-    type.GetMethod("Render").Invoke(template, new Object[]{sw});
-    sw.Close();
-    //关闭文档
-    fs.Close();
-    Response.WriteLine(path);
+    type.GetMethod("Render").Invoke(template, new Object[]{Response});
 }
 
 </script>

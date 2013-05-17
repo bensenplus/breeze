@@ -62,7 +62,7 @@ foreach(DataRow row in Table.Rows)
         sw.WriteLine("import com.founder.fasf.service.AbstractService;");
         
         sw.WriteLine();
-        sw.WriteLine("@Service(\"" + StringUtil.ToCamelCase(row["Service Name"].ToString()) + "\")");
+        sw.WriteLine("@Service(\"" + StringUtil.ToCamelCase(row["Service Name"].ToString().Substring(1)) + "\")");
         sw.WriteLine("public class " + row["Service Name"].ToString().Substring(1)+"Impl extends AbstractService implements " + row["Service Name"]+"{");
         continue;
     }                                                           
@@ -81,20 +81,25 @@ foreach(DataRow row in Table.Rows)
     if(row["Function Name"].ToString().StartsWith("create")){
         sw.WriteLine("\t\treturn this.genericDao.insert("+row["Name1"]+");");
     }
-     else if(row["Function Name"].ToString().StartsWith("update")){
+    else if(row["Function Name"].ToString().StartsWith("get")){
+        string entity = row["Function Name"].ToString().Replace("get","");
+        sw.WriteLine("\t\treturn this.genericDao.get("+entity+".class, "+row["Name1"]+");");
+    }
+    else if(row["Function Name"].ToString().StartsWith("update")){
         sw.WriteLine("\t\treturn this.genericDao.update("+row["Name1"]+");");
     }
     else if(row["Function Name"].ToString().StartsWith("delete")){
-        sw.WriteLine("\t\treturn this.genericDao.delete("+row["Type1"]+".class, "+row["Name1"]+");");
+        string entity = row["Function Name"].ToString().Replace("delete","");
+        sw.WriteLine("\t\treturn this.genericDao.delete("+entity+".class, "+row["Name1"]+");");
     }
     else if(row["Function Name"].ToString().StartsWith("find")){
         if(row["Return"].ToString().StartsWith("PageList")){
-            string enti = row["Return"].ToString().Replace("PageList","").Replace("<","").Replace(">","");
-            sw.WriteLine("\t\treturn this.genericDao.getPageList("+enti+".class, "+row["Name2"]+", "+row["Name1"]+");");
+            string entity = row["Return"].ToString().Replace("PageList","").Replace("<","").Replace(">","");
+            sw.WriteLine("\t\treturn this.genericDao.getPageList("+entity+".class, "+row["Name2"]+", "+row["Name1"]+");");
         }
         if(row["Return"].ToString().StartsWith("List")){
-             string enti = row["Return"].ToString().Replace("List","").Replace("<","").Replace(">","");
-            sw.WriteLine("\t\treturn this.genericDao.getList("+enti+".class, "+row["Name1"]+");");
+             string entity = row["Return"].ToString().Replace("List","").Replace("<","").Replace(">","");
+            sw.WriteLine("\t\treturn this.genericDao.getList("+entity+".class, "+row["Name1"]+");");
         }
     }else{
          sw.WriteLine("\t\t//TODO");

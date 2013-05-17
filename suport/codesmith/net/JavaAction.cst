@@ -47,12 +47,7 @@ foreach(DataRow row in Table.Rows)
             
         }
         
-        path = OutPath + "\\"+row["Package"].ToString().Replace("com.founder.phis.action.","");
-        
-        if(Directory.Exists(path) == false)
-        {
-            Directory.CreateDirectory(path);
-        }
+        path = OutPath;
         
         serviceName = StringUtil.ToCamelCase(row["Service Name"].ToString().Substring(1));        
         actionName = serviceName.Replace("Service","Action");
@@ -65,9 +60,10 @@ foreach(DataRow row in Table.Rows)
         fs = new FileStream(path,FileMode.Create,FileAccess.Write);
         sw = new StreamWriter(fs, System.Text.Encoding.UTF8);
         
-        sw.WriteLine("package "+row["Package"]+";");
+        sw.WriteLine("package "+row["Package"].ToString().Replace("service","action")+";");
         sw.WriteLine();
         sw.WriteLine("import java.util.HashMap;");
+        sw.WriteLine("import java.util.List;");
         sw.WriteLine("import javax.annotation.Resource;");
         sw.WriteLine("import org.springframework.stereotype.Component;");
 
@@ -77,9 +73,10 @@ foreach(DataRow row in Table.Rows)
         sw.WriteLine("import com.founder.fasf.beans.PageList;");
         sw.WriteLine("import "+row["Package"].ToString().Replace("action","service")+".I"+StringUtil.ToPascalCase(serviceName)+";");
         sw.WriteLine("import com.founder.phis.entity.*;");
+        sw.WriteLine("import com.founder.phis.web.BaseAction;");
         sw.WriteLine();
         sw.WriteLine("@Component(\"" + actionName + "\")");
-        sw.WriteLine("public class " + StringUtil.ToPascalCase(actionName) +"extends BaseAction {");
+        sw.WriteLine("public class " + StringUtil.ToPascalCase(actionName) +" extends BaseAction {");
         
         ///write service
         sw.WriteLine();
