@@ -6,19 +6,32 @@
 	xmlns:tx="http://www.springframework.org/schema/tx" 
 	xsi:schemaLocation=
 	  "http://www.springframework.org/schema/mvc 
-	    http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+	    http://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans 
-		http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context 
-		http://www.springframework.org/schema/context/spring-context-3.1.xsd"
+		http://www.springframework.org/schema/context/spring-context.xsd"
 		default-autowire="byName" default-lazy-init="true">
 
 	<description>Spring settings</description>	
 	
 	<context:component-scan base-package="org.breeze"></context:component-scan>
 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
-	<bean	class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping "/>
-	
+<!-- 	<bean	class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping "/> -->
+	<bean	class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" />
+				<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+					<property name="supportedMediaTypes">
+						<list>
+							<value>text/plain; charset=UTF-8</value>
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
 	<mvc:annotation-driven/> 	
    	<mvc:default-servlet-handler/>
 	<mvc:resources mapping="/resources/**" location="/resources/" />

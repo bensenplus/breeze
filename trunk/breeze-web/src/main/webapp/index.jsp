@@ -1,3 +1,3 @@
 ﻿<%@page contentType="text/html;charset=UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<c:redirect url="./adverseReaction/index.html"></c:redirect>
+<c:redirect url="./prescription/index.html"></c:redirect>
