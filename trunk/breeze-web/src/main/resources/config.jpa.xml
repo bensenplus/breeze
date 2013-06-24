@@ -10,9 +10,8 @@
 
 	<bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />
 
-	<bean id="jpaVendorAdapter"
-		class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-		<property name="generateDdl" value="true" />
+	<bean id="jpaVendorAdapter"  class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+		<property name="generateDdl" value="false" />
 		<property name="database" value="ORACLE" />
 	</bean>
 
@@ -39,6 +38,5 @@
 
 	<jpa:repositories base-package="org.breeze.repository"
 		transaction-manager-ref="transactionManager"
-		entity-manager-factory-ref="entityManagerFactory" />
-
+		entity-manager-factory-ref="entityManagerFactory" />		
 </beans>
