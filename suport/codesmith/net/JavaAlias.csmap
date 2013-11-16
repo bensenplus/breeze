@@ -11,7 +11,7 @@
     </item>
     <item>
       <key>System.Byte</key>
-      <value>Byte</value>
+      <value>Integer</value>
     </item>
     <item>
       <key>System.Char</key>
@@ -39,7 +39,7 @@
     </item>
     <item>
       <key>System.SByte</key>
-      <value>Byte</value>
+      <value>Integer</value>
     </item>
     <item>
       <key>System.Int16</key>
