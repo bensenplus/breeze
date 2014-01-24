@@ -24,7 +24,7 @@
 <%@ Property Name="RootTableSpaceName" Type="System.String" Default="org.breeze" Optional="False" Category="Context" Description="源码输出的模块名称 com.scitel.dialtestmgr " %>
 
 <%-- 注册 子模板 --%>
-<%@ Register Name="GenerateSingle" Template="GenerateSingleEntity.cst" %>
+<%@ Register Name="GenerateSingleCode" Template="GenerateSingleCode.cst" %>
 
 <%
     RenderMain();
@@ -58,21 +58,23 @@ public void RenderMain()
     
      Response.WriteLine("Output Path " + OutputPath);
     
-    
+     Response.WriteLine("Successed:" + tables.Count);
  
     /// 重复调用单个的子模板
     int count = 0;
     foreach(TableSchema dt in tables)
     {
-		//System.Diagnostics.Debug.WriteLine(ExportTableName);
+
 		//System.Diagnostics.Debug.WriteLine(dt.Name);
-		this.Progress.Status = "genearting ... " + dt.Name;
+		this.Progress.Value = count;
 		///支撑特定表的输出;
-		if ( ExportTableName.ToUpper().IndexOf(dt.Name.ToUpper(),0 )  >= 0 || ExportTableName == string.Empty )
+		//if ( ExportTableName.ToUpper().IndexOf(dt.Name.ToUpper(),0 )  >= 0 || ExportTableName == string.Empty )
 		{
 			try
 			{
-				GenerateSingle export = new GenerateSingle();
+				Response.WriteLine("Successed:" + dt.Name);
+				
+				GenerateSingleCode export = new GenerateSingleCode();
 			
 				export.SourceTable = dt; 
 				export.OutputPath  = this.OutputPath;

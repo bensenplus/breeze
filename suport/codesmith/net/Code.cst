@@ -31,9 +31,38 @@ String key = StringUtil.ToCamelCase(SourceTable.Columns[0].Name);
 String map = StringUtil.ToCamelCase(SourceTable.Name);
 
 %>
+///////////////////////////////////////////////////////////////////////////////
 
-<% foreach (ColumnSchema column in this.SourceTable.Columns) {%>
-    <%=mode%>.setFieldValue("<%=fieldName(column.Name)%>","0");  //<%=column.Description%>
-<%}%>
+<% foreach (ColumnSchema column in this.SourceTable.Columns) {
+	{	
+	%>	
+	<% if (column.DataType == System.Data.DbType.Object) {%>
+	<%=mode%>.setDateFieldValue("<%=fieldName(column.Name)%>", new Date());  //<%=column.Description%>
+	<%} else {%>
+    <%=mode%>.setFieldValue("<%=fieldName(column.Name)%>", "0");  //<%=column.Description%>	
+<%}
+	}
+}%>
+
+///////////////////////////////////////////////////////////////////////////////
+
+<% foreach (ColumnSchema column in this.SourceTable.Columns) {
+	{	
+	%>
+    String <%=fieldName(column.Name)%> = <%=mode%>.getFieldValue("<%=fieldName(column.Name)%>");  //<%=column.Description%>
+<%
+	}
+}%>
+
+///////////////////////////////////////////////////////////////////////////////
+
+<% foreach (ColumnSchema column in this.SourceTable.Columns) {
+	{	
+	%>
+    <%=mode%>.setFieldValue("<%=fieldName(column.Name)%>",<%=mode%>.getFieldValue("<%=fieldName(column.Name)%>")); 	//<%=column.Description%>
+<%
+	}
+
+}%>
 
 
