@@ -54,7 +54,7 @@ namespace DbAccess
         /// immediatly.</remarks>
         public static void ConvertOracleToSQLiteDatabase(string oracleConnString,
             string sqlitePath, string password, SqlConversionHandler handler,
-            SqlTableSelectionHandler selectionHandler,
+            List<String> includedTables,
             FailedViewDefinitionHandler viewFailureHandler,
             bool createTriggers, bool createViews)
         {
@@ -66,7 +66,7 @@ namespace DbAccess
                 //try
                 {
                     _isActive = true;
-                    ConvertOracleDatabaseToSQLiteFile(oracleConnString, sqlitePath, password, handler, selectionHandler, viewFailureHandler, createTriggers, createViews);
+                    ConvertOracleDatabaseToSQLiteFile(oracleConnString, sqlitePath, password, handler, includedTables, viewFailureHandler, createTriggers, createViews);
                     _isActive = false;
                     handler(true, true, 100, "Finished converting database");
                 }
@@ -94,12 +94,12 @@ namespace DbAccess
         /// convert.</param>
         private static void ConvertOracleDatabaseToSQLiteFile(
             string sqlConnString, string sqlitePath, string password, SqlConversionHandler handler,
-            SqlTableSelectionHandler selectionHandler,
+            List<String> includedTables,
             FailedViewDefinitionHandler viewFailureHandler,
             bool createTriggers, bool createViews)
         {
             // Read the schema of the SQL Server database into a memory structure
-            DatabaseSchema ds = ReadOracleSchema(sqlConnString, handler, selectionHandler);
+            DatabaseSchema ds = ReadOracleSchema(sqlConnString, handler, includedTables);
 
             // Create the SQLite database and apply the schema
             CreateSQLiteDatabase(sqlitePath, ds, password, handler, viewFailureHandler, createViews);
@@ -490,12 +490,12 @@ namespace DbAccess
             _log.Debug("Creating SQLite database...");
 
             // Delete the target file if it exists already.
-            if (File.Exists(sqlitePath)) File.Delete(sqlitePath);
-
-            // Create the SQLite database file
-            SQLiteConnection.CreateFile(sqlitePath);
-
-            _log.Debug("SQLite file was created successfully at [" + sqlitePath + "]");
+            if (!File.Exists(sqlitePath))
+            {
+                // Create the SQLite database file
+                SQLiteConnection.CreateFile(sqlitePath);
+                _log.Debug("SQLite file was created successfully at [" + sqlitePath + "]");
+            }
 
             // Connect to the newly created database
             string sqliteConnString = CreateSQLiteConnectionString(sqlitePath, password);
@@ -823,8 +823,7 @@ namespace DbAccess
         /// <param name="selectionHandler">The selection handler which allows the user to select 
         /// which tables to convert.</param>
         /// <returns>database schema objects for every table/view in the SQL Server database.</returns>
-        private static DatabaseSchema ReadOracleSchema(string connString, SqlConversionHandler handler,
-            SqlTableSelectionHandler selectionHandler)
+        private static DatabaseSchema ReadOracleSchema(string connString, SqlConversionHandler handler,List<String> includedTables)
         {
             // First step is to read the names of all tables in the database
             List<TableSchema> tables = new List<TableSchema>();
@@ -832,45 +831,17 @@ namespace DbAccess
             {
                 conn.Open();
 
-                List<string> tableNames = new List<string>();
-                List<int> numRows = new List<int>();
-                List<string> tblschema = new List<string>();
-
-                // This command will read the names of all tables in the database
-                OracleCommand cmd = new OracleCommand(@"select table_name, num_rows  from user_tables order by num_rows", conn);
-                using (OracleDataReader reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        if (reader["TABLE_NAME"] == DBNull.Value)
-                            continue;
-                        tableNames.Add((string)reader["TABLE_NAME"]);
-                        numRows.Add(reader["NUM_ROWS"] != DBNull.Value ? Convert.ToInt32(reader["NUM_ROWS"]) : 0);
-                        //tblschema.Add((string)reader["TABLE_SCHEMA"]);
-                        tblschema.Add("");
-                    } // while
-                } // using
-
-                // Allow the user a chance to select which tables to convert
-                if (selectionHandler != null)
-                {
-                    List<string> updated = selectionHandler(tableNames, numRows);
-                    if (updated != null)
-                        tableNames = updated;
-                } // if
-
                 // Next step is to use ADO APIs to query the schema of each table.
                 int count = 0;
-                for (int i = 0; i < tableNames.Count; i++)
+                for (int i = 0; i < includedTables.Count; i++)
                 {
-                    string tname = tableNames[i];
-                    string tschma = tblschema[i];
-                    TableSchema ts = CreateTableSchema(conn, tname, tschma);
+                    string tname = includedTables[i];
+                    TableSchema ts = CreateTableSchema(conn, tname, ""); //TODO Schema
                     //CreateForeignKeySchema(conn, ts);
                     tables.Add(ts);
                     count++;
                     CheckCancelled();
-                    handler(false, true, (int)(count * 50.0 / tableNames.Count), "Parsed table " + tname);
+                    handler(false, true, (int)(count * 50.0 / includedTables.Count), "Parsed table " + tname);
 
                     _log.Debug("parsed table schema for [" + tname + "]");
                 } // foreach
@@ -1256,7 +1227,7 @@ namespace DbAccess
         /// </summary>
         /// <param name="sqlitePath">The path to the SQLite database file.</param>
         /// <returns>SQLite connection string</returns>
-        private static string CreateSQLiteConnectionString(string sqlitePath, string password)
+        public static string CreateSQLiteConnectionString(string sqlitePath, string password)
         {
             SQLiteConnectionStringBuilder builder = new SQLiteConnectionStringBuilder();
             builder.DataSource = sqlitePath;
@@ -1339,14 +1310,6 @@ namespace DbAccess
     /// <param name="percent">Progress percent (0-100)</param>
     /// <param name="msg">A message that accompanies the progress.</param>
     public delegate void SqlConversionHandler(bool done, bool success, int percent, string msg);
-
-    /// <summary>
-    /// This handler allows the user to change which tables get converted from SQL Server
-    /// to SQLite.
-    /// </summary>
-    /// <param name="schema">The original SQL Server DB schema</param>
-    /// <returns>The same schema minus any table we don't want to convert.</returns>
-    public delegate List<string> SqlTableSelectionHandler(List<string> schema, List<int> numRows);
 
     /// <summary>
     /// This handler is called in order to handle the case when copying the SQL Server view SQL

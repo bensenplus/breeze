@@ -28,16 +28,13 @@ namespace Converter
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.label2 = new System.Windows.Forms.Label();
             this.txtSQLitePath = new System.Windows.Forms.TextBox();
             this.btnBrowseSQLitePath = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.label3 = new System.Windows.Forms.Label();
-            this.cboDatabases = new System.Windows.Forms.ComboBox();
             this.btnConnect = new System.Windows.Forms.Button();
-            this.pbrProgress = new System.Windows.Forms.ProgressBar();
-            this.lblMessage = new System.Windows.Forms.Label();
             this.btnCancel = new System.Windows.Forms.Button();
             this.cbxEncrypt = new System.Windows.Forms.CheckBox();
             this.txtPassword = new System.Windows.Forms.TextBox();
@@ -53,12 +50,32 @@ namespace Converter
             this.txtSid = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.lblMessage = new System.Windows.Forms.ToolStripStatusLabel();
+            this.pbrProgress = new System.Windows.Forms.ToolStripProgressBar();
+            this.btnDeselectAll = new System.Windows.Forms.Button();
+            this.btnSelectAll = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.Column1 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.timestamp = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.statusStrip1.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 130);
+            this.label2.Location = new System.Drawing.Point(6, 17);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(131, 12);
             this.label2.TabIndex = 10;
@@ -66,16 +83,16 @@ namespace Converter
             // 
             // txtSQLitePath
             // 
-            this.txtSQLitePath.Location = new System.Drawing.Point(153, 127);
+            this.txtSQLitePath.Location = new System.Drawing.Point(147, 14);
             this.txtSQLitePath.Name = "txtSQLitePath";
-            this.txtSQLitePath.Size = new System.Drawing.Size(430, 21);
+            this.txtSQLitePath.Size = new System.Drawing.Size(198, 21);
             this.txtSQLitePath.TabIndex = 11;
-            this.txtSQLitePath.Text = "d:\\test.db";
+            this.txtSQLitePath.Text = "d:\\sqlite.db";
             this.txtSQLitePath.TextChanged += new System.EventHandler(this.txtSQLitePath_TextChanged);
             // 
             // btnBrowseSQLitePath
             // 
-            this.btnBrowseSQLitePath.Location = new System.Drawing.Point(589, 126);
+            this.btnBrowseSQLitePath.Location = new System.Drawing.Point(368, 14);
             this.btnBrowseSQLitePath.Name = "btnBrowseSQLitePath";
             this.btnBrowseSQLitePath.Size = new System.Drawing.Size(75, 21);
             this.btnBrowseSQLitePath.TabIndex = 12;
@@ -85,11 +102,11 @@ namespace Converter
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(431, 297);
+            this.btnStart.Location = new System.Drawing.Point(602, 63);
             this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(198, 21);
+            this.btnStart.Size = new System.Drawing.Size(95, 21);
             this.btnStart.TabIndex = 17;
-            this.btnStart.Text = "Start The Conversion Process";
+            this.btnStart.Text = "Start";
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
@@ -99,29 +116,9 @@ namespace Converter
             this.saveFileDialog1.Filter = "SQLite Files|*.db|All Files|*.*";
             this.saveFileDialog1.RestoreDirectory = true;
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(66, 82);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(65, 12);
-            this.label3.TabIndex = 3;
-            this.label3.Text = "Select DB:";
-            // 
-            // cboDatabases
-            // 
-            this.cboDatabases.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboDatabases.Enabled = false;
-            this.cboDatabases.FormattingEnabled = true;
-            this.cboDatabases.Location = new System.Drawing.Point(153, 79);
-            this.cboDatabases.Name = "cboDatabases";
-            this.cboDatabases.Size = new System.Drawing.Size(222, 20);
-            this.cboDatabases.TabIndex = 4;
-            this.cboDatabases.SelectedIndexChanged += new System.EventHandler(this.cboDatabases_SelectedIndexChanged);
-            // 
             // btnConnect
             // 
-            this.btnConnect.Location = new System.Drawing.Point(589, 46);
+            this.btnConnect.Location = new System.Drawing.Point(626, 13);
             this.btnConnect.Name = "btnConnect";
             this.btnConnect.Size = new System.Drawing.Size(75, 21);
             this.btnConnect.TabIndex = 2;
@@ -129,25 +126,9 @@ namespace Converter
             this.btnConnect.UseVisualStyleBackColor = true;
             this.btnConnect.Click += new System.EventHandler(this.btnSet_Click);
             // 
-            // pbrProgress
-            // 
-            this.pbrProgress.Location = new System.Drawing.Point(15, 262);
-            this.pbrProgress.Name = "pbrProgress";
-            this.pbrProgress.Size = new System.Drawing.Size(834, 19);
-            this.pbrProgress.TabIndex = 16;
-            // 
-            // lblMessage
-            // 
-            this.lblMessage.BackColor = System.Drawing.Color.White;
-            this.lblMessage.Location = new System.Drawing.Point(13, 217);
-            this.lblMessage.Name = "lblMessage";
-            this.lblMessage.Size = new System.Drawing.Size(836, 33);
-            this.lblMessage.TabIndex = 15;
-            this.lblMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(667, 297);
+            this.btnCancel.Location = new System.Drawing.Point(721, 63);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(95, 21);
             this.btnCancel.TabIndex = 18;
@@ -158,7 +139,7 @@ namespace Converter
             // cbxEncrypt
             // 
             this.cbxEncrypt.AutoSize = true;
-            this.cbxEncrypt.Location = new System.Drawing.Point(15, 154);
+            this.cbxEncrypt.Location = new System.Drawing.Point(9, 41);
             this.cbxEncrypt.Name = "cbxEncrypt";
             this.cbxEncrypt.Size = new System.Drawing.Size(144, 16);
             this.cbxEncrypt.TabIndex = 13;
@@ -168,7 +149,7 @@ namespace Converter
             // 
             // txtPassword
             // 
-            this.txtPassword.Location = new System.Drawing.Point(154, 152);
+            this.txtPassword.Location = new System.Drawing.Point(148, 39);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
             this.txtPassword.Size = new System.Drawing.Size(197, 21);
@@ -177,7 +158,7 @@ namespace Converter
             // 
             // txtUserOracle
             // 
-            this.txtUserOracle.Location = new System.Drawing.Point(201, 42);
+            this.txtUserOracle.Location = new System.Drawing.Point(426, 13);
             this.txtUserOracle.Name = "txtUserOracle";
             this.txtUserOracle.Size = new System.Drawing.Size(60, 21);
             this.txtUserOracle.TabIndex = 7;
@@ -185,7 +166,7 @@ namespace Converter
             // 
             // txtPassOracle
             // 
-            this.txtPassOracle.Location = new System.Drawing.Point(367, 42);
+            this.txtPassOracle.Location = new System.Drawing.Point(563, 13);
             this.txtPassOracle.Name = "txtPassOracle";
             this.txtPassOracle.PasswordChar = '*';
             this.txtPassOracle.Size = new System.Drawing.Size(54, 21);
@@ -195,7 +176,7 @@ namespace Converter
             // lblUser
             // 
             this.lblUser.AutoSize = true;
-            this.lblUser.Location = new System.Drawing.Point(154, 46);
+            this.lblUser.Location = new System.Drawing.Point(382, 17);
             this.lblUser.Name = "lblUser";
             this.lblUser.Size = new System.Drawing.Size(35, 12);
             this.lblUser.TabIndex = 6;
@@ -204,7 +185,7 @@ namespace Converter
             // lblPassword
             // 
             this.lblPassword.AutoSize = true;
-            this.lblPassword.Location = new System.Drawing.Point(301, 46);
+            this.lblPassword.Location = new System.Drawing.Point(495, 17);
             this.lblPassword.Name = "lblPassword";
             this.lblPassword.Size = new System.Drawing.Size(59, 12);
             this.lblPassword.TabIndex = 8;
@@ -213,7 +194,7 @@ namespace Converter
             // cbxTriggers
             // 
             this.cbxTriggers.AutoSize = true;
-            this.cbxTriggers.Location = new System.Drawing.Point(15, 178);
+            this.cbxTriggers.Location = new System.Drawing.Point(9, 65);
             this.cbxTriggers.Name = "cbxTriggers";
             this.cbxTriggers.Size = new System.Drawing.Size(252, 16);
             this.cbxTriggers.TabIndex = 19;
@@ -223,7 +204,7 @@ namespace Converter
             // cbxCreateViews
             // 
             this.cbxCreateViews.AutoSize = true;
-            this.cbxCreateViews.Location = new System.Drawing.Point(286, 179);
+            this.cbxCreateViews.Location = new System.Drawing.Point(280, 66);
             this.cbxCreateViews.Name = "cbxCreateViews";
             this.cbxCreateViews.Size = new System.Drawing.Size(312, 16);
             this.cbxCreateViews.TabIndex = 20;
@@ -232,24 +213,24 @@ namespace Converter
             // 
             // txtIp
             // 
-            this.txtIp.Location = new System.Drawing.Point(153, 15);
+            this.txtIp.Location = new System.Drawing.Point(90, 13);
             this.txtIp.Name = "txtIp";
-            this.txtIp.Size = new System.Drawing.Size(158, 21);
+            this.txtIp.Size = new System.Drawing.Size(83, 21);
             this.txtIp.TabIndex = 21;
-            this.txtIp.Text = "172.29.129.31";
+            this.txtIp.Text = "127.0.0.1";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(24, 19);
+            this.label4.Location = new System.Drawing.Point(16, 17);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(107, 12);
+            this.label4.Size = new System.Drawing.Size(65, 12);
             this.label4.TabIndex = 23;
-            this.label4.Text = "Oracle Server IP:";
+            this.label4.Text = "Oracle IP:";
             // 
             // txtPort
             // 
-            this.txtPort.Location = new System.Drawing.Point(368, 15);
+            this.txtPort.Location = new System.Drawing.Point(226, 13);
             this.txtPort.Name = "txtPort";
             this.txtPort.Size = new System.Drawing.Size(50, 21);
             this.txtPort.TabIndex = 24;
@@ -257,7 +238,7 @@ namespace Converter
             // 
             // txtSid
             // 
-            this.txtSid.Location = new System.Drawing.Point(469, 15);
+            this.txtSid.Location = new System.Drawing.Point(323, 13);
             this.txtSid.Name = "txtSid";
             this.txtSid.Size = new System.Drawing.Size(50, 21);
             this.txtSid.TabIndex = 25;
@@ -266,7 +247,7 @@ namespace Converter
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(429, 19);
+            this.label5.Location = new System.Drawing.Point(285, 17);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(29, 12);
             this.label5.TabIndex = 26;
@@ -275,47 +256,193 @@ namespace Converter
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(322, 19);
+            this.label6.Location = new System.Drawing.Point(182, 17);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(35, 12);
             this.label6.TabIndex = 27;
             this.label6.Text = "Port:";
             // 
+            // dataGridView1
+            // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.AllowUserToOrderColumns = true;
+            this.dataGridView1.AllowUserToResizeRows = false;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column1,
+            this.Column2,
+            this.Column4,
+            this.Column3,
+            this.timestamp,
+            this.Column5});
+            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView1.Location = new System.Drawing.Point(0, 40);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowHeadersVisible = false;
+            this.dataGridView1.RowTemplate.Height = 23;
+            this.dataGridView1.Size = new System.Drawing.Size(861, 269);
+            this.dataGridView1.TabIndex = 28;
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.lblMessage,
+            this.pbrProgress});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 424);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(861, 22);
+            this.statusStrip1.TabIndex = 29;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // lblMessage
+            // 
+            this.lblMessage.AutoSize = false;
+            this.lblMessage.AutoToolTip = true;
+            this.lblMessage.Name = "lblMessage";
+            this.lblMessage.Size = new System.Drawing.Size(400, 17);
+            // 
+            // pbrProgress
+            // 
+            this.pbrProgress.Name = "pbrProgress";
+            this.pbrProgress.Size = new System.Drawing.Size(400, 16);
+            // 
+            // btnDeselectAll
+            // 
+            this.btnDeselectAll.Location = new System.Drawing.Point(89, 2);
+            this.btnDeselectAll.Name = "btnDeselectAll";
+            this.btnDeselectAll.Size = new System.Drawing.Size(89, 21);
+            this.btnDeselectAll.TabIndex = 31;
+            this.btnDeselectAll.Text = "Deselect All";
+            this.btnDeselectAll.UseVisualStyleBackColor = true;
+            this.btnDeselectAll.Click += new System.EventHandler(this.btnDeselectAll_Click);
+            // 
+            // btnSelectAll
+            // 
+            this.btnSelectAll.Location = new System.Drawing.Point(8, 2);
+            this.btnSelectAll.Name = "btnSelectAll";
+            this.btnSelectAll.Size = new System.Drawing.Size(75, 21);
+            this.btnSelectAll.TabIndex = 30;
+            this.btnSelectAll.Text = "Select All";
+            this.btnSelectAll.UseVisualStyleBackColor = true;
+            this.btnSelectAll.Click += new System.EventHandler(this.btnSelectAll_Click);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.lblUser);
+            this.groupBox1.Controls.Add(this.lblPassword);
+            this.groupBox1.Controls.Add(this.btnConnect);
+            this.groupBox1.Controls.Add(this.txtUserOracle);
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.txtPassOracle);
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.txtIp);
+            this.groupBox1.Controls.Add(this.txtSid);
+            this.groupBox1.Controls.Add(this.txtPort);
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox1.Location = new System.Drawing.Point(0, 0);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(861, 40);
+            this.groupBox1.TabIndex = 32;
+            this.groupBox1.TabStop = false;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.label2);
+            this.groupBox3.Controls.Add(this.txtSQLitePath);
+            this.groupBox3.Controls.Add(this.btnBrowseSQLitePath);
+            this.groupBox3.Controls.Add(this.btnStart);
+            this.groupBox3.Controls.Add(this.btnCancel);
+            this.groupBox3.Controls.Add(this.cbxEncrypt);
+            this.groupBox3.Controls.Add(this.txtPassword);
+            this.groupBox3.Controls.Add(this.cbxCreateViews);
+            this.groupBox3.Controls.Add(this.cbxTriggers);
+            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.groupBox3.Location = new System.Drawing.Point(0, 334);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(861, 90);
+            this.groupBox3.TabIndex = 34;
+            this.groupBox3.TabStop = false;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.btnDeselectAll);
+            this.panel1.Controls.Add(this.btnSelectAll);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel1.Location = new System.Drawing.Point(0, 309);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(861, 25);
+            this.panel1.TabIndex = 21;
+            // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "";
+            this.Column1.Name = "Column1";
+            this.Column1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Column1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Column1.Width = 30;
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "table name";
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
+            this.Column2.Width = 200;
+            // 
+            // Column4
+            // 
+            this.Column4.HeaderText = "comment";
+            this.Column4.Name = "Column4";
+            this.Column4.ReadOnly = true;
+            this.Column4.Width = 200;
+            // 
+            // Column3
+            // 
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.Column3.DefaultCellStyle = dataGridViewCellStyle1;
+            this.Column3.HeaderText = "rows";
+            this.Column3.Name = "Column3";
+            this.Column3.ReadOnly = true;
+            this.Column3.Width = 60;
+            // 
+            // timestamp
+            // 
+            this.timestamp.HeaderText = "timestamp";
+            this.timestamp.Name = "timestamp";
+            this.timestamp.ReadOnly = true;
+            this.timestamp.Width = 120;
+            // 
+            // Column5
+            // 
+            this.Column5.HeaderText = "sqlite table";
+            this.Column5.Name = "Column5";
+            this.Column5.ReadOnly = true;
+            this.Column5.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Column5.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(861, 339);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.txtSid);
-            this.Controls.Add(this.txtPort);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.txtIp);
-            this.Controls.Add(this.cbxCreateViews);
-            this.Controls.Add(this.cbxTriggers);
-            this.Controls.Add(this.txtPassOracle);
-            this.Controls.Add(this.txtUserOracle);
-            this.Controls.Add(this.txtPassword);
-            this.Controls.Add(this.cbxEncrypt);
-            this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.lblMessage);
-            this.Controls.Add(this.pbrProgress);
-            this.Controls.Add(this.btnConnect);
-            this.Controls.Add(this.cboDatabases);
-            this.Controls.Add(this.lblPassword);
-            this.Controls.Add(this.lblUser);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.btnStart);
-            this.Controls.Add(this.btnBrowseSQLitePath);
-            this.Controls.Add(this.txtSQLitePath);
-            this.Controls.Add(this.label2);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
+            this.ClientSize = new System.Drawing.Size(861, 446);
+            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.groupBox3);
+            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.statusStrip1);
             this.Name = "MainForm";
-            this.Text = "SQL Server To SQLite DB Converter";
+            this.Text = "Oracle to SQLite DB Converter";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -332,11 +459,7 @@ namespace Converter
         private System.Windows.Forms.Button btnBrowseSQLitePath;
         private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox cboDatabases;
         private System.Windows.Forms.Button btnConnect;
-        private System.Windows.Forms.ProgressBar pbrProgress;
-        private System.Windows.Forms.Label lblMessage;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.CheckBox cbxEncrypt;
         private System.Windows.Forms.TextBox txtPassword;
@@ -348,6 +471,21 @@ namespace Converter
         private System.Windows.Forms.TextBox txtSid;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel lblMessage;
+        private System.Windows.Forms.ToolStripProgressBar pbrProgress;
+        private System.Windows.Forms.Button btnDeselectAll;
+        private System.Windows.Forms.Button btnSelectAll;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn timestamp;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
     }
 }
 

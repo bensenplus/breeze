@@ -1,5 +1,6 @@
 using System;
 using System.Data.OracleClient;
+using System.Data.SQLite;
 using System.Reflection;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -53,19 +54,43 @@ namespace Converter
                     conn.Open();
 
                     // Get the names of all DBs in the database server.
-                    OracleCommand query = new OracleCommand(@"select table_name, num_rows from user_tables order by num_rows", conn);
+                    string sql = "select t1.table_name, t2.comments, t1.num_rows, t3.timestamp from user_tables t1 "
+                                +" left join user_tab_comments t2  on  t1.table_name = t2.table_name "
+                                +" left join user_objects t3 on t1.table_name = t3.object_name  and t3.object_type = 'TABLE'"
+                                +" order by num_rows  ";
+                    OracleCommand query = new OracleCommand(sql, conn);
                     using (OracleDataReader reader = query.ExecuteReader())
                     {
-                        cboDatabases.Items.Clear();
                         while (reader.Read())
-                            cboDatabases.Items.Add(reader[0] +"("+ reader[1]+")");
-                        if (cboDatabases.Items.Count > 0)
                         {
-                            cboDatabases.Enabled = true;
-                            cboDatabases.SelectedIndex = 0;
+                            dataGridView1.Rows.Add(true, reader[0], reader[1], reader[2], reader[3]);
                         }
                     } // using
                 } // using
+
+
+                string sqliteConnString = OracleToSQLite.CreateSQLiteConnectionString(txtSQLitePath.Text, null);
+                using (SQLiteConnection conn = new SQLiteConnection(sqliteConnString))
+                {
+                    conn.Open();
+                    // Get the names of all DBs in the database server.
+                    string sql = "select name from sqlite_master where type= 'table'; ";
+                    SQLiteCommand query = new SQLiteCommand(sql, conn);
+                    using (SQLiteDataReader reader = query.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            foreach (DataGridViewRow row in dataGridView1.Rows)
+                            {
+                                if (row.Cells[1].Value.ToString() == reader[0].ToString())
+                                {
+                                    row.Cells[5].Value = "Existed";
+                                    row.Cells[0].Value = false;
+                                }
+                            }
+                        }
+                    } // using
+                }
 
                 pbrProgress.Value = 0;
                 lblMessage.Text = string.Empty;
@@ -90,12 +115,7 @@ namespace Converter
             UpdateSensitivity();
 
             string version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            this.Text = "SQL Server To SQLite DB Converter (" + version + ")";
-        }
-
-		private void txtSqlAddress_TextChanged(object sender, EventArgs e)
-        {
-            UpdateSensitivity();
+            this.Text = "Oracle To SQLite DB Converter (" + version + ")";
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -174,20 +194,10 @@ namespace Converter
                         }
                     }));
             });
-            SqlTableSelectionHandler selectionHandler = new SqlTableSelectionHandler(delegate(List<string> schema, List<int> numRows)
-            {
-                List<string> updated = null;
-                Invoke(new MethodInvoker(delegate
-                {
-                    // Allow the user to select which tables to include by showing him the 
-                    // table selection dialog.
-                    TableSelectionDialog dlg = new TableSelectionDialog();
-                    DialogResult res = dlg.ShowTables(schema, numRows,  this);
-                    if (res == DialogResult.OK)
-                        updated = dlg.IncludedTables;
-                }));
-                return updated;
-            });
+//            SqlTableSelectionHandler selectionHandler = new SqlTableSelectionHandler(delegate(List<string> schema, List<int> numRows)
+//            {
+//                return IncludedTables;
+//            });
 
             FailedViewDefinitionHandler viewFailureHandler = new FailedViewDefinitionHandler(delegate(ViewSchema vs)
             {
@@ -209,8 +219,8 @@ namespace Converter
             string password = txtPassword.Text.Trim();
             if (!cbxEncrypt.Checked)
                 password = null;
-            OracleToSQLite.ConvertOracleToSQLiteDatabase(sqlConnString, sqlitePath, password, handler, 
-                selectionHandler, viewFailureHandler, cbxTriggers.Checked, createViews);
+            OracleToSQLite.ConvertOracleToSQLiteDatabase(sqlConnString, sqlitePath, password, handler,
+                IncludedTables, viewFailureHandler, cbxTriggers.Checked, createViews);
         }
 
         #endregion
@@ -218,7 +228,7 @@ namespace Converter
         #region Private Methods
         private void UpdateSensitivity()
         {
-            if (txtSQLitePath.Text.Trim().Length > 0 && cboDatabases.Enabled &&
+            if (txtSQLitePath.Text.Trim().Length > 0 &&
                 (!cbxEncrypt.Checked || txtPassword.Text.Trim().Length > 0))
                 btnStart.Enabled = true && !OracleToSQLite.IsActive;
             else
@@ -228,7 +238,6 @@ namespace Converter
             txtSQLitePath.Enabled = !OracleToSQLite.IsActive;
             btnBrowseSQLitePath.Enabled = !OracleToSQLite.IsActive;
             cbxEncrypt.Enabled = !OracleToSQLite.IsActive;
-            cboDatabases.Enabled = cboDatabases.Items.Count > 0 && !OracleToSQLite.IsActive;
             txtPassword.Enabled = cbxEncrypt.Checked && cbxEncrypt.Enabled;
             cbxCreateViews.Enabled = !OracleToSQLite.IsActive;
             cbxTriggers.Enabled = !OracleToSQLite.IsActive;
@@ -247,5 +256,41 @@ namespace Converter
         #region Private Variables
         private bool _shouldExit = false;
         #endregion        
+
+        /// <summary>
+        /// Returns the list of included table schema objects.
+        /// </summary>
+        public List<string> IncludedTables
+        {
+            get
+            {
+                List<string> res = new List<string>();
+                foreach (DataGridViewRow row in dataGridView1.Rows)
+                {
+                    bool include = (bool)row.Cells[0].Value;
+                    if (include) res.Add((string)row.Cells[1].Value);
+                } // foreach
+
+                return res;
+            }
+        }
+
+        private void btnSelectAll_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                // Check the [V] for this row.
+                row.Cells[0].Value = true;
+            } // foreach
+        }
+
+        private void btnDeselectAll_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                // Check the [V] for this row.
+                row.Cells[0].Value = false;
+            } // foreach
+        }
     }
 }
