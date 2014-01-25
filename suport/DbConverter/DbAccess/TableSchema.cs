@@ -6,6 +6,8 @@ namespace DbAccess
 {
     public class TableSchema
     {
+        public bool Existed = false;
+
         public string TableName;
 
         public string TableSchemaName;

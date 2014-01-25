@@ -54,7 +54,7 @@ namespace DbAccess
         /// immediatly.</remarks>
         public static void ConvertOracleToSQLiteDatabase(string oracleConnString,
             string sqlitePath, string password, SqlConversionHandler handler,
-            List<String> includedTables,
+            List<String> includedTables, List<String> existedTables,
             FailedViewDefinitionHandler viewFailureHandler,
             bool createTriggers, bool createViews)
         {
@@ -63,19 +63,19 @@ namespace DbAccess
 
             WaitCallback wc = new WaitCallback(delegate(object state)
             {
-                //try
+                try
                 {
                     _isActive = true;
-                    ConvertOracleDatabaseToSQLiteFile(oracleConnString, sqlitePath, password, handler, includedTables, viewFailureHandler, createTriggers, createViews);
+                    ConvertOracleDatabaseToSQLiteFile(oracleConnString, sqlitePath, password, handler, includedTables, existedTables, viewFailureHandler, createTriggers, createViews);
                     _isActive = false;
                     handler(true, true, 100, "Finished converting database");
                 }
-                //catch (Exception ex)
-                //{
-//                    _log.Error("Failed to convert SQL Server database to SQLite database", ex);
-//                    _isActive = false;
-//                    handler(true, false, 100, ex.Message);
-               // } // catch
+                catch (Exception ex)
+                {
+                    _log.Error("Failed to convert SQL Server database to SQLite database", ex);
+                    _isActive = false;
+                    handler(true, false, 100, ex.Message);
+                } // catch
             });
             ThreadPool.QueueUserWorkItem(wc);
         }
@@ -94,12 +94,12 @@ namespace DbAccess
         /// convert.</param>
         private static void ConvertOracleDatabaseToSQLiteFile(
             string sqlConnString, string sqlitePath, string password, SqlConversionHandler handler,
-            List<String> includedTables,
+            List<String> includedTables, List<String> existedTables,
             FailedViewDefinitionHandler viewFailureHandler,
             bool createTriggers, bool createViews)
         {
             // Read the schema of the SQL Server database into a memory structure
-            DatabaseSchema ds = ReadOracleSchema(sqlConnString, handler, includedTables);
+            DatabaseSchema ds = ReadOracleSchema(sqlConnString, handler, includedTables, existedTables);
 
             // Create the SQLite database and apply the schema
             CreateSQLiteDatabase(sqlitePath, ds, password, handler, viewFailureHandler, createViews);
@@ -507,15 +507,19 @@ namespace DbAccess
                 int count = 0;
                 foreach (TableSchema dt in schema.Tables)
                 {
-//                    try
-//                    {
+                    try
+                    {
+                        if (dt.Existed)
+                        {
+                            DropSQLiteTable(conn, dt);
+                        }
                         AddSQLiteTable(conn, dt);
-//                    }
-//                    catch (Exception ex)
-//                    {
-//                        _log.Error("AddSQLiteTable failed", ex);
-//                        throw;
-//                    }
+                    }
+                    catch (Exception ex)
+                    {
+                        _log.Error("AddSQLiteTable failed", ex);
+                        throw;
+                    }
                     count++;
                     CheckCancelled();
                     handler(false, true, (int)(count * 50.0 / schema.Tables.Count), "Added table " + dt.TableName + " to the SQLite database");
@@ -602,6 +606,23 @@ namespace DbAccess
         {
             // Prepare a CREATE TABLE DDL statement
             string stmt = BuildCreateTableQuery(dt);
+
+            _log.Info("\n\n" + stmt + "\n\n");
+
+            // Execute the query in order to actually create the table.
+            SQLiteCommand cmd = new SQLiteCommand(stmt, conn);
+            cmd.ExecuteNonQuery();
+        }
+
+        /// <summary>
+        /// Creates the CREATE TABLE DDL for SQLite and a specific table.
+        /// </summary>
+        /// <param name="conn">The SQLite connection</param>
+        /// <param name="dt">The table schema object for the table to be generated.</param>
+        private static void DropSQLiteTable(SQLiteConnection conn, TableSchema dt)
+        {
+            // Prepare a CREATE TABLE DDL statement
+            string stmt = "DROP TABLE " + dt.TableName;
 
             _log.Info("\n\n" + stmt + "\n\n");
 
@@ -823,7 +844,7 @@ namespace DbAccess
         /// <param name="selectionHandler">The selection handler which allows the user to select 
         /// which tables to convert.</param>
         /// <returns>database schema objects for every table/view in the SQL Server database.</returns>
-        private static DatabaseSchema ReadOracleSchema(string connString, SqlConversionHandler handler,List<String> includedTables)
+        private static DatabaseSchema ReadOracleSchema(string connString, SqlConversionHandler handler,List<String> includedTables, List<String> existedTables)
         {
             // First step is to read the names of all tables in the database
             List<TableSchema> tables = new List<TableSchema>();
@@ -837,6 +858,7 @@ namespace DbAccess
                 {
                     string tname = includedTables[i];
                     TableSchema ts = CreateTableSchema(conn, tname, ""); //TODO Schema
+                    ts.Existed = existedTables.Contains(tname);
                     //CreateForeignKeySchema(conn, ts);
                     tables.Add(ts);
                     count++;

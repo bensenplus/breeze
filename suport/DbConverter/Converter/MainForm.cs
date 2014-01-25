@@ -45,6 +45,7 @@ namespace Converter
 
         private void btnSet_Click(object sender, EventArgs e)
         {
+            dataGridView1.Rows.Clear();
             try
             {
                 string constr = GetSqlServerConnectionString();
@@ -217,10 +218,22 @@ namespace Converter
             });
 
             string password = txtPassword.Text.Trim();
-            if (!cbxEncrypt.Checked)
-                password = null;
+            if (!cbxEncrypt.Checked) password = null;
+
+            List<string> includedTables = new List<string>();
+            List<string> existedTables = new List<string>();
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                bool include = (bool)row.Cells[0].Value;
+                if (include)
+                {
+                    includedTables.Add((string)row.Cells[1].Value);
+                    if ((string)row.Cells[5].Value == "Existed") existedTables.Add((string)row.Cells[1].Value);
+                }
+            } // foreach
+
             OracleToSQLite.ConvertOracleToSQLiteDatabase(sqlConnString, sqlitePath, password, handler,
-                IncludedTables, viewFailureHandler, cbxTriggers.Checked, createViews);
+                includedTables, existedTables, viewFailureHandler, cbxTriggers.Checked, createViews);
         }
 
         #endregion
@@ -256,24 +269,6 @@ namespace Converter
         #region Private Variables
         private bool _shouldExit = false;
         #endregion        
-
-        /// <summary>
-        /// Returns the list of included table schema objects.
-        /// </summary>
-        public List<string> IncludedTables
-        {
-            get
-            {
-                List<string> res = new List<string>();
-                foreach (DataGridViewRow row in dataGridView1.Rows)
-                {
-                    bool include = (bool)row.Cells[0].Value;
-                    if (include) res.Add((string)row.Cells[1].Value);
-                } // foreach
-
-                return res;
-            }
-        }
 
         private void btnSelectAll_Click(object sender, EventArgs e)
         {

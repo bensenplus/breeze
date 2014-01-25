@@ -8,3 +8,4 @@
 bin
 obj
 *.user
+/suport/DbConverter/SqlConverter.v11.suo
