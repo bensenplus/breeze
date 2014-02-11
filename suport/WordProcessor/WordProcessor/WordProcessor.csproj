@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B9894111-E90D-42B7-B5BC-6A746FC9C059}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WordProcessor</RootNamespace>
+    <AssemblyName>WordProcessor</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="API\Win32Imm.cs" />
+    <Compile Include="API\Win32Caret.cs" />
+    <Compile Include="API\Win32User.cs" />
+    <Compile Include="Command\CFontColorSet.cs" />
+    <Compile Include="Command\CFontSet.cs" />
+    <Compile Include="Command\CInsertCheckBox.cs" />
+    <Compile Include="Command\CInsertComboBox.cs" />
+    <Compile Include="Command\CInsertHorizonLine.cs" />
+    <Compile Include="Command\CInsertImage.cs" />
+    <Compile Include="Command\CNewDocument.cs" />
+    <Compile Include="Command\CInsertTable.cs" />
+    <Compile Include="Command\CInsertTextInput.cs" />
+    <Compile Include="Command\Command.cs" />
+    <Compile Include="Command\CXmlExport.cs" />
+    <Compile Include="Command\CXmlImport.cs" />
+    <Compile Include="Command\CParagraphLeft.cs" />
+    <Compile Include="Command\CParagraphRight.cs" />
+    <Compile Include="Command\CParagraphMiddle.cs" />
+    <Compile Include="Control\WEditorView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Control\WEditor.designer.cs">
+      <DependentUpon>WEditorView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Control\WPagination.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Control\WPagination.designer.cs">
+      <DependentUpon>WPagination.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Control\WToolStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\Emre.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Control\Emre.Designer.cs">
+      <DependentUpon>Emre.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Control\WStatusBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\WStatusBar.Designer.cs">
+      <DependentUpon>WStatusBar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Control\WToolBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\WToolBar.Designer.cs">
+      <DependentUpon>WToolBar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Control\WToolBarButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\WToolBarButton.Designer.cs">
+      <DependentUpon>WToolBarButton.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Designer\MClipboard.cs" />
+    <Compile Include="Designer\MConstant.cs" />
+    <Compile Include="Designer\MDocument.cs" />
+    <Compile Include="Designer\CellDocument.cs" />
+    <Compile Include="Designer\XmlTranslator.cs" />
+    <Compile Include="Designer\PHeaderDocument.cs" />
+    <Compile Include="Designer\PFooterDocument.cs" />
+    <Compile Include="Dom\DCheckBox.cs" />
+    <Compile Include="Dom\DComboBox.cs" />
+    <Compile Include="Dom\DDocRow.cs" />
+    <Compile Include="Dom\DHorizonLine.cs" />
+    <Compile Include="Dom\DPage.cs" />
+    <Compile Include="Dom\DPageBody.cs" />
+    <Compile Include="Dom\DPageFooter.cs" />
+    <Compile Include="Dom\DPageHeader.cs" />
+    <Compile Include="Dom\DTable.cs" />
+    <Compile Include="Dom\DImage.cs" />
+    <Compile Include="Dom\DRowMember.cs" />
+    <Compile Include="Designer\EditorDocument.cs" />
+    <Compile Include="Designer\EditorSetting.cs" />
+    <Compile Include="Dom\DTextChar.cs" />
+    <Compile Include="Dom\DTextInput.cs" />
+    <Compile Include="Dom\MImage.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MImage.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Dom\DMember.cs" />
+    <Compile Include="Interface\ICompatible.cs" />
+    <Compile Include="Painter\CellPainter.cs" />
+    <Compile Include="Painter\EditorPainter.cs" />
+    <Compile Include="Painter\PheaderPainter.cs" />
+    <Compile Include="Painter\PfooterPainter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="WinForm\SplitCellDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForm\SplitCellDialog.Designer.cs">
+      <DependentUpon>SplitCellDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForm\TableDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForm\TableDialog.Designer.cs">
+      <DependentUpon>TableDialog.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Control\Emre.resx">
+      <DependentUpon>Emre.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Control\WEditorView.resx">
+      <DependentUpon>WEditorView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Control\WPagination.resx">
+      <DependentUpon>WPagination.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Control\WStatusBar.resx">
+      <DependentUpon>WStatusBar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dom\MImage.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MImage.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForm\SplitCellDialog.resx">
+      <DependentUpon>SplitCellDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForm\TableDialog.resx">
+      <DependentUpon>TableDialog.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\EnterArrow.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TableSelect.jpg" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
