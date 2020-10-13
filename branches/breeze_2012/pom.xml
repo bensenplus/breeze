@@ -22,7 +22,7 @@
 		<cxf.version>2.2.6</cxf.version>
 		<cglib.version>2.2.2</cglib.version>
 		<mybatis.spring.version>1.1.1</mybatis.spring.version>
-		<junit.version>4.8</junit.version>
+		<junit.version>4.13.1</junit.version>
 		<sitemesh.version>2.4.2</sitemesh.version>
 	</properties>
 
