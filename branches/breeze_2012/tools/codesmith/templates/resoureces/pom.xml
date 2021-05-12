@@ -10,7 +10,7 @@
 	<version>0.1</version>
 
 	<properties>
-		<springframework.version>3.1.2.RELEASE</springframework.version>
+		<springframework.version>5.2.10.RELEASE</springframework.version>
 		<org.slf4j.version>1.5.10</org.slf4j.version>
 		<log4j.version>1.2.16</log4j.version>
 		<displaytag.version>1.2</displaytag.version>
